@@ -4,6 +4,18 @@ const router = express.Router();
 
 /**
  * @swagger
+ * /districts
+ *  get:
+ *      summary: Get all districts of all provinces
+ *      description: Retrieve a list of districts basic information from the database.
+ *      responses:
+ *          200:
+ *              description: The list of districts.
+ */
+router.get('/districts', locationController.getAllDistrictsOfAllProvinces);
+
+/**
+ * @swagger
  * /provinces
  *  get:
  *      summary: Get all provinces and municipalities

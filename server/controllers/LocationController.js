@@ -5,6 +5,36 @@ const {
 
 class LocationController {
     /**
+    * Get all districts of all provinces. This is used by sequelize to get all districts of all provinces.
+    * 
+    * @param req - The request object from express server. Cannot be null.
+    * @param res - The response object from express server. Cannot be null.
+    * @param next - The next middleware function in the chain. Cannot be null.
+    * 
+    * @return { Promise } Resolves to the list of districts
+    */
+    async getAllDistrictsOfAllProvinces(req, res, next) {
+        return res.status(200).json(await Province_municipality.findAll({
+            attributes: [
+                [sequelize.col('province_municipality.province_municipality_id'), 'provinceMunicipalityId'],
+                [sequelize.col('province_municipality'), 'provinceMunicipality'],
+            ],
+            include: {
+                model: District,
+                attributes: [
+                    [sequelize.col('district_id'), 'districtId'],
+                    [sequelize.col('district'), 'district'],
+                ],
+                required: true,
+            },
+            order: [
+                ['provinceMunicipalityId', 'ASC'],
+                [sequelize.col('district_id'), 'ASC'],
+            ],
+        }));
+    }
+
+    /**
     * Get all province municipalities from the database. This is used to load all data from the database.
     * 
     * @param req - The request object from express server. Cannot be null.
