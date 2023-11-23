@@ -2,7 +2,6 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('district', {
     district_id: {
-      autoIncrement: false,
       type: DataTypes.SMALLINT.UNSIGNED,
       allowNull: false,
       primaryKey: true

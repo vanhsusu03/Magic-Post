@@ -39,6 +39,7 @@ db.models.Package_type = require("./package_type")(sequelize, Sequelize.DataType
 db.models.Province_municipality = require('./province_municipality')(sequelize, Sequelize.DataTypes);
 db.models.Status_detail = require("./status_detail")(sequelize, Sequelize.DataTypes);
 db.models.Warehouse = require("./warehouse")(sequelize, Sequelize.DataTypes);
+db.models.Token = require("./token")(sequelize, Sequelize.DataTypes);
 
 db.models.Package.belongsToMany(db.models.Package_collection, { through: db.models.Package_pkg_collection, foreignKey: "package_id", otherKey: "package_collection_id" });
 db.models.Package.belongsToMany(db.models.Package_status, { through: db.models.Status_detail, foreignKey: "package_id", otherKey: "status_id" });
@@ -74,6 +75,8 @@ db.models.Account.belongsTo(db.models.Warehouse, { foreignKey: "warehouse_id"});
 db.models.Warehouse.hasMany(db.models.Account, { foreignKey: "warehouse_id"});
 db.models.Delivery_center.belongsTo(db.models.Warehouse, { foreignKey: "warehouse_id"});
 db.models.Warehouse.hasMany(db.models.Delivery_center, { foreignKey: "warehouse_id"});
+db.models.Token.belongsTo(db.models.Account, { foreignKey: "token_id"});
+db.models.Account.hasOne(db.models.Token, { foreignKey: "token_id"});
 
 Object.keys(db.models).forEach((modelName) => {
     if (db.models[modelName].associate) {

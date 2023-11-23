@@ -127,3 +127,12 @@ CREATE TABLE `account` (
     UNIQUE(phone),
     UNIQUE(citizen_identity_card_image)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `token` (
+	token_id MEDIUMINT UNSIGNED NOT NULL,
+    token VARCHAR(300) NOT NULL,
+    `type` ENUM('Bearer', 'Google') DEFAULT 'Bearer',
+    expires BOOLEAN DEFAULT FALSE,
+    PRIMARY KEY (token_id),
+    CONSTRAINT fk_token_account FOREIGN KEY (token_id) REFERENCES account (account_id) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
