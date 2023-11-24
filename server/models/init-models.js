@@ -11,6 +11,7 @@ var _package_status = require("./package_status");
 var _package_type = require("./package_type");
 var _province_municipality = require("./province_municipality");
 var _status_detail = require("./status_detail");
+var _token = require("./token");
 var _warehouse = require("./warehouse");
 
 function initModels(sequelize) {
@@ -26,12 +27,15 @@ function initModels(sequelize) {
   var package_type = _package_type(sequelize, DataTypes);
   var province_municipality = _province_municipality(sequelize, DataTypes);
   var status_detail = _status_detail(sequelize, DataTypes);
+  var token = _token(sequelize, DataTypes);
   var warehouse = _warehouse(sequelize, DataTypes);
 
   package.belongsToMany(package_collection, { as: 'package_collection_id_package_collections', through: package_pkg_collection, foreignKey: "package_id", otherKey: "package_collection_id" });
   package.belongsToMany(package_status, { as: 'status_id_package_statuses', through: status_detail, foreignKey: "package_id", otherKey: "status_id" });
   package_collection.belongsToMany(package, { as: 'package_id_packages', through: package_pkg_collection, foreignKey: "package_collection_id", otherKey: "package_id" });
   package_status.belongsToMany(package, { as: 'package_id_package_status_details', through: status_detail, foreignKey: "status_id", otherKey: "package_id" });
+  token.belongsTo(account, { as: "token", foreignKey: "token_id"});
+  account.hasOne(token, { as: "token", foreignKey: "token_id"});
   account.belongsTo(account_type, { as: "account_type", foreignKey: "account_type_id"});
   account_type.hasMany(account, { as: "accounts", foreignKey: "account_type_id"});
   account.belongsTo(delivery_center, { as: "delivery_center", foreignKey: "delivery_center_id"});
@@ -76,6 +80,7 @@ function initModels(sequelize) {
     package_type,
     province_municipality,
     status_detail,
+    token,
     warehouse,
   };
 }
