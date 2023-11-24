@@ -1,19 +1,31 @@
 <template>
-  <div class="bg-green-300 border-green-600 border-b p-4 m-4 rounded">
-    Hello World
-  </div>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App" />
+  <Header></Header>
+  <LeaderManageAccount></LeaderManageAccount>
+  <Footer></Footer>
+  <!-- <img alt="Vue logo" src="./assets/logo.png">
+  <HelloWorld msg="Welcome to Your Vue.js App" /> -->
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-import "./assets/general_css/general.css"
+import "./assets/general_css/style.css";
+import Login from './pages/Login.vue';
+import Footer from './components/Footer.vue';
+import CustomerSearching from './components/CustomerSearching.vue';
+import Header from './components/Header.vue';
+import Home from './pages/Home.vue';
+import LeaderManageAccount from './components/LeaderManageAccount.vue';
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    HelloWorld,
+    Login,
+    Footer,
+    CustomerSearching,
+    Header,
+    Home,
+    LeaderManageAccount
+}
 }
 </script>
 
@@ -26,4 +38,5 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
 </style>

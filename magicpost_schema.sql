@@ -3,14 +3,14 @@ CREATE SCHEMA magicpost;
 USE magicpost;
 
 CREATE TABLE province_municipality (
-	province_municipality_id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	province_municipality_id TINYINT UNSIGNED NOT NULL,
     province_municipality VARCHAR(100) NOT NULL,
     PRIMARY KEY (province_municipality_id),
     UNIQUE(province_municipality)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE district (
-	district_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+	district_id SMALLINT UNSIGNED NOT NULL,
     province_municipality_id TINYINT UNSIGNED NOT NULL,
     district VARCHAR(100) NOT NULL,
     PRIMARY KEY (district_id),
