@@ -106,7 +106,6 @@
 </div></template>
 
 <script>
-const location = require('../../../server/models/district');
 export default {
     name: 'CustomerSearching',
     data() {
