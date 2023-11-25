@@ -5,73 +5,99 @@ const { Province_municipality, District } = db.models
 
 const LocationController = {
     /**
-    * Get all districts of all provinces. This is used by sequelize to get all districts of all provinces.
+    * Get all districts of all provinces. This is used by SEQIOUS_PERSONAL_DIAGNOSTICS to get all districts of all provinces.
     * 
-    * @param req - The request object from express server. Cannot be null.
-    * @param res - The response object from express server. Cannot be null.
+    * @param req - The request object from express server. { object }
+    * @param res - The response object from express server. { object }
     * 
-    * @return { Promise } Resolves to an array of districts in JSON format. Each district has a field named ` province_municipality
+    * @return { Promise } Resolves with list of all districts of all provinces in this seq
     */
     getAllDistrictsOfAllProvinces: async (req, res) => {
-        return res.status(200).json(await Province_municipality.findAll({
-            attributes: [
-                [sequelize.col('province_municipality.province_municipality_id'), 'provinceMunicipalityId'],
-                [sequelize.col('province_municipality'), 'provinceMunicipality'],
-            ],
-            include: {
-                model: District,
+        try {
+            const ans = await Province_municipality.findAll({
+                attributes: [
+                    [sequelize.col('province_municipality.province_municipality_id'), 'provinceMunicipalityId'],
+                    [sequelize.col('province_municipality'), 'provinceMunicipality'],
+                ],
+                include: {
+                    model: District,
+                    attributes: [
+                        [sequelize.col('district_id'), 'districtId'],
+                        [sequelize.col('district'), 'district'],
+                    ],
+                    required: true,
+                },
+                order: [
+                    ['provinceMunicipalityId', 'ASC'],
+                    [sequelize.col('district_id'), 'ASC'],
+                ],
+            })
+            res.status(200).json(ans)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
+    /**
+    * Get all province municipalities from the databse. This is used to get all the data in the database
+    * 
+    * @param req - express request object from express server
+    * @param res - express response object from express server ( not used in this function )
+    * 
+    * @return { Promise } Resolves with array of all the data in the databse or 500 if something goes
+    */
+    getAllProvincesMunicipalities: async (req, res) => {
+        try {
+            const ans = await Province_municipality.findAll({
+                attributes: [
+                    [sequelize.col('province_municipality_id'), 'provinceMunicipalityId'],
+                    [sequelize.col('province_municipality'), 'provinceMunicipality'],
+                ],
+                order: [['provinceMunicipalityId', 'ASC']],
+            })
+            res.status(200).json(ans)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
+    /**
+    * Get all districts of a province. This is used by getProvince and getPurchInventors
+    * 
+    * @param req - Request object from express server.
+    * @param res - Response object from express server. { status : 200 message :'Something went wrong'}
+    * 
+    * @return { Promise } Resolves with list of districts in JSON format. If an error occurs returns 500
+    */
+    getAllDistrictsOfAProvince: async (req, res) => {
+        try {
+            const provinceMunicipalityId = Number(req.params.provinceMunicipalityId)
+            const ans = await District.findAll({
                 attributes: [
                     [sequelize.col('district_id'), 'districtId'],
                     [sequelize.col('district'), 'district'],
                 ],
-                required: true,
-            },
-            order: [
-                ['provinceMunicipalityId', 'ASC'],
-                [sequelize.col('district_id'), 'ASC'],
-            ],
-        }))
-    },
-
-    /**
-    * Get all province municipalities from the database. This is used to populate the list of provinces and municipalities
-    * 
-    * @param req - The request object from express server
-    * @param res - The response object from express server ( not used in this function )
-    * 
-    * @return { Promise } A promise that fulfills with an array of Province_municipality
-    */
-    getAllProvincesMunicipalities: async (req, res) => {
-        return res.status(200).json(await Province_municipality.findAll({
-            attributes: [
-                [sequelize.col('province_municipality_id'), 'provinceMunicipalityId'],
-                [sequelize.col('province_municipality'), 'provinceMunicipality'],
-            ],
-            order: [['provinceMunicipalityId', 'ASC']],
-        }))
-    },
-
-    /**
-    * Get all districts of a province. This is used by Sequelize to get all districts of a province.
-    * 
-    * @param req - The request object from express server. { String } provinceMunicipalityId The ID of the province.
-    * @param res
-    * 
-    * @return { Promise } Resolves with an array of districts in JSON format ordered by id. Example request. { String }
-    */
-    getAllDistrictsOfAProvince: async (req, res) => {
-        const provinceMunicipalityId = Number(req.params.provinceMunicipalityId)
-
-        return res.status(200).json(await District.findAll({
-            attributes: [
-                [sequelize.col('district_id'), 'districtId'],
-                [sequelize.col('district'), 'district'],
-            ],
-            where: {
-                province_municipality_id: provinceMunicipalityId,
-            },
-            order: [['districtId', 'ASC']],
-        }))
+                where: {
+                    province_municipality_id: provinceMunicipalityId,
+                },
+                order: [['districtId', 'ASC']],
+            })
+            res.status(200).json(ans)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
     },
 }
 

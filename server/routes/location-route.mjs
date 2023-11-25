@@ -42,6 +42,15 @@
  * tags:
  *  name: Location
  *  description: The location API
+ */
+
+import { Router } from 'express'
+import locationController from "../controllers/LocationController.mjs"
+
+const router = Router()
+
+/**
+ * @swagger
  * /districts:
  *  get:
  *      summary: Get all districts of all provinces/municipalities
@@ -56,6 +65,13 @@
  *                          type: array
  *                          items:
  *                              $ref: '#/components/schemas/District'
+ *          '500':
+ *              description: Internal Server Error
+ */
+router.get('/districts', locationController.getAllDistrictsOfAllProvinces)
+
+/**
+ * @swagger
  * /provinces:
  *  get:
  *      summary: Get all provinces/municipalities
@@ -70,6 +86,13 @@
  *                          type: array
  *                          items:
  *                              $ref: '#/components/schemas/ProvinceMunicipality'
+ *          '500':
+ *              description: Internal Server Error
+ */
+router.get('/provinces', locationController.getAllProvincesMunicipalities)
+
+/**
+ * @swagger
  * /provinces/{provinceMunicipalityId}/districts:
  *  get:
  *      summary: Get all districts of a specific province/municipality
@@ -91,15 +114,9 @@
  *                          type: array
  *                          items:
  *                              $ref: '#/components/schemas/District'
+ *          '500':
+ *              description: Internal Server Error
  */
-
-import { Router } from 'express'
-import locationController from "../controllers/LocationController.mjs"
-
-const router = Router()
-
-router.get('/districts', locationController.getAllDistrictsOfAllProvinces)
-router.get('/provinces', locationController.getAllProvincesMunicipalities)
 router.get('/provinces/:provinceMunicipalityId/districts', locationController.getAllDistrictsOfAProvince)
 
 export default router

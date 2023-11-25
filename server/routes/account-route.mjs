@@ -1,6 +1,3 @@
-// const express = require('express');
-// const accountController = require('../controllers/AccountController');
-
 /**
  * @swagger
  * components:
@@ -108,10 +105,13 @@
  *              registration_time: "2023-01-01T12:00:00"
  */
 
-// const router = express.Router();
+import { Router } from 'express'
+// import accountController from '../controllers/AccountController.mjs'
 
-// router.post('/signup', accountController.signUp);
-// router.post('/login', accountController.logIn);
-// router.post('/logout', accountController.logOut);
+const router = Router()
 
-// module.exports = router;
+// router.post('/signup', accountController.signUp)
+// router.post('/login', accountController.logIn)
+// router.post('/logout', accountController.logOut)
+
+export default router
