@@ -64,6 +64,10 @@ export default function (sequelize, DataTypes) {
     registration_time: {
       type: DataTypes.DATE,
       allowNull: false
+    },
+    refresh_token: {
+      type: DataTypes.STRING(300),
+      allowNull: true
     }
   }, {
     sequelize,

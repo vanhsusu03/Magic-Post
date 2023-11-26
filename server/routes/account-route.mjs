@@ -106,12 +106,17 @@
  */
 
 import { Router } from 'express'
-// import accountController from '../controllers/AccountController.mjs'
+import accountController from '../controllers/AccountController.mjs'
+import { isAuth } from '../middlewares/Auth.mjs'
 
 const router = Router()
 
-// router.post('/signup', accountController.signUp)
-// router.post('/login', accountController.logIn)
+router.post('/signup', accountController.signUp)
+router.post('/login', accountController.logIn)
+router.post('/refresh', accountController.refreshToken)
 // router.post('/logout', accountController.logOut)
+router.get('/profile', isAuth, async (req, res) => {
+	res.json(req.account)
+})
 
 export default router

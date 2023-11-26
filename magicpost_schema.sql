@@ -119,6 +119,7 @@ CREATE TABLE `account` (
     phone VARCHAR(20) NOT NULL,
     citizen_identity_card_image VARCHAR(300) NOT NULL,
     registration_time DATETIME NOT NULL,
+    refresh_token VARCHAR(300) DEFAULT NULL,
     PRIMARY KEY (account_id),
     CONSTRAINT fk_account_delivery_center FOREIGN KEY (delivery_center_id) REFERENCES delivery_center (delivery_center_id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_account_warehouse FOREIGN KEY (warehouse_id) REFERENCES warehouse (warehouse_id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -126,13 +127,4 @@ CREATE TABLE `account` (
     UNIQUE(username),
     UNIQUE(phone),
     UNIQUE(citizen_identity_card_image)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-CREATE TABLE `token` (
-	token_id MEDIUMINT UNSIGNED NOT NULL,
-    token VARCHAR(300) NOT NULL,
-    `type` ENUM('Bearer', 'Google') DEFAULT 'Bearer',
-    expires BOOLEAN DEFAULT FALSE,
-    PRIMARY KEY (token_id),
-    CONSTRAINT fk_token_account FOREIGN KEY (token_id) REFERENCES account (account_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

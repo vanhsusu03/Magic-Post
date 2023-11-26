@@ -13,7 +13,6 @@ import _package_status from "./package_status.mjs"
 import _package_type from "./package_type.mjs"
 import _province_municipality from "./province_municipality.mjs"
 import _status_detail from "./status_detail.mjs"
-import _token from "./token.mjs"
 import _warehouse from "./warehouse.mjs"
 
 dotenv.config()
@@ -45,7 +44,6 @@ db.models.Package_type = _package_type(sequelize, DataTypes)
 db.models.Province_municipality = _province_municipality(sequelize, DataTypes)
 db.models.Status_detail = _status_detail(sequelize, DataTypes)
 db.models.Warehouse = _warehouse(sequelize, DataTypes)
-db.models.Token = _token(sequelize, DataTypes)
 
 db.models.Package.belongsToMany(db.models.Package_collection, {
 	through: db.models.Package_pkg_collection,
@@ -156,12 +154,6 @@ db.models.Delivery_center.belongsTo(db.models.Warehouse, {
 })
 db.models.Warehouse.hasMany(db.models.Delivery_center, {
 	foreignKey: "warehouse_id"
-})
-db.models.Token.belongsTo(db.models.Account, {
-	foreignKey: "token_id"
-})
-db.models.Account.hasOne(db.models.Token, {
-	foreignKey: "token_id"
 })
 
 Object.keys(db.models).forEach(modelName => {
