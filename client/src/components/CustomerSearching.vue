@@ -75,37 +75,47 @@
 
             </div>
         </div>
-        {{ query }}
+
     </div>
 
     <!-- Post Office Search -->
     <div class="max-w-3xl" v-if="showTab == 1">
         <div class="flex items-center justify-center flex-col w-full gap-[12px] md:flex-row overflow-hidden h-full">
-            <div id="province" class="w-full common-shadow-input h-[43px] select2-stupid-at-home" data-select2-id="select2-data-73-3wmt">
-                <select id="office-province" name="province_id"
-                    class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300" tabindex="-1" aria-hidden="true"
-                    data-select2-id="select2-data-office-province">
-                    <option class="text-gray-900" value="">Tỉnh/ Thành phố</option>
-                    <option class="text-gray-900" value="">Ninh Bình</option>
+            <div id="province" class="w-full common-shadow-input h-[43px] select2-stupid-at-home"
+                data-select2-id="select2-data-73-3wmt">
+                <select id="office-province" name="province_id" v-model="provinceSelectedId"
+                    @change="this.getAllDistrictsOfAProvince()"
+                    class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300"
+                    tabindex="-1" aria-hidden="true" data-select2-id="select2-data-office-province">
+                    <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
+                    <option class="text-gray-900" v-for="province in provinces" :value="province.provinceMunicipalityId"
+                        :key="province.provinceMunicipalityId">{{ province.provinceMunicipality }}</option>
                 </select>
             </div>
 
             <div id="district" class="common-shadow-input w-full h-[43px] select2-stupid-at-home">
-                <select id="slDistrict" name="district_id" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300"
-                    tabindex="-1" aria-hidden="true">
+                <select id="slDistrict" name="district_id"
+                    class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300s" tabindex="-1"
+                    aria-hidden="true">
                     <option class="text-gray-900" value="">Quận/huyện</option>
+                    <option class="text-gray-900" v-if="districts && districts.length" v-for="district in districts">{{
+                        district.district }}</option>
                 </select>
             </div>
 
             <div class="flex items-center  w-full md:w-[180px]">
-                <button class="w-full md:w-[180px] mr-0 lg:mr-2 bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[16px] h-[45px] rounded-[2px] text-white">
+                <button
+                    class="w-full md:w-[180px] mr-0 lg:mr-2 bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[16px] h-[45px] rounded-[2px] text-white">
                     Tìm kiếm
                 </button>
             </div>
         </div>
-</div></template>
+
+    </div>
+</template>
 
 <script>
+import axios from 'axios';
 export default {
     name: 'CustomerSearching',
     data() {
@@ -116,11 +126,30 @@ export default {
             s2: "",
             s3: "",
             show: false,
-            showTab: 1
+            showTab: 1,
+            provinces: [],
+            provinceSelectedId: 0,
+            districts: []
         }
     },
 
     methods: {
+        async getProvinces() {
+            await axios.get('/provinces', { withCredentials: true }).then(res => {
+                this.provinces = res.data
+            })
+        },
+
+        async getAllDistrictsOfAProvince() {
+            if (this.provinceSelectedId > 0) {
+                await axios.get(`/provinces/${this.provinceSelectedId}/districts`, { withCredentials: true }).then(res => {
+                    this.districts = res.data
+                })
+            } else {
+                this.districts = null;
+            }
+        },
+
         showStatus() {
             this.show = true;
             if (this.data == 1) {
@@ -139,6 +168,10 @@ export default {
         clearData() {
 
         }
+    },
+
+    mounted() {
+        this.getProvinces();
     }
 }
 </script>
