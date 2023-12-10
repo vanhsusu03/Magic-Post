@@ -5,35 +5,35 @@
  *      ProvinceMunicipality:
  *          type: object
  *          properties:
- *              province_municipality_id:
+ *              provinceMunicipalityId:
  *                  type: integer
  *                  description: The unique identifier for the province or municipality.
- *              province_municipality:
+ *              provinceMunicipality:
  *                  type: string
  *                  description: The name of the province or municipality.
  *          required:
- *              - province_municipality
+ *              - provinceMunicipality
  *          example:
- *              province_municipality_id: 1
- *              province_municipality: "Province A"
+ *              provinceMunicipalityId: 1
+ *              provinceMunicipality: "Province A"
  *      District:
  *          type: object
  *          properties:
- *              district_id:
+ *              districtId:
  *                  type: integer
  *                  description: The unique identifier for the district.
- *              province_municipality_id:
+ *              provinceMunicipalityId:
  *                  type: integer
  *                  description: The identifier for the province or municipality associated with the district.
  *              district:
  *                  type: string
  *                  description: The name of the district.
  *          required:
- *              - province_municipality_id
+ *              - provinceMunicipalityId
  *              - district
  *          example:
- *              district_id: 1
- *              province_municipality_id: 101
+ *              districtId: 1
+ *              provinceMunicipalityId: 101
  *              district: "Cầu Giấy"
  */
 

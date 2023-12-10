@@ -90,10 +90,10 @@ db.models.Delivery_center.hasMany(db.models.Package, {
 	foreignKey: "delivery_center_send_id"
 })
 db.models.Delivery_center.belongsTo(db.models.District, {
-	foreignKey: "delivery_center_id"
+	foreignKey: "district_id"
 })
-db.models.District.hasOne(db.models.Delivery_center, {
-	foreignKey: "delivery_center_id"
+db.models.District.hasMany(db.models.Delivery_center, {
+	foreignKey: "district_id"
 })
 db.models.Package_pkg_collection.belongsTo(db.models.Package, {
 	foreignKey: "package_id"
@@ -138,10 +138,10 @@ db.models.Province_municipality.hasMany(db.models.District, {
 	foreignKey: "province_municipality_id"
 })
 db.models.Warehouse.belongsTo(db.models.Province_municipality, {
-	foreignKey: "warehouse_id"
+	foreignKey: "province_municipality_id"
 })
-db.models.Province_municipality.hasOne(db.models.Warehouse, {
-	foreignKey: "warehouse_id"
+db.models.Province_municipality.hasMany(db.models.Warehouse, {
+	foreignKey: "province_municipality_id"
 })
 db.models.Account.belongsTo(db.models.Warehouse, {
 	foreignKey: "warehouse_id"

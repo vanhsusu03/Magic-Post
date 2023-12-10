@@ -18,18 +18,20 @@ CREATE TABLE district (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE warehouse (
-	warehouse_id TINYINT UNSIGNED NOT NULL,
+	warehouse_id TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    province_municipality_id TINYINT UNSIGNED NOT NULL,
     address VARCHAR(500) NOT NULL,
     PRIMARY KEY (warehouse_id),
-    CONSTRAINT fk_warehouse_province_municipality FOREIGN KEY (warehouse_id) REFERENCES province_municipality (province_municipality_id) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT fk_warehouse_province_municipality FOREIGN KEY (province_municipality_id) REFERENCES province_municipality (province_municipality_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE delivery_center (
-	delivery_center_id SMALLINT UNSIGNED NOT NULL,
+	delivery_center_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    district_id SMALLINT UNSIGNED NOT NULL,
     warehouse_id TINYINT UNSIGNED NOT NULL,
     address VARCHAR(500) NOT NULL,
     PRIMARY KEY (delivery_center_id),
-    CONSTRAINT fk_delivery_center_district FOREIGN KEY (delivery_center_id) REFERENCES district (district_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_delivery_center_district FOREIGN KEY (district_id) REFERENCES district (district_id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT fk_delivery_center_warehouse FOREIGN KEY (warehouse_id) REFERENCES warehouse (warehouse_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

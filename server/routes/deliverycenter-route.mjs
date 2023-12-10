@@ -5,20 +5,25 @@
  *      DeliveryCenter:
  *          type: object
  *          properties:
- *              delivery_center_id:
+ *              deliveryCenterId:
  *                  type: integer
  *                  description: The unique identifier for the delivery center.
- *              warehouse_id:
+ *              districtId:
+ *                  type: integer
+ *                  description: The identifier for the district which delivery center belongs to.
+ *              warehouseId:
  *                  type: integer
  *                  description: The identifier for the warehouse associated with the delivery center.
  *              address:
  *                  type: string
  *                  description: The address of the delivery center.
  *          required:
- *              - warehouse_id
+ *              - districtId
+ *              - warehouseId
  *              - address
  *          example:
- *              delivery_center_id: 1
- *              warehouse_id: 101
+ *              deliveryCenterId: 34
+ *              districtId: 5
+ *              warehouseId: 7
  *              address: "144 Xuân Thủy, Cầu Giấy"
  */

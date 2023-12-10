@@ -4,7 +4,7 @@ import randToken from 'rand-token'
 import { format } from 'date-fns'
 import db from '../models/index.mjs'
 
-const { Token, Account } = db.models
+const { Account } = db.models
 
 const AccountController = {
 	signUp: async (req, res) => {

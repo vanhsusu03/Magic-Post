@@ -5,21 +5,21 @@
  *      PackageStatus:
  *          type: object
  *          properties:
- *              status_id:
+ *              statusId:
  *                  type: integer
  *                  description: The unique identifier for the package status.
- *              package_status:
+ *              packageStatus:
  *                  type: string
  *                  description: The name of the package status.
  *          required:
- *              - package_status
+ *              - packageStatus
  *          example:
- *              status_id: 1
- *              package_status: "In Transit"
+ *              statusId: 1
+ *              packageStatus: "In Transit"
  *      StatusDetail:
  *          type: object
  *          properties:
- *              status_id:
+ *              statusId:
  *                  type: integer
  *                  description: The identifier for the package status.
  *              time:
@@ -29,17 +29,17 @@
  *              location:
  *                  type: string
  *                  description: The location associated with the status update.
- *              package_id:
+ *              packageId:
  *                  type: integer
  *                  description: The identifier for the package.
  *          required:
- *              - status_id
+ *              - statusId
  *              - time
  *              - location
- *              - package_id
+ *              - packageId
  *          example:
- *              status_id: 1
+ *              statusId: 1
  *              time: "2023-01-01T12:00:00"
  *              location: "Warehouse A"
- *              package_id: 123
+ *              packageId: 123
  */
