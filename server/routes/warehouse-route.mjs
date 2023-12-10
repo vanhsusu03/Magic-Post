@@ -89,4 +89,49 @@ router.get('/warehouses', WarehouseController.getAllWarehouses)
  */
 router.post('/warehouses', WarehouseController.createWarehouse)
 
+/**
+ * @swagger
+ * /warehouses/{warehouseId}:
+ *  put:
+ *      summary: Update an existing warehouse
+ *      tags: [Warehouse]
+ *      description: Update the address of an existing warehouse.
+ *      parameters:
+ *        - in: path
+ *          name: warehouseId
+ *          required: true
+ *          description: The unique identifier for the warehouse.
+ *          schema:
+ *              type: integer
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          address:
+ *                              type: string
+ *                              description: The updated address of the warehouse.
+ *                      required:
+ *                          - address
+ *                      example:
+ *                          address: "123 Xuân Thủy"
+ *      responses:
+ *          '200':
+ *              description: Warehouse successfully updated
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Warehouse'
+ *          '500':
+ *              description: Internal Server Error
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          message: "Internal Server Error"
+ *                          error: "Error details"
+ */
+router.put('/warehouses/:warehouseId', WarehouseController.updateWarehouse)
+
 export default router

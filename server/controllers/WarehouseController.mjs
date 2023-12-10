@@ -71,6 +71,40 @@ const WarehouseController = {
             })
         }
     },
+
+    /**
+    * Update a Warehouse. The address is passed as a JSON object to update in the database
+    * 
+    * @param req - Request object from express server
+    * @param res - Response object from express server ( error response will be JSON with error message )
+    * 
+    * @return { Object } Warehouse with province_municipality_id and address updated in the
+    */
+    updateWarehouse: async (req, res) => {
+        try {
+            const warehouseId = Number(req.params.warehouseId)
+            const { address } = req.body
+
+            const warehouse = await Warehouse.update({
+                address
+            }, {
+                where: {
+                    warehouse_id: warehouseId
+                }
+            })
+            res.status(200).json({
+                warehouseId: warehouse.warehouse_id,
+                provinceMunicipalityId: warehouse.province_municipality_id,
+                address: warehouse.address
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
 }
 
 export default WarehouseController
