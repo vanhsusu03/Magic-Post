@@ -85,7 +85,7 @@ const WarehouseController = {
             const warehouseId = Number(req.params.warehouseId)
             const { address } = req.body
 
-            const warehouse = await Warehouse.update({
+            await Warehouse.update({
                 address
             }, {
                 where: {
@@ -93,9 +93,8 @@ const WarehouseController = {
                 }
             })
             res.status(200).json({
-                warehouseId: warehouse.warehouse_id,
-                provinceMunicipalityId: warehouse.province_municipality_id,
-                address: warehouse.address
+                warehouseId,
+                address
             })
         } catch (err) {
             console.log(err)
