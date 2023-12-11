@@ -100,3 +100,50 @@
  *              packageId: 1
  *              packageCollectionId: 101
  */
+
+/**
+ * @swagger
+ * tags:
+ *  name: Package
+ *  description: The package API
+ */
+
+import { Router } from 'express'
+import PackageController from "../controllers/PackageController.mjs"
+
+const router = Router()
+
+/**
+ * @swagger
+ * /packages:
+ *  post:
+ *      summary: Confirm a new package
+ *      tags: [Package]
+ *      description: Confirm the details for a new package.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Package'
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Package'
+ *      responses:
+ *          '200':
+ *              description: Package successfully confirmed
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Package'
+ *          '500':
+ *              description: Internal Server Error
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          message: "Internal Server Error"
+ *                          error: "Error details"
+ */
+router.post('/packages', PackageController.confirm)
+
+export default router
