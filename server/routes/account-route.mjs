@@ -84,18 +84,153 @@
  *              refreshToken: "refresh_token_string"
  */
 
+/**
+ * @swagger
+ * tags:
+ *  name: Account
+ *  description: The account API
+ */
+
+
 import { Router } from 'express'
-import accountController from '../controllers/AccountController.mjs'
+import AccountController from '../controllers/AccountController.mjs'
 import { isAuth } from '../middlewares/Auth.mjs'
 
 const router = Router()
 
-router.post('/signup', accountController.signUp)
-router.post('/login', accountController.logIn)
-router.post('/refresh', accountController.refreshToken)
+/**
+ * @swagger
+ * /signup:
+ *  post:
+ *      summary: Sign up for a new account
+ *      tags: [Account]
+ *      description: Register a new account with the provided details.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Account'
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Account'
+ *      responses:
+ *          '201':
+ *              description: Account successfully created
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Account'
+ *          '500':
+ *              description: Internal Server Error
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          message: "Internal Server Error"
+ *                          error: "Error details"
+ */
+router.post('/signup', AccountController.signUp)
+
+/**
+ * @swagger
+ * /login:
+ *  post:
+ *      summary: Log in to an existing account
+ *      tags: [Account]
+ *      description: Log in to an existing account with the provided username and password.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          username:
+ *                              type: string
+ *                              description: The username of the account.
+ *                          password:
+ *                              type: string
+ *                              description: The password of the account.
+ *                      required:
+ *                          - username
+ *                          - password
+ *                      example:
+ *                          username: "john_doe"
+ *                          password: "password123"
+ *      responses:
+ *          '200':
+ *              description: Successful login
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Account'
+ *          '400':
+ *              description: Bad Request
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          message: "Bad Request"
+ *                          error: "Error details"
+ */
+router.post('/login', AccountController.logIn)
+
+/**
+ * @swagger
+ * /refresh:
+ *  post:
+ *      summary: Refresh Access Token
+ *      tags: [Account]
+ *      description: Refresh the access token using a valid refresh token.
+ *      parameters:
+ *        - in: header
+ *          name: x_authorization
+ *          required: true
+ *          description: an authorization header
+ *          schema:
+ *              type: string
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          refreshToken:
+ *                              type: string
+ *                              description: The refresh token obtained during the login process.
+ *                      required:
+ *                          - refreshToken
+ *                      example:
+ *                          refreshToken: "ZcEZoAyOffpJ7M68aIY1vyHqAu7hGEtBWznQm7itLgk9NWd6wJPqknkwIQGgve2VKYSe62DkHU5BWDQylb0gPdgcvStxQryZ1ThS"
+ *      responses:
+ *          '200':
+ *              description: Successful token refresh
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              accessToken:
+ *                                  type: string
+ *                                  description: The new access token.
+ *                          example:
+ *                              accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjQsImFjY291bnRUeXBlSWQiOjEsImlhdCI6MTcwMjMyNTg3OCwiZXhwIjoxNzAyMzI2NDc4fQ.a3B4Ru5SysMy51net01w-3kIGH5v6PMa9nhW2myEQNs"
+ *          '400':
+ *              description: Bad Request
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          message: "Bad Request"
+ *                          error: "Error details"
+ */
+router.post('/refresh', AccountController.refreshToken)
+
+
+// router.get('/profile', isAuth, async (req, res) => {
+// 	res.json(req.account)
+// })
+
 // router.post('/logout', accountController.logOut)
-router.get('/profile', isAuth, async (req, res) => {
-	res.json(req.account)
-})
+
 
 export default router

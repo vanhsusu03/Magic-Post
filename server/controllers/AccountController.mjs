@@ -7,6 +7,14 @@ import db from '../models/index.mjs'
 const { Account } = db.models
 
 const AccountController = {
+    /**
+	* Sign up a account. Checks to make sure username and / or email are not already in use
+	* 
+	* @param req - The request object from express server
+	* @param res - The response object from express server ( unused )
+	* 
+	* @return { Object } The signed up account in response to Express HTTP request ( used for validation and database operations
+	*/
 	signUp: async (req, res) => {
         try {
             const { accountTypeId, username, password,
@@ -30,11 +38,11 @@ const AccountController = {
                 account_type_id: accountTypeId,
                 username: username,
                 password: hashedPassword,
-                delivery_center_id: deliveryCenterId,
-                warehouse_id: warehouseId,
+                delivery_center_id: deliveryCenterId == '' ? null : deliveryCenterId,
+                warehouse_id: warehouseId == '' ? null : warehouseId,
                 first_name: firstName,
                 last_name: lastName,
-                email: email,
+                email: email == '' ? null : email,
                 phone: phone,
                 citizen_identity_card_image: citizenIdentityCardImage,
                 registration_time: vietnamTime
@@ -65,6 +73,14 @@ const AccountController = {
         }
 	},
 
+    /**
+	* Logs in a user to HipChat and returns a token to the request body. This is the endpoint that will be used to send requests to HipChat
+	* 
+	* @param req - The request object from express server
+	* @param res - The response object from express server ( response will be written to it )
+	* 
+	* @return { Promise } - resolves when the user has been logged in or rejects with an error if there was
+	*/
 	logIn: async (req, res) => {
         try {
             const { username, password } = req.body;
@@ -131,23 +147,14 @@ const AccountController = {
         }
 	},
 
-	// logOut: async (req, res) => {
-    //     try {
-    //         const token = req.headers.authorization.split(' ')[1]
-    //         await Token.destroy({ where: { token } })
-
-    //         res.status(200).json({
-    //             message: 'Logout successful',
-    //         })
-    //     } catch (err) {
-    //         console.log(err)
-    //         res.status(500).json({
-    //             message: 'Something went wrong',
-    //             error: err.message
-    //         })
-    //     }
-	// },
-
+    /**
+    * Handles the request to refresh the access token. Verifies the access token and refresh token are valid and returns the new access token
+    * 
+    * @param req - request object from express server
+    * @param res - response object from express server ( promise ) throws on
+    * 
+    * @return { Object } The JSON representation of the access token
+    */
     refreshToken: async (req, res) => {
         try {
             const accessTokenFromHeader = req.headers.x_authorization
@@ -201,6 +208,23 @@ const AccountController = {
             })
         }
 	},
+
+    // logOut: async (req, res) => {
+    //     try {
+    //         const token = req.headers.authorization.split(' ')[1]
+    //         await Token.destroy({ where: { token } })
+
+    //         res.status(200).json({
+    //             message: 'Logout successful',
+    //         })
+    //     } catch (err) {
+    //         console.log(err)
+    //         res.status(500).json({
+    //             message: 'Something went wrong',
+    //             error: err.message
+    //         })
+    //     }
+	// },
 }
 
 export default AccountController
