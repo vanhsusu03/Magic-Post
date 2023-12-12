@@ -40,6 +40,6 @@
  *          example:
  *              statusId: 1
  *              time: "2023-01-01T12:00:00"
- *              location: "Warehouse A"
+ *              location: "144 Xuân Thủy"
  *              packageId: 123
  */
