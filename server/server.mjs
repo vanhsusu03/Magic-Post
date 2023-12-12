@@ -1,4 +1,4 @@
-import express, { json } from "express"
+import express, { json, urlencoded } from "express"
 import { Server } from "http"
 import cors from "cors"
 import moment from "moment"
@@ -34,6 +34,9 @@ app.use(cors({
 
 // HANDLES JSON REQUEST BODY
 app.use(json())
+
+// HANDLES x-www-form-urlencoded REQUEST BODY
+app.use(urlencoded({ extended: true }))
 
 // USES DEFINED ROUTES
 app.use('/', routes)

@@ -1,9 +1,14 @@
 export default function (sequelize, DataTypes) {
   return sequelize.define('delivery_center', {
     delivery_center_id: {
+      autoIncrement: true,
       type: DataTypes.SMALLINT.UNSIGNED,
       allowNull: false,
-      primaryKey: true,
+      primaryKey: true
+    },
+    district_id: {
+      type: DataTypes.SMALLINT.UNSIGNED,
+      allowNull: false,
       references: {
         model: 'district',
         key: 'district_id'
@@ -25,19 +30,29 @@ export default function (sequelize, DataTypes) {
     sequelize,
     tableName: 'delivery_center',
     timestamps: false,
-    indexes: [{
-      name: "PRIMARY",
-      unique: true,
-      using: "BTREE",
-      fields: [{
-        name: "delivery_center_id"
-      }]
-    }, {
-      name: "fk_delivery_center_warehouse",
-      using: "BTREE",
-      fields: [{
-        name: "warehouse_id"
-      }]
-    }]
+    indexes: [
+      {
+        name: "PRIMARY",
+        unique: true,
+        using: "BTREE",
+        fields: [
+          { name: "delivery_center_id" },
+        ]
+      },
+      {
+        name: "fk_delivery_center_district",
+        using: "BTREE",
+        fields: [
+          { name: "district_id" },
+        ]
+      },
+      {
+        name: "fk_delivery_center_warehouse",
+        using: "BTREE",
+        fields: [
+          { name: "warehouse_id" },
+        ]
+      },
+    ]
   });
 }
