@@ -104,4 +104,63 @@ const router = Router()
  */
 router.post('/collections', PackageCollectionController.create)
 
+/**
+ * @swagger
+ * /collections/{packageCollectionId}/statuses:
+ *  put:
+ *      summary: Confirm Got Collection
+ *      tags: [Package collection]
+ *      description: Confirm the status for all packages in a package collection.
+ *      parameters:
+ *        - in: path
+ *          name: packageCollectionId
+ *          required: true
+ *          description: The ID of the package collection.
+ *          schema:
+ *              type: integer
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          statusId:
+ *                              type: integer
+ *                              description: The ID of the status to be confirmed.
+ *                          location:
+ *                              type: string
+ *                              description: The location associated with the status.
+ *                      required:
+ *                          - statusId
+ *                          - location
+ *                      example:
+ *                          statusId: 3
+ *                          location: "123 Xuân Thủy"
+ *      responses:
+ *          '200':
+ *              description: Successful confirmation of the status for all packages in the collection
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              vietnamTime:
+ *                                  type: string
+ *                                  format: date-time
+ *                                  description: The timestamp when the status was confirmed.
+ *                              packages:
+ *                                  type: array
+ *                                  items:
+ *                                      $ref: "#/components/schemas/Package"
+ *          '500':
+ *              description: Internal Server Error
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          message: "Something went wrong"
+ *                          error: "Error details"
+ */
+router.put('/collections/:packageCollectionId/statuses', PackageCollectionController.confirmGotCollection)
+
 export default router
