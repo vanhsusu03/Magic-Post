@@ -7,7 +7,7 @@ import db from '../models/index.mjs'
 const { Token, Account } = db.models
 
 const AccountController = {
-	signUp: async (req, res) => {
+    signUp: async (req, res) => {
         try {
             const { accountTypeId, username, password,
                 deliveryCenterId, warehouseId, firstName, lastName,
@@ -42,7 +42,7 @@ const AccountController = {
             if (!account) {
                 throw new Error('There was an error creating the account')
             }
-        
+
             res.status(201).json({
                 accountId: account.account_id,
                 accountTypeId: account.account_type_id,
@@ -63,9 +63,9 @@ const AccountController = {
                 error: err.message
             })
         }
-	},
+    },
 
-	logIn: async (req, res) => {
+    logIn: async (req, res) => {
         try {
             const { username, password } = req.body;
 
@@ -82,7 +82,6 @@ const AccountController = {
             if (!isPasswordCorrect) {
                 throw new Error('Wrong password')
             }
-
             const accessToken = jwt.sign({
                 accountId: account.account_id,
                 accountTypeId: account.account_type_id
@@ -93,7 +92,7 @@ const AccountController = {
             if (!accessToken) {
                 throw new Error('Login unsuccessful')
             }
-        
+
             let refreshToken = randToken.generate(process.env.REFRESH_TOKEN_SIZE)
             if (!account.refreshToken) {
                 await Account.update({ refresh_token: refreshToken }, {
@@ -129,9 +128,9 @@ const AccountController = {
                 error: err.message
             })
         }
-	},
+    },
 
-	// logOut: async (req, res) => {
+    // logOut: async (req, res) => {
     //     try {
     //         const token = req.headers.authorization.split(' ')[1]
     //         await Token.destroy({ where: { token } })
@@ -146,19 +145,19 @@ const AccountController = {
     //             error: err.message
     //         })
     //     }
-	// },
+    // },
 
     refreshToken: async (req, res) => {
         try {
             const accessTokenFromHeader = req.headers.x_authorization
-	        if (!accessTokenFromHeader) {
-		        throw new Error('Access token not found')
-	        }
+            if (!accessTokenFromHeader) {
+                throw new Error('Access token not found')
+            }
 
-	        const refreshTokenFromBody = req.body.refreshToken
-	        if (!refreshTokenFromBody) {
-		        throw new Error('Refresh token not found')
-	        }
+            const refreshTokenFromBody = req.body.refreshToken
+            if (!refreshTokenFromBody) {
+                throw new Error('Refresh token not found')
+            }
             // Decode access token
             const decoded = jwt.verify(accessTokenFromHeader, process.env.ACCESS_TOKEN_SECRET, {
                 ignoreExpiration: true,
@@ -167,7 +166,7 @@ const AccountController = {
                 throw new Error('Access token is invalid')
             }
 
-	        const accountId = decoded.accountId
+            const accountId = decoded.accountId
 
             const account = await Account.findOne({ where: { account_id: accountId } })
             if (!account) {
@@ -183,11 +182,11 @@ const AccountController = {
                 accountId: account.account_id,
                 accountTypeId: account.account_type_id
             },
-            process.env.ACCESS_TOKEN_SECRET,
-            {
-                algorithm: 'HS256',
-                expiresIn:process.env.ACCESS_TOKEN_LIFE,
-            })
+                process.env.ACCESS_TOKEN_SECRET,
+                {
+                    algorithm: 'HS256',
+                    expiresIn: process.env.ACCESS_TOKEN_LIFE,
+                })
             if (!accessToken) {
                 throw new Error('Creating access token failed')
             }
@@ -200,7 +199,7 @@ const AccountController = {
                 error: err.message
             })
         }
-	},
+    },
 }
 
 export default AccountController

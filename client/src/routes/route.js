@@ -5,14 +5,17 @@ import Home from '../pages/Home.vue';
 import AboutUs from '../pages/AboutUs.vue';
 import Contact from '../pages/Contact.vue';
 import LeaderManageAccount from '../components/LeaderManageAccount.vue';
+import Login from '../pages/Login.vue';
+import CustomerSearching from '../components/CustomerSearching.vue'
 import store from '@/store/index';
 
 const routes = [
     { path: "/", name: "Home", component: Home }, 
     { path: "/aboutus", name: "About Us", component: AboutUs }, 
-    // { path: "/searching", name: "Home", component: Home }, 
+    { path: "/customer/searching", name: "CustomerSearching", component: CustomerSearching}, 
     { path: "/contact", name: "Contact", component: Contact },
-    { path: "/leader/manage/account", name: "LeaderManageAccount", component: LeaderManageAccount}
+    { path: "/leader/manage/account", name: "LeaderManageAccount", component: LeaderManageAccount},
+    { path: "/login", name: "Login", component: Login}
     //addition in here
 ]
 

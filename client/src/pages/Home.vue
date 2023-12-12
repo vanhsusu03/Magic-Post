@@ -51,7 +51,7 @@ export default {
     margin-bottom: 500px;
 
     img {
-        width: 80%;
+        width: 90%;
     }
 
     @keyframes FadeOut {

@@ -44,7 +44,7 @@
 <script>
 import "../assets/general_css/style.css";
 export default {
-    name: 'LoginVue',
+    name: 'Login',
     // data() {
     //     return {
     //         email: '',
