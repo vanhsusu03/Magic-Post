@@ -201,4 +201,54 @@ const router = Router()
  */
 router.post('/packages', PackageController.confirm)
 
+/**
+ * @swagger
+ * /packages/{packageId}/statuses:
+ *  put:
+ *      summary: Update Delivery Status
+ *      tags: [Package]
+ *      description: Update the delivery status for a specific package.
+ *      parameters:
+ *        - in: path
+ *          name: packageId
+ *          required: true
+ *          description: The ID of the package.
+ *          schema:
+ *              type: integer
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          statusId:
+ *                              type: integer
+ *                              description: The ID of the status to be updated.
+ *                          location:
+ *                              type: string
+ *                              description: The location associated with the updated status.
+ *                      required:
+ *                          - statusId
+ *                          - location
+ *                      example:
+ *                          statusId: 12
+ *                          location: "123 Xuân Thủy"
+ *      responses:
+ *          '200':
+ *              description: Successful update of the delivery status for the package
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: "#/components/schemas/StatusDetail"
+ *          '500':
+ *              description: Internal Server Error
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          message: "Something went wrong"
+ *                          error: "Error details"
+ */
+router.put('/packages/:packageId/statuses', PackageController.updateDeliveryStatus)
+
 export default router

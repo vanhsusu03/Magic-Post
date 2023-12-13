@@ -74,6 +74,43 @@ const PackageController = {
             })
         }
     },
+
+    /**
+    * Updates delivery status for a package. Update database.
+    * 
+    * @param req - request object from express server
+    * @param res - response object from express server ( error or success )
+    * 
+    * @return { object } response object from express server ( success or failure ) note : statusId is the primary key of the
+    */
+    updateDeliveryStatus: async (req, res) => {
+        try {
+            const packageId = Number(req.params.packageId)
+            const { statusId, location } = req.body
+
+            const now = new Date()
+            const vietnamTime = format(now, 'yyyy-MM-dd HH:mm:ss', { timeZone: 'Asia/Ho_Chi_Minh' })
+            const statusDetail = await Status_detail.create({
+                status_id: statusId,
+                time: vietnamTime,
+                location: location,
+                package_id: packageId
+            })
+
+            res.status(200).json({
+                statusId: statusDetail.status_id,
+                time: statusDetail.time,
+                location: statusDetail.location,
+                packageId: statusDetail.package_id
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
 }
 
 export default PackageController
