@@ -111,6 +111,79 @@ const PackageController = {
             })
         }
     },
+
+    /**
+    * Update delivery status of many packages in the database based on request body. This is used to update the delivery status of many packages
+    * 
+    * @param req - request object from express server
+    * @param res - response object from express server ( write to database )
+    * 
+    * @return { Promise } - resolves with response body after updating delivery status of many packages in the database is written
+    */
+    updateDeliveryStatusOfManyPackages: async (req, res) => {
+        try {
+            let packageIds = req.body.packageIds
+            const { statusText, location } = req.body
+
+            if (typeof packageIds === "string") {
+                packageIds = packageIds.split(',').map(Number)
+            }
+            const now = new Date()
+            const vietnamTime = format(now, 'yyyy-MM-dd HH:mm:ss', { timeZone: 'Asia/Ho_Chi_Minh' })
+            let ans = []
+            for (const id of packageIds) {
+                const statusDetail = await Status_detail.findAll({
+                    attributes: [
+                        [sequelize.col('status_id'), 'statusId']
+                    ],
+                    where: {
+                        package_id: id
+                    },
+                    order: [['time', 'DESC']],
+                    raw: true,
+                    nest: true
+                })
+
+                const t = Number(statusDetail[1].statusId)
+                let statusId = 8
+                if (statusText == "Delivered") {
+                    statusId = 9
+                } else if (statusText == "Fail") {
+                    statusId = t + 1
+                    if (t != 10 && t != 11) {
+                        statusId = 10
+                    } 
+                } else {
+                    if (t == 8) {
+                        statusId = 19
+                    } else if (t == 19) {
+                        statusId = 20
+                    }
+                }
+
+                const status = await Status_detail.create({
+                    status_id: statusId,
+                    time: vietnamTime,
+                    location: location,
+                    package_id: id
+                })
+
+                ans.push({
+                    statusId: status.status_id,
+                    time: status.time,
+                    location: status.location,
+                    packageId: status.package_id
+                })
+            }
+            res.status(200).json(ans)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
 }
 
 export default PackageController

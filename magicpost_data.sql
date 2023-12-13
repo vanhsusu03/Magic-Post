@@ -17,7 +17,7 @@ INSERT INTO package_status (package_status) VALUES
 ('Arrival at Warehouse 2'),
 ('Transport departure from Warehouse 2'),
 ('Arrival at Delivery center 2'),
-('Item out for physical delivery'),
+('Item out for physical delivery 1'),
 ('Delivered'),
 ('Fail 1'),
 ('Fail 2'),
@@ -27,7 +27,9 @@ INSERT INTO package_status (package_status) VALUES
 ('Transport departure from Warehouse 3'),
 ('Arrival at Warehouse 4'),
 ('Transport departure from Warehouse 4'),
-('Arrival at Delivery center 4');
+('Arrival at Delivery center 4'),
+('Item out for physical delivery 2'),
+('Item out for physical delivery 3');
 
 INSERT INTO account_type (account_type) VALUES
 ('Admin'),

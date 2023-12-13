@@ -251,4 +251,52 @@ router.post('/packages', PackageController.confirm)
  */
 router.put('/packages/:packageId/statuses', PackageController.updateDeliveryStatus)
 
+/**
+ * @swagger
+ * /packages/statuses:
+ *  put:
+ *      summary: Update Delivery Status of Many Packages
+ *      tags: [Package]
+ *      description: Update the delivery status for multiple packages.
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/x-www-form-urlencoded:
+ *                  schema:
+ *                      type: object
+ *                      properties:
+ *                          packageIds:
+ *                              type: array
+ *                              items:
+ *                                  type: integer
+ *                              description: An array of package IDs to update the delivery status.
+ *                          statusText:
+ *                              type: string
+ *                              description: The status text to be applied.
+ *                          location:
+ *                              type: string
+ *                              description: The location associated with the updated status.
+ *                      required:
+ *                          - packageIds
+ *                          - statusText
+ *                          - location
+ *      responses:
+ *          '200':
+ *              description: Successful update of the delivery status for multiple packages
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: "#/components/schemas/StatusDetail"
+ *          '500':
+ *              description: Internal Server Error
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          message: "Something went wrong"
+ *                          error: "Error details"
+ */
+router.put('/packages/statuses', PackageController.updateDeliveryStatusOfManyPackages)
+
 export default router
