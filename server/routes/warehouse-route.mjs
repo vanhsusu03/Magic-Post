@@ -32,6 +32,7 @@
 
 import { Router } from 'express'
 import WarehouseController from "../controllers/WarehouseController.mjs"
+import { isAuth, isLeadership } from "../middlewares/Auth.mjs"
 
 const router = Router()
 
@@ -87,7 +88,7 @@ router.get('/warehouses', WarehouseController.getAllWarehouses)
  *                          message: "Internal Server Error"
  *                          error: "Error details"
  */
-router.post('/warehouses', WarehouseController.createWarehouse)
+router.post('/warehouses', isAuth, isLeadership, WarehouseController.createWarehouse)
 
 /**
  * @swagger
@@ -132,6 +133,6 @@ router.post('/warehouses', WarehouseController.createWarehouse)
  *                          message: "Internal Server Error"
  *                          error: "Error details"
  */
-router.put('/warehouses/:warehouseId', WarehouseController.updateWarehouse)
+router.put('/warehouses/:warehouseId', isAuth, isLeadership, WarehouseController.updateWarehouse)
 
 export default router

@@ -41,6 +41,8 @@
 
 import { Router } from 'express'
 import PackageCollectionController from "../controllers/PackCollectionController.mjs"
+import { isAuth } from "../middlewares/Auth.mjs"
+import permit from "../middlewares/Permissions.mjs"
 
 const router = Router()
 
@@ -102,7 +104,7 @@ const router = Router()
  *                          message: "Something went wrong"
  *                          error: "Error details"
  */
-router.post('/collections', PackageCollectionController.create)
+router.post('/collections', isAuth, permit([4, 6]), PackageCollectionController.create)
 
 /**
  * @swagger
@@ -161,6 +163,6 @@ router.post('/collections', PackageCollectionController.create)
  *                          message: "Something went wrong"
  *                          error: "Error details"
  */
-router.put('/collections/:packageCollectionId/statuses', PackageCollectionController.confirmGotCollection)
+router.put('/collections/:packageCollectionId/statuses', isAuth, permit([4, 6]), PackageCollectionController.confirmGotCollection)
 
 export default router

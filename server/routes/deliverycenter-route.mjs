@@ -37,6 +37,7 @@
 
 import { Router } from 'express'
 import DeliveryCenterController from "../controllers/DeliveryCenterController.mjs"
+import { isAuth, isLeadership } from "../middlewares/Auth.mjs"
 
 const router = Router()
 
@@ -97,7 +98,7 @@ router.get('/deliveryCenters', DeliveryCenterController.getAllDeliveryCenters)
  *                          message: "Internal Server Error"
  *                          error: "Error details"
  */
-router.post('/deliveryCenters', DeliveryCenterController.createDeliveryCenter)
+router.post('/deliveryCenters', isAuth, isLeadership, DeliveryCenterController.createDeliveryCenter)
 
 /**
  * @swagger
@@ -144,6 +145,6 @@ router.post('/deliveryCenters', DeliveryCenterController.createDeliveryCenter)
  *                          message: "Internal Server Error"
  *                          error: "Error details"
  */
-router.put('/deliveryCenters/:deliveryCenterId', DeliveryCenterController.updateDeliveryCenter)
+router.put('/deliveryCenters/:deliveryCenterId', isAuth, isLeadership, DeliveryCenterController.updateDeliveryCenter)
 
 export default router

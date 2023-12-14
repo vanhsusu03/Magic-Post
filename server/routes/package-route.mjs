@@ -110,6 +110,7 @@
 
 import { Router } from 'express'
 import PackageController from "../controllers/PackageController.mjs"
+import { isAuth, isTeller } from "../middlewares/Auth.mjs"
 
 const router = Router()
 
@@ -199,7 +200,7 @@ const router = Router()
  *                          message: "Internal Server Error"
  *                          error: "Error details"
  */
-router.post('/packages', PackageController.confirm)
+router.post('/packages', isAuth, isTeller, PackageController.confirm)
 
 /**
  * @swagger
@@ -249,7 +250,7 @@ router.post('/packages', PackageController.confirm)
  *                          message: "Something went wrong"
  *                          error: "Error details"
  */
-router.put('/packages/:packageId/statuses', PackageController.updateDeliveryStatus)
+router.put('/packages/:packageId/statuses', isAuth, isTeller, PackageController.updateDeliveryStatus)
 
 /**
  * @swagger
@@ -297,6 +298,6 @@ router.put('/packages/:packageId/statuses', PackageController.updateDeliveryStat
  *                          message: "Something went wrong"
  *                          error: "Error details"
  */
-router.put('/packages/statuses', PackageController.updateDeliveryStatusOfManyPackages)
+router.put('/packages/statuses', isAuth, isTeller, PackageController.updateDeliveryStatusOfManyPackages)
 
 export default router
