@@ -6,11 +6,13 @@ import AboutUs from '../pages/AboutUs.vue';
 import Contact from '../pages/Contact.vue';
 import LeaderManageAccount from '../components/LeaderManageAccount.vue';
 import Login from '../pages/Login.vue';
-import CustomerSearching from '../components/CustomerSearching.vue'
+import CustomerSearching from '../components/CustomerSearching.vue';
+import ManagerHome from '../pages/ManagerHome.vue';
 import store from '@/store/index';
 
 const routes = [
     { path: "/", name: "Home", component: Home }, 
+    { path: "/manager", name: "ManagerHome", component: ManagerHome }, 
     { path: "/aboutus", name: "About Us", component: AboutUs }, 
     { path: "/customer/searching", name: "CustomerSearching", component: CustomerSearching}, 
     { path: "/contact", name: "Contact", component: Contact },

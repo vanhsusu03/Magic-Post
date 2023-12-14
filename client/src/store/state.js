@@ -1,7 +1,9 @@
 export default {
-    head_comp:"",
-    head_DC: "",
-    head_WH: "",
+    leadership:"",
+    manager_DC: "",
+    manager_WH: "",
+    staff_WH: [],
+    teller_DC: [],
     isLogin: false,
     packageStatus: []
 };

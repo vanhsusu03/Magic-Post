@@ -5,29 +5,29 @@
  *      PackageCollectionType:
  *          type: object
  *          properties:
- *              type_id:
+ *              typeId:
  *                  type: integer
  *                  description: The unique identifier for the package collection type.
- *              package_collection_type:
+ *              packageCollectionType:
  *                  type: string
  *                  description: The name of the package collection type.
  *          required:
- *              - package_collection_type
+ *              - packageCollectionType
  *          example:
- *              type_id: 1
- *              package_collection_type: "Regular"
+ *              typeId: 1
+ *              packageCollectionType: "Regular"
  *      PackageCollection:
  *          type: object
  *          properties:
- *              package_collection_id:
+ *              packageCollectionId:
  *                  type: integer
  *                  description: The unique identifier for the package collection.
- *              package_collection_type_id:
+ *              packageCollectionTypeId:
  *                  type: integer
  *                  description: The identifier for the package collection type.
  *          required:
- *              - package_collection_type_id
+ *              - packageCollectionTypeId
  *          example:
- *              package_collection_id: 101
- *              package_collection_type_id: 1
+ *              packageCollectionId: 101
+ *              packageCollectionTypeId: 1
  */
