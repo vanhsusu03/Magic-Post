@@ -50,7 +50,7 @@ const AccountController = {
             if (!account) {
                 throw new Error('There was an error creating the account')
             }
-        
+
             res.status(201).json({
                 accountId: account.account_id,
                 accountTypeId: account.account_type_id,
@@ -71,7 +71,7 @@ const AccountController = {
                 error: err.message
             })
         }
-	},
+    },
 
     /**
 	* Logs in a user to HipChat and returns a token to the request body. This is the endpoint that will be used to send requests to HipChat
@@ -98,7 +98,6 @@ const AccountController = {
             if (!isPasswordCorrect) {
                 throw new Error('Wrong password')
             }
-
             const accessToken = jwt.sign({
                 accountId: account.account_id,
                 accountTypeId: account.account_type_id
@@ -109,7 +108,7 @@ const AccountController = {
             if (!accessToken) {
                 throw new Error('Login unsuccessful')
             }
-        
+
             let refreshToken = randToken.generate(process.env.REFRESH_TOKEN_SIZE)
             if (!account.refreshToken) {
                 await Account.update({ refresh_token: refreshToken }, {
@@ -145,7 +144,7 @@ const AccountController = {
                 error: err.message
             })
         }
-	},
+    },
 
     /**
     * Handles the request to refresh the access token. Verifies the access token and refresh token are valid and returns the new access token
@@ -158,14 +157,14 @@ const AccountController = {
     refreshToken: async (req, res) => {
         try {
             const accessTokenFromHeader = req.headers.x_authorization
-	        if (!accessTokenFromHeader) {
-		        throw new Error('Access token not found')
-	        }
+            if (!accessTokenFromHeader) {
+                throw new Error('Access token not found')
+            }
 
-	        const refreshTokenFromBody = req.body.refreshToken
-	        if (!refreshTokenFromBody) {
-		        throw new Error('Refresh token not found')
-	        }
+            const refreshTokenFromBody = req.body.refreshToken
+            if (!refreshTokenFromBody) {
+                throw new Error('Refresh token not found')
+            }
             // Decode access token
             const decoded = jwt.verify(accessTokenFromHeader, process.env.ACCESS_TOKEN_SECRET, {
                 ignoreExpiration: true,
@@ -174,7 +173,7 @@ const AccountController = {
                 throw new Error('Access token is invalid')
             }
 
-	        const accountId = decoded.accountId
+            const accountId = decoded.accountId
 
             const account = await Account.findOne({ where: { account_id: accountId } })
             if (!account) {
@@ -190,11 +189,11 @@ const AccountController = {
                 accountId: account.account_id,
                 accountTypeId: account.account_type_id
             },
-            process.env.ACCESS_TOKEN_SECRET,
-            {
-                algorithm: 'HS256',
-                expiresIn:process.env.ACCESS_TOKEN_LIFE,
-            })
+                process.env.ACCESS_TOKEN_SECRET,
+                {
+                    algorithm: 'HS256',
+                    expiresIn: process.env.ACCESS_TOKEN_LIFE,
+                })
             if (!accessToken) {
                 throw new Error('Creating access token failed')
             }

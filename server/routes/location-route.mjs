@@ -47,7 +47,7 @@
 import { Router } from 'express'
 import locationController from "../controllers/LocationController.mjs"
 
-const router = Router()
+const router = Router();
 
 /**
  * @swagger
