@@ -129,7 +129,7 @@ const router = Router()
  *                          message: "Internal Server Error"
  *                          error: "Error details"
  */
-router.post('/signup', AccountController.signUp)
+router.post('/signup', isAuth, AccountController.signUp)
 
 /**
  * @swagger

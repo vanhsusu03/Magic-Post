@@ -3,9 +3,8 @@ import jwt from "jsonwebtoken"
 import randToken from 'rand-token'
 import { format } from 'date-fns'
 import db from '../models/index.mjs'
-import account_type from "../models/account_type.mjs"
 
-const { Account } = db.models
+const { Account, Account_type } = db.models
 
 const AccountController = {
     isProhibited: async (accountTypeId) => {
@@ -279,7 +278,7 @@ const AccountController = {
                 [sequelize.col('account_type'), 'accountType']
             ],
             include: {
-                model: account_type,
+                model: Account_type,
                 attributes: []
             },
             where: {
