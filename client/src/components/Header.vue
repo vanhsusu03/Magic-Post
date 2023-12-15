@@ -47,7 +47,7 @@
                                     tabindex="-1" id="menu-item-1">
                                     Giới thiệu
                                 </RouterLink>
-                                <RouterLink to="/searching" @click="handleDropdown(), scrollToTop()"
+                                <RouterLink to="/customer/searching" @click="handleDropdown(), scrollToTop()"
                                     class="text-gray-700 block px-4 py-2 text-sm pr-4 pl-3 lg:p-0" role="menuitem"
                                     tabindex="-1" id="menu-item-2">
                                     Tra cứu
@@ -77,7 +77,7 @@
                                 lg:hover:bg-transparentborder-gray-700">Giới thiệu</RouterLink>
                         </li>
                         <li>
-                            <RouterLink to="/searching" @click="scrollToTop()" class="block py-2 pr-4 pl-3 text-gray-700 border-b-4 
+                            <RouterLink to="/customer/searching" @click="scrollToTop()" class="block py-2 pr-4 pl-3 text-gray-700 border-b-4 
                                 border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-primary-700 
                                 lg:p-0 text-black-400 lg:hover:text-black dark:hover:bg-gray-700 hover:text-black 
                                 lg:hover:bg-transparentborder-gray-700">Tra cứu</RouterLink>
@@ -87,6 +87,16 @@
                                 border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-primary-700 
                                 lg:p-0 text-black-400 lg:hover:text-black dark:hover:bg-gray-700 hover:text-black 
                                 lg:hover:bg-transparentborder-gray-700">Liên hệ</RouterLink>
+                        </li>
+                        <li>
+                            <RouterLink v-if="!isLogin" to="/login" @click="scrollToTop()" class="block py-2 pr-4 pl-3 text-gray-700 border-b-4 
+                                border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-primary-700 
+                                lg:p-0 text-black-400 lg:hover:text-black dark:hover:bg-gray-700 hover:text-black 
+                                lg:hover:bg-transparentborder-gray-700">Đăng nhập</RouterLink>
+                            <RouterLink v-else to="/manager" @click="scrollToTop()" class="block py-2 pr-4 pl-3 text-gray-700 border-b-4 
+                                border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-primary-700 
+                                lg:p-0 text-black-400 lg:hover:text-black dark:hover:bg-gray-700 hover:text-black 
+                                lg:hover:bg-transparentborder-gray-700">Quản lý</RouterLink>
                         </li>
                     </ul>
                 </div>
@@ -99,7 +109,7 @@
 // import axios from 'axios';
 // import { mapMutations, mapState } from 'vuex';
 import "../assets/general_css/style.css";
-
+import { mapState } from "vuex";
 
 export default {
     // eslint-disable-next-line vue/multi-word-component-names
@@ -129,7 +139,7 @@ export default {
         // },
     },
     computed: {
-        // ...mapState(['student', 'admin'])
+        ...mapState(['isLogin'])
     },
 }
 </script>
@@ -174,4 +184,5 @@ header {
     #menu-item-3:hover {
         background-color: rgb(231, 204, 84);
     }
-}</style>
+}
+</style>

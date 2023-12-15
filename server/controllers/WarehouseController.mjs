@@ -53,7 +53,7 @@ const WarehouseController = {
     createWarehouse: async (req, res) => {
         try {
             const { provinceMunicipalityId, address } = req.body
-            
+            console.log("Its is bug: " + provinceMunicipalityId)
             const warehouse = await Warehouse.create({
                 province_municipality_id: provinceMunicipalityId,
                 address: address

@@ -59,7 +59,7 @@ const LocationController = {
                 ],
                 order: [['provinceMunicipalityId', 'ASC']],
             })
-            res.status(200).json(ans)
+            res.status(201).json(ans)
         } catch (err) {
             console.log(err)
             res.status(500).json({
@@ -78,6 +78,7 @@ const LocationController = {
     * @return { Promise } Resolves with list of districts in JSON format. If an error occurs returns 500
     */
     getAllDistrictsOfAProvince: async (req, res) => {
+       
         try {
             const provinceMunicipalityId = Number(req.params.provinceMunicipalityId)
             const ans = await District.findAll({
