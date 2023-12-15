@@ -135,4 +135,44 @@ router.post('/warehouses', isAuth, isLeadership, WarehouseController.createWareh
  */
 router.put('/warehouses/:warehouseId', isAuth, isLeadership, WarehouseController.updateWarehouse)
 
+/**
+ * @swagger
+ * /warehouses/{warehouseId}:
+ *  delete:
+ *      summary: Remove a Warehouse
+ *      tags: [Warehouse]
+ *      description: Remove a warehouse by its ID.
+ *      parameters:
+ *        - in: path
+ *          name: warehouseId
+ *          required: true
+ *          description: The ID of the warehouse to be removed.
+ *          schema:
+ *              type: integer
+ *      responses:
+ *          '200':
+ *              description: Successful removal of the warehouse
+ *          '401':
+ *              description: Unauthorized - Access token not found or invalid
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          response: "Access token not found"
+ *          '403':
+ *              description: Forbidden - Leadership access required
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          response:
+ *                              message: "Leadership access required"
+ *          '500':
+ *              description: Internal Server Error
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          response: "Something went wrong while removing the warehouse"
+ * 
+ */
+router.delete('/warehouses/:warehouseId', isAuth, isLeadership, WarehouseController.removeAWarehouse)
+
 export default router

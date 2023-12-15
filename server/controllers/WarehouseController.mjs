@@ -104,6 +104,36 @@ const WarehouseController = {
             })
         }
     },
+
+    /**
+    * Removes warehouse from the database by id. This is used to remove a warehouse that no longer exists
+    * 
+    * @param req - Request object from express server
+    * @param res - Response object from express server ( error response will be JSON )
+    * 
+    * @return { Object } response with status and error message if something goes wrong with the request or if everything went
+    */
+    removeAWarehouse: async (req, res) => {
+        try {
+            const warehouseId = Number(req.params.warehouseId)
+
+            await Warehouse.destroy({
+                where: {
+                    warehouse_id: warehouseId
+                }
+            })
+
+            res.status(200).json({
+                message: 'success',
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
 }
 
 export default WarehouseController
