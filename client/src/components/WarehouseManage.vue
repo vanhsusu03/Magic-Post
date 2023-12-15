@@ -14,28 +14,43 @@
             </span>
         </div>
         <!-- <hr> -->
-        <div class="tabcontent" id="course">
-            <table class="table-auto">
+        <div class="tabcontentt" id="course">
+            <table>
                 <tr>
-                    <th>ID</th>
-                    <th>Title</th>
-                    <th>Instrutor</th>
-                    <th>Fee</th>
-                    <th>Delete</th>
-                    <th>Change</th>
+                    <th class="border">Chỉnh sửa</th>
+                    <th class="py-2 px-4 border">Mã định danh Tỉnh/Thành phố</th>
+                    <th class="py-2 px-4 border">Tỉnh/Thành phố</th>
+                    <th class="py-2 px-4 border">Mã điểm TK</th>
+                    <th class="py-2 px-4 border">Địa chỉ cụ thể</th>
+                    <th class="py-2 px-4 border">Xóa</th>
                 </tr>
-                <tr v-for="course in courses">
-                    <td>ddd</td>
-                    <td>dđ</td>
-                    <td>ddddd</td>
-                    <td>{{ course.courseFee }}</td>
-                    <td><button class="remove" @click="removeCourse(course.courseId)">Delete</button></td>
-                    <td><button class="remove"
-                            @click="openPayment(2); dataAddChapter.addChapterId = course.courseId; getChapter(course.courseId)">Change</button>
-                    </td>
+                <tr v-for="warehouse in displayedItemList">
+                    <td class="py-2 px-4 border items-center justify-center"> <img class="w-2/4"
+                            src="../assets/img/note.png" alt=""> </td>
+                    <td class="py-2 px-4 border"> {{ warehouse.provinceMunicipalityId }}</td>
+                    <td class="py-2 px-4 border">{{ warehouse.provinceMunicipality }}</td>
+                    <td class="py-2 px-4 border">
+                <tr v-for="whouse in warehouse.warehouses">
+                    <td>{{ whouse.warehouseId }}</td>
+                    <!-- <td>{{ whouse.address }}</td> -->
+                </tr>
+                </td>
+                <td class="py-2 px-4 border">
+                    <tr v-for="whouse in warehouse.warehouses">{{ whouse.address }}</tr>
+                </td>
+                <td class="py-2 px-4 border">
+                    <tr v-for="whouse in warehouse.warehouses"><img class="w-2/4" src="../assets/img/trash.png" alt=""></tr>
+                </td>
                 </tr>
             </table>
-
+            <div class="">
+                <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                    @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Previous Page</button>
+                <span class="pl-10 pr-10">Trang <strong>{{ currentPage }}</strong> trong tổng số <strong>{{ totalPages
+                }}</strong></span>
+                <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                    @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Next Page</button>
+            </div>
         </div>
     </div>
     <div v-else class="custom-delivery-center pl-5">
@@ -79,7 +94,7 @@
                     <select id="slDistrict" name="district_id" v-model="districtSelected"
                         class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300s"
                         tabindex="-1" aria-hidden="true">
-                        <option class="text-gray-900" value="">Quận/Huyện</option>
+                        <option class="text-gray-900" value="auto">Quận/Huyện</option>
                         <option class="text-gray-900" v-if="districts && districts.length" v-for="district in districts"
                             :value="district" :key="district.districtId">{{
                                 district.district }}</option>
@@ -126,17 +141,42 @@ export default {
             provinceError: [],
             districtError: [],
             addressError: [],
+            count: 1,
+            itemsPerPage: 4, // Adjust the number of items per page
+            currentPage: 1,
         }
     },
     methods: {
         ...mapMutations(['scrollToTop']),
+        startManage() {
+            this.createdANewWH();
+            this.getAllWarehouse();
+            this.getProvinces();
+        },
+        mountedComponent() {
+            this.form.provinceMunicipalityId = 0;
+            this.form.address = "";
+            this.getAllDistrictsOfAProvince();
+            this.provinceSelected.provinceMunicipalityId = 0;
+            this.districtSelected.districtSelectedId = 0;
+            this.provinceSelected.provinceMunicipality = '';
+            this.districtSelected.district = '';
+            this.getProvinces();
+        },
         async handleCreateWH() {
             try {
-                let res = axios.post('/warehouses', this.form, { withCredentials: true });
-                console.log(res.data);
-                alert("SUCCESS");
+                axios.post('/warehouses', this.form, { withCredentials: true });
+                this.getAllWarehouse();
+                this.createdANewWH();
             } catch (err) {
                 alert(err.response.data.error);
+            }
+        },
+        async handleDeleteWH(id) {
+            try {
+                // let res = await axios.put
+            } catch (err) {
+                alert(err.respone.data.error);
             }
         },
         async getProvinces() {
@@ -153,8 +193,7 @@ export default {
             if (this.provinceSelected.provinceMunicipalityId > 0) {
                 try {
                     const res = await axios.get(`/provinces/${this.provinceSelected.provinceMunicipalityId}/districts`, { withCredentials: true });
-                    this.districts = res.data
-F
+                    this.districts = res.data;
                 } catch (error) {
                     console.error('getDistrictofAProvince:', error.message);
                 }
@@ -164,19 +203,18 @@ F
             try {
                 let res = await axios.get('/warehouses', { withCredentials: true });
                 this.wareHouses = res.data;
-                // alert(this.deliveryCenters);
             }
             catch (error) {
                 console.error('getAllWareHouses:', error.message);
             }
         },
         createdANewWH() {
+            this.getAllWarehouse();
+            this.mountedComponent();
             this.createNew = !this.createNew;
         },
         preSubmit() {
             this.form.provinceMunicipalityId = this.provinceSelected.provinceMunicipalityId;
-            // this.form.address = this.form.address + ', ' + this.districtSelected.district + ', ' + this.provinceSelected.provinceMunicipality;
-
         },
         async handleSubmit(event) {
 
@@ -200,7 +238,6 @@ F
                 event.preventDefault();
             }
             else {
-                // alert(this.form.provinceMunicipalityId);
                 this.form.address = this.form.address + ', ' + this.districtSelected.district + ', ' + this.provinceSelected.provinceMunicipality;
                 event.preventDefault();
                 this.scrollToTop();
@@ -210,15 +247,29 @@ F
         // showFinalAddress() {
         //     this.$refs.inputText.innerHTML = this.form.address + ', ' + this.districtSelected.district + ', ' + this.provinceSelected.provinceMunicipality;
         // }
+        goToPage(page) {
+            if (page >= 1 && page <= this.totalPages) {
+                this.currentPage = page;
+            }
+            this.scrollToTop();
+        },
     },
 
     computed: {
         ...mapState([]),
+        totalPages() {
+            return Math.ceil(this.wareHouses.length / this.itemsPerPage);
+        },
+        displayedItemList() {
+            const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+            const endIndex = startIndex + this.itemsPerPage;
+            return this.wareHouses.slice(startIndex, endIndex);
+        },
     },
-    mounted() {
+    created() {
         this.getProvinces();
         this.getAllWarehouse();
-    },
+    }
 }
 </script>
 
@@ -245,7 +296,7 @@ h1 {
 /* .sub, .province, .district {
     border-radius: 5px;
 } */
-.tabcontent {
+.tabcontentt {
     float: left;
     padding: 0px 12px;
     border: 1px solid #ccc;
@@ -253,7 +304,7 @@ h1 {
     border-left: none;
     height: auto;
     /* display: none; */
-    position: relative;
+    /* position: relative; */
 }
 
 table {
