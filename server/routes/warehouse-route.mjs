@@ -134,4 +134,6 @@ router.post('/warehouses', WarehouseController.createWarehouse)
  */
 router.put('/warehouses/:warehouseId', WarehouseController.updateWarehouse)
 
+router.get('/warehouses/:provinceId', WarehouseController.getWarehousesByProvinces)
+
 export default router

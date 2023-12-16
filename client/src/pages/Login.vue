@@ -73,7 +73,7 @@ export default {
         async handleLogin() {
             try {
                 let res = await axios.post('/login', this.form, { withCredentials: true });
-                let user = res.data;
+                let user = res.data.account;
                 if (user.accountTypeId == 2) {
                     this.setLeadership(user);
                 } else if (user.accountTypeId == 3) {

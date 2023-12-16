@@ -3,19 +3,20 @@ import jwt from "jsonwebtoken"
 import randToken from 'rand-token'
 import { format } from 'date-fns'
 import db from '../models/index.mjs'
+import sequelize from 'sequelize'
 
 const { Account } = db.models
 
 const AccountController = {
     /**
-	* Sign up a account. Checks to make sure username and / or email are not already in use
-	* 
-	* @param req - The request object from express server
-	* @param res - The response object from express server ( unused )
-	* 
-	* @return { Object } The signed up account in response to Express HTTP request ( used for validation and database operations
-	*/
-	signUp: async (req, res) => {
+    * Sign up a account. Checks to make sure username and / or email are not already in use
+    * 
+    * @param req - The request object from express server
+    * @param res - The response object from express server ( unused )
+    * 
+    * @return { Object } The signed up account in response to Express HTTP request ( used for validation and database operations
+    */
+    signUp: async (req, res) => {
         try {
             const { accountTypeId, username, password,
                 deliveryCenterId, warehouseId, firstName, lastName,
@@ -74,14 +75,14 @@ const AccountController = {
     },
 
     /**
-	* Logs in a user to HipChat and returns a token to the request body. This is the endpoint that will be used to send requests to HipChat
-	* 
-	* @param req - The request object from express server
-	* @param res - The response object from express server ( response will be written to it )
-	* 
-	* @return { Promise } - resolves when the user has been logged in or rejects with an error if there was
-	*/
-	logIn: async (req, res) => {
+    * Logs in a user to HipChat and returns a token to the request body. This is the endpoint that will be used to send requests to HipChat
+    * 
+    * @param req - The request object from express server
+    * @param res - The response object from express server ( response will be written to it )
+    * 
+    * @return { Promise } - resolves when the user has been logged in or rejects with an error if there was
+    */
+    logIn: async (req, res) => {
         try {
             const { username, password } = req.body;
 
@@ -206,8 +207,69 @@ const AccountController = {
                 error: err.message
             })
         }
-	},
+    },
 
+    getAllAccountFromDeliveryCenter: async (req, res) => {
+        try {
+            const ans = await Account.findAll({
+                attributes: [
+                    [sequelize.col('account.account_id'), 'accountId'],
+                    [sequelize.col('account.account_type_id'), 'accountTypeId'],
+                    [sequelize.col('account.username'), 'username'],
+                    [sequelize.col('account.delivery_center_id'), 'delivery_center_id'],
+                    [sequelize.col('account.warehouse_id'), 'warehouse_id'],
+                    [sequelize.col('account.first_name'), 'first_name'],
+                    [sequelize.col('account.last_name'), 'last_name'],
+                    [sequelize.col('account.email'), 'email'],
+                    [sequelize.col('account.phone'), 'phone'],
+                    [sequelize.col('account.citizen_identity_card_image'), 'citizen_identity_card_image'],
+                    [sequelize.col('account.registration_time'), 'registration_time']
+                ],
+                where: {
+                    account_type_id: 3
+                },
+                oder: [['accountId', 'ASC']]
+            });
+            res.status(200).json(ans);
+        } catch (err) {
+            console.log(err);
+            res.status(400).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
+    getAllAccountFromWarehouse: async (req, res) => {
+        try {
+            const ans = await Account.findAll({
+                attributes: [
+                    [sequelize.col('account.account_id'), 'accountId'],
+                    [sequelize.col('account.account_type_id'), 'accountTypeId'],
+                    [sequelize.col('account.username'), 'username'],
+                    [sequelize.col('account.delivery_center_id'), 'deliveryCenterId'],
+                    [sequelize.col('account.warehouse_id'), 'warehouseId'],
+                    [sequelize.col('account.first_name'), 'firstName'],
+                    [sequelize.col('account.last_name'), 'lastName'],
+                    [sequelize.col('account.email'), 'email'],
+                    [sequelize.col('account.phone'), 'phone'],
+                    [sequelize.col('account.citizen_identity_card_image'), 'identityCardlink'],
+                    [sequelize.col('account.registration_time'), 'registrationTime']
+                ],
+                where: {
+                    account_type_id: 5
+                },
+                oder: [['accountId', 'ASC']]
+            });
+            res.status(200).json(ans);
+        } catch (err) {
+            console.log(err);
+            res.status(400).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    }
     // logOut: async (req, res) => {
     //     try {
     //         const token = req.headers.authorization.split(' ')[1]
@@ -223,7 +285,7 @@ const AccountController = {
     //             error: err.message
     //         })
     //     }
-	// },
+    // },
 }
 
 export default AccountController
