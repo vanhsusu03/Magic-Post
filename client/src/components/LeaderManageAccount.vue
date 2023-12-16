@@ -1,196 +1,319 @@
 <template>
-  <div>
-    <aside class="bg-gray-100 z-20 hidden w-64 h-screen overflow-y-auto dark:bg-gray-800 md:block flex-shrink-0">
-      <div class="py-4 text-gray-500 dark:text-gray-400">
-        <a class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" href="#">
-          Magic Post
-        </a>
-        <ul class="mt-6">
-          <li class="relative px-6 py-3">
-            <span v-show="selecteds[0]" class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
-              aria-hidden="true"></span>
-            <a @click="display(0)" v-if="selecteds"
-              class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100 cursor-pointer">
-              <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"
-                stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                </path>
-              </svg>
-              <span class="ml-4">Trang chủ
-              </span>
-            </a>
-          </li>
-        </ul>
-        <ul>
-          <li class="relative px-6 py-3">
-            <span v-show="selecteds[1]" class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
-              aria-hidden="true"></span>
-            <a @click="display(1)"
-              class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer">
-              <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"
-                stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  d="M9.6,3.32a3.86,3.86,0,1,0,3.86,3.85A3.85,3.85,0,0,0,9.6,3.32M16.35,11a.26.26,0,0,0-.25.21l-.18,1.27a4.63,4.63,0,0,0-.82.45l-1.2-.48a.3.3,0,0,0-.3.13l-1,1.66a.24.24,0,0,0,.06.31l1,.79a3.94,3.94,0,0,0,0,1l-1,.79a.23.23,0,0,0-.06.3l1,1.67c.06.13.19.13.3.13l1.2-.49a3.85,3.85,0,0,0,.82.46l.18,1.27a.24.24,0,0,0,.25.2h1.93a.24.24,0,0,0,.23-.2l.18-1.27a5,5,0,0,0,.81-.46l1.19.49c.12,0,.25,0,.32-.13l1-1.67a.23.23,0,0,0-.06-.3l-1-.79a4,4,0,0,0,0-.49,2.67,2.67,0,0,0,0-.48l1-.79a.25.25,0,0,0,.06-.31l-1-1.66c-.06-.13-.19-.13-.31-.13L19.5,13a4.07,4.07,0,0,0-.82-.45l-.18-1.27a.23.23,0,0,0-.22-.21H16.46M9.71,13C5.45,13,2,14.7,2,16.83v1.92h9.33a6.65,6.65,0,0,1,0-5.69A13.56,13.56,0,0,0,9.71,13m7.6,1.43a1.45,1.45,0,1,1,0,2.89,1.45,1.45,0,0,1,0-2.89Z" />
-              </svg>
-
-              <span class="ml-4">Quản lí tài khoản</span>
-            </a>
-          </li>
-          <li class="relative px-6 py-3">
-            <span v-show="selecteds[2]" class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
-              aria-hidden="true"></span>
-
-            <a @click="display(2)"
-              class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer">
-              <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"
-                stroke-width="2" viewBox="0 0 48 48" stroke="currentColor">
-                <path
-                  d="M35.8,11a3.2,3.2,0,0,0-2.2-1H32V8a2.9,2.9,0,0,0-3-3H5A2.9,2.9,0,0,0,2,8V35a2.9,2.9,0,0,0,3,3H7.3a7,7,0,0,0,13.4,0h6.6a7,7,0,0,0,13.4,0H43a2.9,2.9,0,0,0,3-3V22.2Zm-2.7,3,7.3,8H32V14ZM6,9H28V32.4a7.7,7.7,0,0,0-.7,1.6H20.7A7,7,0,0,0,7.3,34H6Zm8,30a3,3,0,1,1,3-3A2.9,2.9,0,0,1,14,39Zm20,0a3,3,0,1,1,3-3A2.9,2.9,0,0,1,34,39Zm6.7-5A7,7,0,0,0,34,29a6.4,6.4,0,0,0-2,.3V26H42v8Z" />
-              </svg>
-              <span class="ml-4">Quản lí điểm giao dịch</span>
-            </a>
-          </li>
-
-
-          <li class="relative px-6 py-3">
-            <span v-show="selecteds[3]" class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
-              aria-hidden="true"></span>
-            <a @click="display(3)"
-              class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer">
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#858585"
-                class="w-5 h-5" version="1.1" id="Capa_1" viewBox="0 0 489.475 489.475" xml:space="preserve"
-                stroke="#858585">
-
-                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-
-                <g id="SVGRepo_iconCarrier">
-                  <g>
-                    <g>
-                      <path
-                        d="M487.823,468.675v-346.4c0-8.3-4.2-15.6-11.4-18.7l-223.7-102c-5.2-2.1-11.4-2.1-16.6,0l-223.7,102 c-7.3,3.1-11.4,10.4-11.4,18.7v346.4c0,11.4,9.4,20.8,20.8,20.8s20.8-9.4,20.8-20.8v-332.9l203.9-92.6l202.8,92.6v332.9 c0,11.4,9.4,20.8,20.8,20.8S491.023,480.175,487.823,468.675z" />
-                      <path
-                        d="M313.123,285.575c11.4,0,20.8-9.4,20.8-20.8v-134.2c0-11.4-9.4-20.8-20.8-20.8h-134.2c-11.4,0-20.8,9.4-20.8,20.8v134.2 c0,11.4,9.4,20.8,20.8,20.8H313.123z M199.723,152.475h92.6v92.6h-92.6V152.475z" />
-                      <path
-                        d="M213.223,313.675h-134.2c-11.4,0-20.8,9.4-20.8,20.8v134.2c0,11.4,9.4,20.8,20.8,20.8h134.2c11.4,0,20.8-9.4,20.8-20.8 v-134.2C234.023,323.075,224.623,313.675,213.223,313.675z M192.423,448.975h-92.6v-92.6h92.6V448.975z" />
-                      <path
-                        d="M412.923,313.675h-134.2c-11.4,0-20.8,9.4-20.8,20.8v134.2c0,11.4,9.4,20.8,20.8,20.8h134.2c11.4,0,20.8-9.4,20.8-20.8 v-134.2C433.723,323.075,424.423,313.675,412.923,313.675z M392.123,448.975h-92.6v-92.6h92.6V448.975z" />
-                    </g>
-                  </g>
-                </g>
-
-              </svg>
-              <span class="ml-4">Quản lí điểm tập kết</span>
-            </a>
-          </li>
-          <li class="relative px-6 py-3">
-            <span v-show="selecteds[4]" class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
-              aria-hidden="true"></span>
-
-            <a @click="display(4)"
-              class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer">
-              <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"
-                stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
-                <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
-              </svg>
-              <span class="ml-4">Thống kê</span>
-            </a>
-          </li>
-          <li class="relative px-6 py-3">
-            <span v-show="selecteds[5]" class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
-              aria-hidden="true"></span>
-
-            <a @click="display(5)"
-              class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 48 48" fill="none" stroke="">
-
-                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-
-                <g id="SVGRepo_iconCarrier">
-                  <rect width="48" height="48" fill="white" fill-opacity="0.01" />
-                  <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z"
-                    stroke="#7d7d7d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                  <path
-                    d="M24 23C26.7614 23 29 20.7614 29 18C29 15.2386 26.7614 13 24 13C21.2386 13 19 15.2386 19 18C19 20.7614 21.2386 23 24 23Z"
-                    fill="#ffffff" stroke="#7d7d7d" stroke-width="4" stroke-linejoin="round" />
-                  <path d="M10.022 38.332C10.3657 33.1206 14.7016 29 20 29H28C33.2914 29 37.6229 33.1097 37.9767 38.3113"
-                    stroke="#7d7d7d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                </g>
-
-              </svg>
-              <span class="ml-4">Thông tin</span>
-            </a>
-          </li>
-
-          <!-- <li class="relative px-6 py-3">
-              <button class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" @click="togglePagesMenu" aria-haspopup="true">
-                <span class="inline-flex items-center">
-                  <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
-                  </svg>
-                  <span class="ml-4">Pages</span>
-                </span>
-                <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                </svg>
+  <div v-if="!this.createNew" class="custom-warehouse pl-5">
+      <div class="head">
+          <span>
+              <h1 class="inline-flex font-semibold lg:text-3xl md:text-xl sm:text-sm text-xs">
+                  Danh sách tài khoản nhân viên
+              </h1>
+          </span>
+          <span>
+              <button v-on:click="this.createdANewAcc()"
+                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn">
+                  Thêm tài khoản
               </button>
-              <template x-if="isPagesMenuOpen">
-                <ul x-transition:enter="transition-all ease-in-out duration-300" x-transition:enter-start="opacity-25 max-h-0" x-transition:enter-end="opacity-100 max-h-xl" x-transition:leave="transition-all ease-in-out duration-300" x-transition:leave-start="opacity-100 max-h-xl" x-transition:leave-end="opacity-0 max-h-0" class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900" aria-label="submenu">
-                  <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                    <a class="w-full" href="pages/login.html">Login</a>
-                  </li>
-                  <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                    <a class="w-full" href="pages/create-account.html">
-                      Create account
-                    </a>
-                  </li>
-                  <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                    <a class="w-full" href="pages/forgot-password.html">
-                      Forgot password
-                    </a>
-                  </li>
-                  <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                    <a class="w-full" href="pages/404.html">404</a>
-                  </li>
-                  <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                    <a class="w-full" href="pages/blank.html">Blank</a>
-                  </li>
-                </ul>
-              </template>
-            </li> -->
-        </ul>
+          </span>
       </div>
-    </aside>
+      <!-- <hr> -->
+      <div class="tabcontentt" id="course">
+          <table>
+              <tr>
+                  <th class="border">Chỉnh sửa</th>
+                  <th class="py-2 px-4 border">Mã định danh Tỉnh/Thành phố</th>
+                  <th class="py-2 px-4 border">Tỉnh/Thành phố</th>
+                  <th class="py-2 px-4 border">Mã điểm TK</th>
+                  <th class="py-2 px-4 border">Địa chỉ cụ thể</th>
+                  <th class="py-2 px-4 border">Xóa</th>
+              </tr>
+              <tr v-for="warehouse in displayedItemList">
+                  <td class="py-2 px-4 border items-center justify-center"> <img class="w-2/4"
+                          src="../assets/img/note.png" alt=""> </td>
+                  <td class="py-2 px-4 border"> {{ warehouse.provinceMunicipalityId }}</td>
+                  <td class="py-2 px-4 border">{{ warehouse.provinceMunicipality }}</td>
+                  <td class="py-2 px-4 border">
+              <tr v-for="whouse in warehouse.warehouses">
+                  <td>{{ whouse.warehouseId }}</td>
+                  <!-- <td>{{ whouse.address }}</td> -->
+              </tr>
+              </td>
+              <td class="py-2 px-4 border">
+                  <tr v-for="whouse in warehouse.warehouses">{{ whouse.address }}</tr>
+              </td>
+              <td class="py-2 px-4 border">
+                  <tr v-for="whouse in warehouse.warehouses"><img class="w-2/4" src="../assets/img/trash.png" alt=""></tr>
+              </td>
+              </tr>
+          </table>
+          <div class="">
+              <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                  @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Previous Page</button>
+              <span class="pl-10 pr-10">Trang <strong>{{ currentPage }}</strong> trong tổng số <strong>{{ totalPages
+              }}</strong></span>
+              <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                  @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Next Page</button>
+          </div>
+      </div>
+  </div>
+  <div v-else class="custom-delivery-center pl-5">
+      <div class="head">
+          <span>
+              <h1 class="inline-flex font-semibold lg:text-3xl md:text-xl sm:text-sm text-xs">
+                  Tạo mới tài khoản
+              </h1>
+          </span>
+          <span>
+              <button v-on:click="this.createdANewAcc()"
+                  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn">
+                  Hủy bỏ
+              </button>
+          </span>
+      </div>
+      <!-- <hr> -->
+      <div class="tabcontent" id="course">
+          <form @submit="handleSubmit" class="bg-white items-center shadow-lg rounded px-8 pt-6 pb-8 mb-4" novalidate
+              autocapitalize="off">
+
+              <label for="province" class="info">Tỉnh/Thành phố:</label>
+              <br>
+              <div id="province" class="w-2/5 common-shadow-input h-[43px] select2-stupid-at-home"
+                  data-select2-id="select2-data-73-3wmt">
+                  <select id="office-province" name="province_id" v-model="provinceSelected"
+                      @change="this.getAllDistrictsOfAProvince()"
+                      class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300"
+                      tabindex="-1" aria-hidden="true" data-select2-id="select2-data-office-province">
+                      <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
+                      <option class="text-gray-900" v-for="province in provinces" :value="province"
+                          :key="province.provinceMunicipalityId">{{
+                              province.provinceMunicipality }}</option>
+                  </select>
+              </div>
+              <p class="error" v-if="this.provinceError.length > 0">{{ provinceError[0] }}</p>
+              <br>
+              <label for="district" class="info">Quận/Huyện:</label>
+              <br>
+              <div id="district" class="common-shadow-input w-2/5 h-[43px] select2-stupid-at-home">
+                  <select id="slDistrict" name="district_id" v-model="districtSelected"
+                      class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300s"
+                      tabindex="-1" aria-hidden="true">
+                      <option class="text-gray-900" value="auto">Quận/Huyện</option>
+                      <option class="text-gray-900" v-if="districts && districts.length" v-for="district in districts"
+                          :value="district" :key="district.districtId">{{
+                              district.district }}</option>
+                  </select>
+              </div>
+              <p class="error" v-if="districtError.length > 0">{{ districtError[0] }}</p>
+              <br>
+
+              <label for="address" class="info">Địa chỉ cụ thể: <br /> </label>
+              <input type="text" ref="inputText" id="address" class="sub w-2/5" v-model="form.address">
+              <p class="error" v-if="addressError.length > 0">{{ addressError[0] }}</p>
+              <br>
+              <br>
+              <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Tạo tài khoản</button>
+          </form>
+      </div>
   </div>
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex';
+import axios from 'axios';
 export default {
-  name: 'LeaderManagerAccount',
-
+  name: 'LeaderManageAccount',
   data() {
-    return {
-      selecteds: [true, false, false, false, false, false],
-    }
+      return {
+          form: {
+              provinceMunicipalityId: 0,
+              address: "",
+          },
+          provinceSelected: {
+              provinceMunicipalityId: 0,
+              provinceMunicipality: ''
+          },
+          districtSelected: {
+              districtSelectedId: 0,
+              district: ''
+          },
+          wareHouses: [],
+          createNew: false,
+          provinces: [],
+          districts: [],
+          provinceError: [],
+          districtError: [],
+          addressError: [],
+          count: 1,
+          itemsPerPage: 4, // Adjust the number of items per page
+          currentPage: 1,
+      }
+  },
+  methods: {
+      ...mapMutations(['scrollToTop']),
+      startManage() {
+          this.createdANewAcc();
+          this.getAllWarehouse();
+          this.getProvinces();
+      },
+      mountedComponent() {
+          this.form.provinceMunicipalityId = 0;
+          this.form.address = "";
+          this.getAllDistrictsOfAProvince();
+          this.provinceSelected.provinceMunicipalityId = 0;
+          this.districtSelected.districtSelectedId = 0;
+          this.provinceSelected.provinceMunicipality = '';
+          this.districtSelected.district = '';
+          this.getProvinces();
+      },
+      async handleCreateWH() {
+          try {
+              axios.post('/warehouses', this.form, { withCredentials: true });
+              this.getAllWarehouse();
+              this.createdANewAcc();
+          } catch (err) {
+              alert(err.response.data.error);
+          }
+      },
+      async handleDeleteWH(id) {
+          try {
+              // let res = await axios.put
+          } catch (err) {
+              alert(err.respone.data.error);
+          }
+      },
+      async getProvinces() {
+          try {
+              const response = await axios.get('/provinces', { withCredentials: true });
+              this.provinces = response.data;
+          } catch (error) {
+              console.error('Error fetching provinces:', error.message);
+          }
+      },
+
+      async getAllDistrictsOfAProvince() {
+          this.districts = null;
+          if (this.provinceSelected.provinceMunicipalityId > 0) {
+              try {
+                  const res = await axios.get(`/provinces/${this.provinceSelected.provinceMunicipalityId}/districts`, { withCredentials: true });
+                  this.districts = res.data;
+              } catch (error) {
+                  console.error('getDistrictofAProvince:', error.message);
+              }
+          }
+      },
+      async getAllWarehouse() {
+          try {
+              let res = await axios.get('/warehouses', { withCredentials: true });
+              this.wareHouses = res.data;
+          }
+          catch (error) {
+              console.error('getAllWareHouses:', error.message);
+          }
+      },
+      createdANewAcc() {
+          this.getAllWarehouse();
+          this.mountedComponent();
+          this.createNew = !this.createNew;
+      },
+      preSubmit() {
+          this.form.provinceMunicipalityId = this.provinceSelected.provinceMunicipalityId;
+      },
+      async handleSubmit(event) {
+
+          this.provinceError = [];
+          this.districtError = [];
+          this.addressError = [];
+
+          this.preSubmit();
+
+          if (this.provinceSelected.provinceMunicipalityId == 0) {
+              this.provinceError.push('Vui lòng chọn Tỉnh/Thành phố!');
+          }
+          if (this.districtSelected.districtSelectedId == 0) {
+              this.districtError.push('Vui lòng chọn Quận/Huyện!');
+          }
+          if (!this.form.address) {
+              this.addressError.push('Vui lòng nhập địa chỉ cụ thể!');
+          }
+
+          if (!this.provinceError.length == 0 || !this.districtError.length == 0 || !this.addressError.length == 0) {
+              event.preventDefault();
+          }
+          else {
+              this.form.address = this.form.address + ', ' + this.districtSelected.district + ', ' + this.provinceSelected.provinceMunicipality;
+              event.preventDefault();
+              this.scrollToTop();
+              await this.handleCreateWH();
+          }
+      },
+      // showFinalAddress() {
+      //     this.$refs.inputText.innerHTML = this.form.address + ', ' + this.districtSelected.district + ', ' + this.provinceSelected.provinceMunicipality;
+      // }
+      goToPage(page) {
+          if (page >= 1 && page <= this.totalPages) {
+              this.currentPage = page;
+          }
+          this.scrollToTop();
+      },
   },
 
-  methods: {
-    display(t) {
-      for (let i = 0; i < this.selecteds.length; i++) {
-        if (i == t) {
-          this.selecteds[i] = true;
-        } else {
-          this.selecteds[i] = false;
-        }
-
-      }
-    }
+  computed: {
+      ...mapState([]),
+      totalPages() {
+          return Math.ceil(this.wareHouses.length / this.itemsPerPage);
+      },
+      displayedItemList() {
+          const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+          const endIndex = startIndex + this.itemsPerPage;
+          return this.wareHouses.slice(startIndex, endIndex);
+      },
+  },
+  created() {
+      this.getProvinces();
+      this.getAllWarehouse();
   }
 }
 </script>
+
+<style>
+* {
+  /* display: block; */
+}
+
+h1 {
+  font-size: 30px;
+}
+
+.custom-warehouse {
+  width: 100%;
+  /* Set the width to 100% to take up the full width */
+  /* Add other styling if needed */
+}
+
+.btn {
+  float: right;
+  margin-right: 20%;
+}
+
+/* .sub, .province, .district {
+  border-radius: 5px;
+} */
+.tabcontentt {
+  float: left;
+  padding: 0px 12px;
+  border: 1px solid #ccc;
+  width: 80%;
+  border-left: none;
+  height: auto;
+  /* display: none; */
+  /* position: relative; */
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 70%;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  margin-top: 10px;
+  margin-bottom: 10px;
+  counter-reset: tableCount;
+}
+</style>
