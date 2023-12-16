@@ -1,7 +1,7 @@
 import sequelize from 'sequelize'
 import db from '../models/index.mjs'
 
-const { Province_municipality, District } = db.models
+const { Province_municipality, District, Warehouse, Delivery_center } = db.models
 
 const LocationController = {
     /**
@@ -78,7 +78,6 @@ const LocationController = {
     * @return { Promise } Resolves with list of districts in JSON format. If an error occurs returns 500
     */
     getAllDistrictsOfAProvince: async (req, res) => {
-       
         try {
             const provinceMunicipalityId = Number(req.params.provinceMunicipalityId)
             const ans = await District.findAll({
@@ -90,6 +89,56 @@ const LocationController = {
                     province_municipality_id: provinceMunicipalityId,
                 },
                 order: [['districtId', 'ASC']],
+            })
+            res.status(200).json(ans)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
+    /**
+    * Retrieve Warehouses and Province_municipality records by province_municipality.
+    * 
+    * @param req - The request object from express server. { nome :'Sequelize'provinceMunicipalityId : number }
+    * @param res - The response object from express server. { nome :'Sequelize'}
+    * 
+    * @return { Promise } Resolves with an array of Warehouse and / or Delivery_center records corresponding to the province
+    */
+    getOfficeByProvince: async (req, res) => {
+        try {
+            const provinceMunicipalityId = Number(req.params.provinceMunicipalityId)
+
+            const ans = await Province_municipality.findAll({
+                attributes: [
+                    [sequelize.col('province_municipality.province_municipality_id'), 'provinceMunicipalityId'],
+                    [sequelize.col('province_municipality'), 'provinceMunicipality'],
+                ],
+                include: {
+                    model: Warehouse,
+                    attributes: [
+                        [sequelize.col('warehouse_id'), 'warehouseId'],
+                        [sequelize.col('address'), 'address'],
+                    ],
+                    include: {
+                        model: Delivery_center,
+                        attributes: [
+                            [sequelize.col('delivery_center_id'), 'deliveryCenterId'],
+                            [sequelize.col('district_id'), 'districtId'],
+                            [sequelize.col('address'), 'address']
+                        ]
+                    },
+                },
+                where: {
+                    province_municipality_id: provinceMunicipalityId
+                },
+                order: [
+                    [sequelize.col('warehouses.warehouse_id'), 'ASC'],
+                    [sequelize.col('delivery_center_id'), 'ASC']
+                ]
             })
             res.status(200).json(ans)
         } catch (err) {

@@ -119,4 +119,36 @@ router.get('/provinces', locationController.getAllProvincesMunicipalities)
  */
 router.get('/provinces/:provinceMunicipalityId/districts', locationController.getAllDistrictsOfAProvince)
 
+/**
+ * @swagger
+ * /provinces/{provinceMunicipalityId}/offices:
+ *  get:
+ *      summary: Get Offices by Province
+ *      tags: [Location]
+ *      description: Retrieve offices (warehouses and delivery centers) in a specific province or municipality.
+ *      parameters:
+ *        - in: path
+ *          name: provinceMunicipalityId
+ *          required: true
+ *          description: The ID of the province or municipality.
+ *          schema:
+ *              type: integer
+ *      responses:
+ *          '200':
+ *              description: Successful retrieval of offices
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/DeliveryCenter'
+ *          '500':
+ *              description: Internal Server Error
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          response: "Something went wrong while retrieving offices"
+ */
+router.get('/provinces/:provinceMunicipalityId/offices', locationController.getOfficeByProvince)
+
 export default router
