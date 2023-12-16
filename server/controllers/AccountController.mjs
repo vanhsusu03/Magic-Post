@@ -1,18 +1,20 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import randToken from 'rand-token'
+import sequelize from 'sequelize'
 import { format } from 'date-fns'
 import db from '../models/index.mjs'
 
 const { Account, Account_type } = db.models
 
 const AccountController = {
-    isProhibited: async (accountTypeId) => {
-        if (((accountTypeId == 3 || accountTypeId == 5) && req.account.account_type_id != 2) 
-                    || (accountTypeId == 4 && req.account.account_type_id != 3)
-                    || (accountTypeId == 6 && req.account.account_type_id != 5)) {
+    isProhibited: (accountTypeId, acc) => {
+        if (((accountTypeId == 3 || accountTypeId == 5) && acc.account_type_id != 2) 
+                    || (accountTypeId == 4 && acc.account_type_id != 3)
+                    || (accountTypeId == 6 && acc.account_type_id != 5)) {
                 return true
-         }
+        }
+        return false
 	},
 
     /**
@@ -27,9 +29,9 @@ const AccountController = {
         try {
             const { accountTypeId, username, password,
                 deliveryCenterId, warehouseId, firstName, lastName,
-                email, phone, citizenIdentityCardImage } = req.body
+                email, phone, citizenIdentityCardNumber } = req.body
             
-            if (AccountController.isProhibited(accountTypeId)) {
+            if (AccountController.isProhibited(accountTypeId, req.account)) {
                 throw new Error('No permission')
             }
 
@@ -56,7 +58,7 @@ const AccountController = {
                 last_name: lastName,
                 email: email == '' ? null : email,
                 phone: phone,
-                citizen_identity_card_image: citizenIdentityCardImage,
+                citizen_identity_card_number: citizenIdentityCardNumber,
                 registration_time: vietnamTime
             })
             if (!account) {
@@ -73,7 +75,7 @@ const AccountController = {
                 lastName: account.last_name,
                 email: account.email,
                 phone: account.phone,
-                citizenIdentityCardImage: account.citizen_identity_card_image,
+                citizenIdentityCardNumber: account.citizen_identity_card_number,
                 registrationTime: account.registration_time,
             })
         } catch (err) {
@@ -145,7 +147,7 @@ const AccountController = {
                     lastName: account.last_name,
                     email: account.email,
                     phone: account.phone,
-                    citizenIdentityCardImage: account.citizen_identity_card_image,
+                    citizenIdentityCardNumber: account.citizen_identity_card_number,
                     registrationTime: account.registration_time,
                 }
             })
@@ -220,6 +222,60 @@ const AccountController = {
         }
 	},
 
+    /**
+    * Gets information account by office id.
+    * 
+    * @param req - Object with the request parameters.
+    * @param res - Object with the response parameters. { Object }
+    * 
+    * @return { Promise } Resolves with an array of Account objects with info about the account identified by req. params
+    */
+    getInfoByOffice: async (req, res) => {
+        try {
+            const officeId = Number(req.params.officeId)
+            const accountTypeId = Number(req.params.accountTypeId)
+
+            if (AccountController.isProhibited(accountTypeId, req.account)) {
+                throw new Error('No permission')
+            }
+
+            let condition = {
+                warehouse_id: officeId,
+                account_type_id: accountTypeId
+            }
+            if (accountTypeId == 3 || accountTypeId == 4) {
+                condition = {
+                    delivery_center_id: officeId,
+                    account_type_id: accountTypeId
+                }
+            }
+
+            const ans = await Account.findAll({
+                attributes: [
+                    [sequelize.col('account_id'), 'accountId'],
+                    [sequelize.col('account_type_id'), 'accountTypeId'],
+                    [sequelize.col('username'), 'username'],
+                    [sequelize.col('delivery_center_id'), 'deliveryCenterId'],
+                    [sequelize.col('warehouse_id'), 'warehouseId'],
+                    [sequelize.col('first_name'), 'firstName'],
+                    [sequelize.col('last_name'), 'lastName'],
+                    [sequelize.col('email'), 'email'],
+                    [sequelize.col('phone'), 'phone'],
+                    [sequelize.col('citizen_identity_card_number'), 'citizenIdentityCardNumber'],
+                    [sequelize.col('registration_time'), 'registrationTime'],
+                ],
+                where: condition,
+            })
+            res.status(200).json(ans)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
     // logOut: async (req, res) => {
     //     try {
     //         const token = req.headers.authorization.split(' ')[1]
@@ -237,58 +293,58 @@ const AccountController = {
     //     }
 	// },
 
-    getMyInfo: async(req, res) => {
-        try {
-            res.status(200).json({
-                accountId: req.account.account_id,
-                accountTypeId: req.account.account_type_id,
-                username: req.account.username,
-                deliveryCenterId: req.account.delivery_center_id,
-                warehouseId: req.account.warehouse_id,
-                firstName: req.account.first_name,
-                lastName: req.account.last_name,
-                email: req.account.email,
-                phone: req.account.phone,
-                citizenIdentityCardImage: req.account.citizen_identity_card_image,
-                registrationTime: req.account.registration_time,
-            })
-        } catch (err) {
-            console.log(err)
-            res.status(500).json({
-                message: 'Something went wrong',
-                error: err.message
-            })
-        }
-    },
+    // getMyInfo: async(req, res) => {
+    //     try {
+    //         res.status(200).json({
+    //             accountId: req.account.account_id,
+    //             accountTypeId: req.account.account_type_id,
+    //             username: req.account.username,
+    //             deliveryCenterId: req.account.delivery_center_id,
+    //             warehouseId: req.account.warehouse_id,
+    //             firstName: req.account.first_name,
+    //             lastName: req.account.last_name,
+    //             email: req.account.email,
+    //             phone: req.account.phone,
+    //             citizenIdentityCardNumber: req.account.citizen_identity_card_number,
+    //             registrationTime: req.account.registration_time,
+    //         })
+    //     } catch (err) {
+    //         console.log(err)
+    //         res.status(500).json({
+    //             message: 'Something went wrong',
+    //             error: err.message
+    //         })
+    //     }
+    // },
 
-    getInfoManager: async(req, res) => {
-        await Account.findAll({
-            attributes: [
-                [sequelize.col('account_id'), 'accountId'],
-                [sequelize.col('account_type_id'), 'accountTypeId'],
-                [sequelize.col('username'), 'username'],
-                [sequelize.col('delivery_center_id'), 'deliveryCenterId'],
-                [sequelize.col('warehouse_id'), 'warehouseId'],
-                [sequelize.col('first_name'), 'firstName'],
-                [sequelize.col('last_name'), 'lastName'],
-                [sequelize.col('email'), 'email'],
-                [sequelize.col('phone'), 'phone'],
-                [sequelize.col('citizen_identity_card_image'), 'citizenIdentityCardImage'],
-                [sequelize.col('registration_time'), 'registrationTime'],
-                [sequelize.col('account_type'), 'accountType']
-            ],
-            include: {
-                model: Account_type,
-                attributes: []
-            },
-            where: {
-                account_type: {
-                    [Op.or]: ["Delivery center Manager", "Warehouse Manager"]
-                }
-            },
-            order: [['accountTypeId', 'ASC']]
-        })
-    },
+    // getInfoManager: async(req, res) => {
+    //     await Account.findAll({
+    //         attributes: [
+    //             [sequelize.col('account_id'), 'accountId'],
+    //             [sequelize.col('account_type_id'), 'accountTypeId'],
+    //             [sequelize.col('username'), 'username'],
+    //             [sequelize.col('delivery_center_id'), 'deliveryCenterId'],
+    //             [sequelize.col('warehouse_id'), 'warehouseId'],
+    //             [sequelize.col('first_name'), 'firstName'],
+    //             [sequelize.col('last_name'), 'lastName'],
+    //             [sequelize.col('email'), 'email'],
+    //             [sequelize.col('phone'), 'phone'],
+    //             [sequelize.col('citizen_identity_card_number'), 'citizenIdentityCardNumber'],
+    //             [sequelize.col('registration_time'), 'registrationTime'],
+    //             [sequelize.col('account_type'), 'accountType']
+    //         ],
+    //         include: {
+    //             model: Account_type,
+    //             attributes: []
+    //         },
+    //         where: {
+    //             account_type: {
+    //                 [Op.or]: ["Delivery center Manager", "Warehouse Manager"]
+    //             }
+    //         },
+    //         order: [['accountTypeId', 'ASC']]
+    //     })
+    // },
 }
 
 export default AccountController

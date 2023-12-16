@@ -119,7 +119,7 @@ CREATE TABLE `account` (
     last_name VARCHAR(75) NOT NULL,
     email VARCHAR(60) DEFAULT NULL,
     phone VARCHAR(20) NOT NULL,
-    citizen_identity_card_image VARCHAR(300) NOT NULL,
+    citizen_identity_card_number VARCHAR(300) NOT NULL,
     registration_time DATETIME NOT NULL,
     refresh_token VARCHAR(300) DEFAULT NULL,
     PRIMARY KEY (account_id),
@@ -128,5 +128,5 @@ CREATE TABLE `account` (
     CONSTRAINT fk_account_account_type FOREIGN KEY (account_type_id) REFERENCES account_type (type_id) ON DELETE CASCADE ON UPDATE CASCADE,
     UNIQUE(username),
     UNIQUE(phone),
-    UNIQUE(citizen_identity_card_image)
+    UNIQUE(citizen_identity_card_number)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
