@@ -135,18 +135,24 @@ export default {
 
     methods: {
         async getProvinces() {
-            await axios.get('/provinces', { withCredentials: true }).then(res => {
-                this.provinces = res.data
-            })
+            try {
+                const response = await axios.get('/provinces', { withCredentials: true });
+                this.provinces = response.data;
+            } catch (error) {
+                console.error('Error fetching provinces:', error.message);
+            }
         },
 
         async getAllDistrictsOfAProvince() {
+            this.districts = null;
             if (this.provinceSelectedId > 0) {
-                await axios.get(`/provinces/${this.provinceSelectedId}/districts`, { withCredentials: true }).then(res => {
+                try {
+                    const res = await axios.get(`/provinces/${this.provinceSelectedId}/districts`, { withCredentials: true });
                     this.districts = res.data
-                })
-            } else {
-                this.districts = null;
+
+                } catch (error) {
+                    console.error('getDistrictofAProvince:', error.message);
+                }
             }
         },
 
@@ -170,7 +176,7 @@ export default {
         }
     },
 
-    mounted() {
+    created() {
         this.getProvinces();
     }
 }
