@@ -1,7 +1,8 @@
 <template>
-  <Header></Header>
-  <router-view></router-view>
-  <Footer></Footer>
+  <!-- <Header></Header>
+  <router-view></router-view> -->
+  <DeliveryCenterManage></DeliveryCenterManage>
+  <!-- <Footer></Footer> -->
   <!-- <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App" /> -->
 </template>
@@ -15,10 +16,14 @@ import CustomerSearching from './components/CustomerSearching.vue';
 import Header from './components/Header.vue';
 import Home from './pages/Home.vue';
 import LeaderManageAccount from './components/LeaderManageAccount.vue';
+import WarehouseManage from './components/WarehouseManage.vue';
+import DeliveryCenterManage from './components/DeliveryCenterManage.vue';
 export default {
   name: 'App',
   components: {
     Header,
+    DeliveryCenterManage,
+    WarehouseManage,
     Footer
 }
 }
