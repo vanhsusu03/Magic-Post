@@ -129,7 +129,13 @@ const LocationController = {
                             [sequelize.col('delivery_center_id'), 'deliveryCenterId'],
                             [sequelize.col('district_id'), 'districtId'],
                             [sequelize.col('address'), 'address']
-                        ]
+                        ],
+                        include: {
+                            model: District,
+                            attributes: [
+                                [sequelize.col('district'), 'district']
+                            ]
+                        }
                     },
                 },
                 where: {
