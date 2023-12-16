@@ -141,6 +141,36 @@ const DeliveryCenterController = {
             })
         }
     },
+
+    /**
+    * Remove a delivery center from the database by its id This is used to remove a delivery center from the database
+    * 
+    * @param req - Request object from express server with all data required for deletion
+    * @param res - Response object from express server with error code and message
+    * 
+    * @return { Object } Data from AWS with status code and error message if there was an error in the deletion
+    */
+    removeADeliveryCenter: async (req, res) => {
+        try {
+            const deliveryCenterId = Number(req.params.deliveryCenterId)
+
+            await Delivery_center.destroy({
+                where: {
+                    delivery_center_id: deliveryCenterId
+                }
+            })
+
+            res.status(200).json({
+                message: 'success',
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
 }
 
 export default DeliveryCenterController
