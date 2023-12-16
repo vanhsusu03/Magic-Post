@@ -5,7 +5,7 @@ import { format } from 'date-fns'
 import db from '../models/index.mjs'
 import sequelize from 'sequelize'
 
-const { Account } = db.models
+const { Account,Warehouse, Province_municipality } = db.models
 
 const AccountController = {
     /**
@@ -256,6 +256,20 @@ const AccountController = {
                     [sequelize.col('account.citizen_identity_card_image'), 'identityCardlink'],
                     [sequelize.col('account.registration_time'), 'registrationTime']
                 ],
+                include:{
+                    model: Warehouse,
+                    attributes: [
+                        [sequelize.col('province_municipality_id'),'provinceMunicipalityId']
+                    ],
+                    required: true,
+                    include: {
+                        model: Province_municipality,
+                        attributes: [
+                            [sequelize.col('province_municipality'),'provinceMunicipality']
+                        ],
+                        required: true,
+                    }
+                },
                 where: {
                     account_type_id: 5
                 },

@@ -27,36 +27,57 @@
             </select>
             <!-- HEAD COMP MANAGE  -->
             <div class="tabcontentt" id="course">
-                <table>
+                <table v-if="this.accountTypeSelected == 1">
                     <tr>
-                        <th v-if="this.accountTypeSelected == 1" class="py-2 px-4 border">Mã điểm Tập kết</th>
-                        <th v-if="this.accountTypeSelected == 1" class="py-2 px-4 border">Tỉnh/Thành phố</th>
-                        <th v-if="this.accountTypeSelected == 1" class="border">Mã tài khoản</th>
-                        <th v-if="this.accountTypeSelected == 1" class="py-2 px-4 border">Tên</th>
-                        <th v-if="this.accountTypeSelected == 1" class="py-2 px-4 border">Email</th>
-                        <th v-if="this.accountTypeSelected == 1" class="py-2 px-4 border">SĐT</th>
-                        <th v-if="this.accountTypeSelected == 1" class="border">Chỉnh sửa</th>
-                        <th v-if="this.accountTypeSelected == 1" class="py-2 px-4 border">Xóa</th>
+                        <th class="py-2 px-4 border">Mã điểm TK</th>
+                        <th class="py-2 px-4 border">Tỉnh/Thành phố</th>
+                        <th class="py-2 px-4 border">Mã tài khoản</th>
+                        <th class="py-2 px-4 border">Tên</th>
+                        <th class="py-2 px-4 border">Email</th>
+                        <th class="py-2 px-4 border">SĐT</th>
+                        <th class="py-2 px-4 border">Chỉnh sửa</th>
+                        <th class="py-2 px-4 border">Xóa</th>
                     </tr>
                     <tr v-for="account in displayedItemList">
-                        <td>{{ account.warehouseId }}</td>
+                        <td class="py-2 px-4 border">{{ account.warehouseId }}</td>
+                        <td class="py-2 px-4 border">{{ account.warehouse.province_municipality.provinceMunicipality }}</td>
+                        <td class="py-2 px-4 border">WH_{{ account.warehouse.provinceMunicipalityId }}_MANGER_{{
+                            account.accountId }}</td>
+                        <td class="py-2 px-4 border truncate">{{ account.firstName + ' ' + account.lastName }}</td>
+                        <td class="py-2 px-4 border truncate">{{ truncateText(account.email, 20) }}</td>
+                        <td class="py-2 px-4 border truncate">{{ account.phone }}</td>
                         <td class="py-2 px-4 border items-center justify-center"> <img class="w-2/4"
                                 src="../assets/img/note.png" alt=""> </td>
-                        <!-- <td class="py-2 px-4 border"> {{ account.}}</td>
-                        <td class="py-2 px-4 border">{{ account. }}</td> -->
                         <td class="py-2 px-4 border">
-                    <tr v-for="whouse in wareHouses.warehouses">
-                        <td>{{ whouse.warehouseId }}</td>
-                        <!-- <td>{{ whouse.address }}</td> -->
+                            <img class="w-2/4" src="../assets/img/trash.png" alt="">
+                        </td>
                     </tr>
-                    </td>
-                    <td class="py-2 px-4 border">
-                        <tr v-for="whouse in wareHouses.warehouses">{{ whouse.address }}</tr>
-                    </td>
-                    <td class="py-2 px-4 border">
-                        <tr v-for="whouse in wareHouses.warehouses"><img class="w-2/4" src="../assets/img/trash.png" alt="">
-                        </tr>
-                    </td>
+                </table>
+
+                <table v-if="this.accountTypeSelected == 2">
+                    <tr>
+                        <th class="py-2 px-4 border">Mã điểm GD</th>
+                        <th class="py-2 px-4 border">Tỉnh/Thành phố</th>
+                        <th class="py-2 px-4 border">Mã tài khoản</th>
+                        <th class="py-2 px-4 border">Tên</th>
+                        <th class="py-2 px-4 border">Email</th>
+                        <th class="py-2 px-4 border">SĐT</th>
+                        <th class="py-2 px-4 border">Chỉnh sửa</th>
+                        <th class="py-2 px-4 border">Xóa</th>
+                    </tr>
+                    <tr v-for="account in displayedItemList">
+                        <td class="py-2 px-4 border">{{ account.warehouseId }}</td>
+                        <td class="py-2 px-4 border">{{ account.warehouse.province_municipality.provinceMunicipality }}</td>
+                        <td class="py-2 px-4 border">WH_{{ account.warehouse.provinceMunicipalityId }}_MANGER_{{
+                            account.accountId }}</td>
+                        <td class="py-2 px-4 border truncate">{{ account.firstName + ' ' + account.lastName }}</td>
+                        <td class="py-2 px-4 border truncate">{{ truncateText(account.email, 20) }}</td>
+                        <td class="py-2 px-4 border truncate">{{ account.phone }}</td>
+                        <td class="py-2 px-4 border items-center justify-center"> <img class="w-2/4"
+                                src="../assets/img/note.png" alt=""> </td>
+                        <td class="py-2 px-4 border">
+                            <img class="w-2/4" src="../assets/img/trash.png" alt="">
+                        </td>
                     </tr>
                 </table>
                 <div class="">
@@ -312,12 +333,12 @@ export default {
             this.deliverycenterSelectedId = 0;
             this.form.username = "";
             this.form.password = "";
-            this.repassword ="";
+            this.repassword = "";
             this.form.firstName = "";
-            this.form.lastName ="";
-            this.form.email ="";
-            this.form.phone= "";
-            this.form.citizenIdentityCardImage ="";
+            this.form.lastName = "";
+            this.form.email = "";
+            this.form.phone = "";
+            this.form.citizenIdentityCardImage = "";
             this.createNew = !this.createNew;
         },
         preSubmit() {
