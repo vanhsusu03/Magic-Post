@@ -38,20 +38,27 @@
                         warehouse.provinceMunicipalityId }}</td>
                     <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs">{{
                         warehouse.provinceMunicipality }}</td>
-                    <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs">
-                        <tr class="my-auto mx-auto md:text-base sm:text-sm text-xs" v-for="whouse in warehouse.warehouses">
-                            <td class="py-6">{{ whouse.warehouseId }}</td>
-                            <!-- <td>{{ whouse.address }}</td> -->
-                        </tr>
-                    </td>
-                    <td class="py-4 px-4 border md:text-base sm:text-sm text-xs">
-                        <tr class="my-4" v-for="whouse in warehouse.warehouses">{{ whouse.address }}</tr>
-                    </td>
-                    <td class="py-2 px-4 border items-center md:text-base sm:text-sm text-xs">
-                        <tr v-for="whouse in warehouse.warehouses"><img
-                                class="lg:w-2/5 md:w-3/5 sm:w-4/5 w-10/12 mx-auto cursor-pointer hover:opacity-90 py-6"
-                                src="../assets/img/trash.png" alt="" @click="test()"></tr>
-                    </td>
+                    <td class="py-2 px-4 border text-center md:text-lg sm:text-base text-sm">
+                <tr class="my-auto mx-auto md:text-lg sm:text-base text-sm" v-for="whouse in warehouse.warehouses">
+                    <td class="py-6">{{ whouse.warehouseId }}</td>
+                    <!-- <td>{{ whouse.address }}</td> -->
+                </tr>
+                </td>
+                <td class="py-4 px-4 border md:text-lg sm:text-base text-sm">
+                    <tr class="my-4 truncate" v-for="whouse in warehouse.warehouses"
+                        @mouseover="setHoveredText(whouse.address, whouse.warehouseId, $event)"
+                        @mouseleave="clearHoveredText(whouse.warehouseId)">
+                        {{ truncateText(whouse.address, 50) }}
+                        <div v-if="isSmallScreen && whouse.warehouseId === hoveredRowId" class="tooltip">
+                            {{ hoveredText }}
+                        </div>
+                    </tr>
+                </td>
+                <td class="py-2 px-4 border items-center md:text-lg sm:text-base text-sm">
+                    <tr v-for="whouse in warehouse.warehouses"><img
+                            class="lg:w-2/5 md:w-3/5 sm:w-4/5 w-10/12 mx-auto cursor-pointer hover:opacity-90 py-6"
+                            src="../assets/img/trash.png" alt="" @click="test()"></tr>
+                </td>
                 </tr>
             </table>
             <div class="my-4">
@@ -150,6 +157,7 @@ export default {
                 district: ''
             },
             hoveredText: null,
+            hoveredRowId: null,
             isSmallScreen: false,
             wareHouses: [],
             createNew: false,
@@ -165,13 +173,17 @@ export default {
     },
     methods: {
         ...mapMutations(['scrollToTop']),
-        setHoveredText(text, event) {
+        setHoveredText(text, rowId, event) {
             this.hoveredText = text;
+            this.hoveredRowId = rowId;
             this.isSmallScreen = true; // Adjust the breakpoint as needed
         },
-        clearHoveredText() {
-            this.hoveredText = null;
-            this.isSmallScreen = false;
+        clearHoveredText(rowId) {
+            if (rowId === this.hoveredRowId) {
+                this.hoveredText = null;
+                this.hoveredRowId = null;
+                this.isSmallScreen = false;
+            }
         },
         getRenderedText(text) {
             return this.hoveredText ? this.hoveredText : this.truncateText(text, 50);
@@ -301,5 +313,13 @@ export default {
 }
 </script>
 
-<style></style>
-
+<style>
+.tooltip {
+    position: absolute;
+    background-color: rgba(230, 227, 227, 0.8);
+    color: #000;
+    padding: 1px;
+    font-size: 12px;
+    z-index: 9999;
+}
+</style>
