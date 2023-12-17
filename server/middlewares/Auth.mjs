@@ -33,7 +33,7 @@ export const isAuth = async (req, res, next) => {
 
 export const isLeadership = async (req, res, next) => {
 	try {
-		if (parseInt(req.account.account_type_id) !== 2) {
+		if (parseInt(req.body.accountTypeId) !== 2) {
 			res.status(403).json({
 				response: {
 					message: 'Leadership access required'
