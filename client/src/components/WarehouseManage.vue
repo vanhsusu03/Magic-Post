@@ -7,8 +7,7 @@
                 </h1>
             </span>
             <span class="col-span-1">
-                <button v-on:click="this.createdANewWH()"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 my-4 
+                <button v-on:click="this.createdANewWH()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 my-4 
                     md:text-lg sm:text-base text-sm rounded btn">
                     Tạo điểm tập kết
                 </button>
@@ -19,44 +18,55 @@
         <div class="" id="course">
             <table class="px-auto">
                 <tr>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Chỉnh sửa</th>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Mã định danh Tỉnh/Thành phố</th>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Tỉnh/Thành phố</th>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Mã điểm TK</th>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Địa chỉ cụ thể</th>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Chỉnh sửa
+                    </th>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Mã định
+                        danh Tỉnh/Thành phố</th>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">
+                        Tỉnh/Thành phố</th>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Mã điểm
+                        TK</th>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Địa chỉ
+                        cụ thể</th>
                     <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Xóa</th>
                 </tr>
                 <tr class="" v-for="warehouse in displayedItemList">
                     <td class="py-2 px-4 border items-center justify-center"> <img class="w-2/5 mx-auto"
-                            src="../assets/img/note.png" >
-                         </td>
-                    <td class="py-2 px-4 border text-center md:text-lg sm:text-base text-sm"> {{ warehouse.provinceMunicipalityId }}</td>
-                    <td class="py-2 px-4 border text-center md:text-lg sm:text-base text-sm">{{ warehouse.provinceMunicipality }}</td>
+                            src="../assets/img/note.png">
+                    </td>
+                    <td class="py-2 px-4 border text-center md:text-lg sm:text-base text-sm"> {{
+                        warehouse.provinceMunicipalityId }}</td>
+                    <td class="py-2 px-4 border text-center md:text-lg sm:text-base text-sm">{{
+                        warehouse.provinceMunicipality }}</td>
                     <td class="py-2 px-4 border text-center md:text-lg sm:text-base text-sm">
-                    <tr class="my-auto mx-auto md:text-lg sm:text-base text-sm" v-for="whouse in warehouse.warehouses">
-                        <td class="py-6">{{ whouse.warehouseId }}</td>
-                        <!-- <td>{{ whouse.address }}</td> -->
-                    </tr>
-                </td>
-                <td class="py-4 px-4 border md:text-lg sm:text-base text-sm">
-                    <tr class="my-4" v-for="whouse in warehouse.warehouses">{{ whouse.address }}</tr>
-                </td>
-                <td class="py-2 px-4 border items-center md:text-lg sm:text-base text-sm">
-                    <tr v-for="whouse in warehouse.warehouses"><img class="lg:w-2/5 md:w-3/5 sm:w-4/5 w-10/12 mx-auto cursor-pointer hover:opacity-90 py-6" 
-                        src="../assets/img/trash.png" alt="" @click="test()"></tr>
-                </td>
+                        <tr class="my-auto mx-auto md:text-lg sm:text-base text-sm" v-for="whouse in warehouse.warehouses">
+                            <td class="py-6">{{ whouse.warehouseId }}</td>
+                            <!-- <td>{{ whouse.address }}</td> -->
+                        </tr>
+                    </td>
+                    <td class="py-4 px-4 border md:text-lg sm:text-base text-sm">
+                        <tr class="my-4" v-for="whouse in warehouse.warehouses">{{ whouse.address }}</tr>
+                    </td>
+                    <td class="py-2 px-4 border items-center md:text-lg sm:text-base text-sm">
+                        <tr v-for="whouse in warehouse.warehouses"><img
+                                class="lg:w-2/5 md:w-3/5 sm:w-4/5 w-10/12 mx-auto cursor-pointer hover:opacity-90 py-6"
+                                src="../assets/img/trash.png" alt="" @click="test()"></tr>
+                    </td>
                 </tr>
             </table>
             <div class="my-4">
                 <div class="max-w-fit mx-auto">
-                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-lg sm:text-base text-sm"
+                    <button
+                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-lg sm:text-base text-sm"
                         @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Previous Page</button>
-                    <span class="pl-10 pr-10 md:text-lg sm:text-base text-sm">Trang <strong>{{ currentPage }}</strong> trong tổng số <strong>{{ totalPages
-                    }}</strong></span>
-                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-lg sm:text-base text-sm"
+                    <span class="pl-10 pr-10 md:text-lg sm:text-base text-sm">Trang <strong>{{ currentPage }}</strong> trong
+                        tổng số <strong>{{ totalPages
+                        }}</strong></span>
+                    <button
+                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-lg sm:text-base text-sm"
                         @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Next Page</button>
                 </div>
-                
+
             </div>
         </div>
     </div>
@@ -68,8 +78,7 @@
                 </h1>
             </span>
             <span class="col-start-6">
-                <button v-on:click="this.createdANewWH()"
-                    class="bg-blue-500 hover:bg-blue-700 hover:shadow-xl text-white font-bold 
+                <button v-on:click="this.createdANewWH()" class="bg-blue-500 hover:bg-blue-700 hover:shadow-xl text-white font-bold 
                     md:text-lg sm:text-base text-sm py-2 px-4 rounded btn">
                     Hủy bỏ
                 </button>
@@ -85,10 +94,9 @@
                 <div id="province" class="w-2/5 common-shadow-input h-[43px] select2-stupid-at-home"
                     data-select2-id="select2-data-73-3wmt">
                     <select id="office-province" name="province_id" v-model="provinceSelected"
-                        @change="this.getAllDistrictsOfAProvince()"
-                        class="cursor-pointer hover:shadow-lg search-select w-full h-full select2-hidden-accessible 
-                        bg-gray-100 rounded-b-lg border-gray-300"
-                        tabindex="-1" aria-hidden="true" data-select2-id="select2-data-office-province">
+                        @change="this.getAllDistrictsOfAProvince()" class="cursor-pointer hover:shadow-lg search-select w-full h-full select2-hidden-accessible 
+                        bg-gray-100 rounded-b-lg border-gray-300" tabindex="-1" aria-hidden="true"
+                        data-select2-id="select2-data-office-province">
                         <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
                         <option class="text-gray-900" v-for="province in provinces" :value="province"
                             :key="province.provinceMunicipalityId">{{
@@ -100,10 +108,8 @@
                 <label for="district" class="md:text-lg sm:text-base text-sm">Quận/Huyện:</label>
                 <br>
                 <div id="district" class="common-shadow-input w-2/5 h-[43px] select2-stupid-at-home">
-                    <select id="slDistrict" name="district_id" v-model="districtSelected"
-                        class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300s
-                            cursor-pointer hover:shadow-lg"
-                        tabindex="-1" aria-hidden="true">
+                    <select id="slDistrict" name="district_id" v-model="districtSelected" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300s
+                            cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true">
                         <option class="text-gray-900" value="auto">Quận/Huyện</option>
                         <option class="text-gray-900" v-if="districts && districts.length" v-for="district in districts"
                             :value="district" :key="district.districtId">{{
