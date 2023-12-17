@@ -46,14 +46,13 @@
                 </td>
                 <td class="py-4 px-4 border md:text-lg sm:text-base text-sm">
                     <tr class="my-4 truncate" v-for="whouse in warehouse.warehouses"
-                        @mouseover="setHoveredText(whouse.address, $event)" @mouseleave="clearHoveredText">
+                        @mouseover="setHoveredText(whouse.address, whouse.warehouseId, $event)"
+                        @mouseleave="clearHoveredText(whouse.warehouseId)">
                         {{ truncateText(whouse.address, 50) }}
+                        <div v-if="isSmallScreen && whouse.warehouseId === hoveredRowId" class="tooltip">
+                            {{ hoveredText }}
+                        </div>
                     </tr>
-
-                    <!-- Show tooltip on small screens -->
-                    <div v-if="hoveredText && isSmallScreen" class="tooltip">
-                        {{ hoveredText }}
-                    </div>
                 </td>
                 <td class="py-2 px-4 border items-center md:text-lg sm:text-base text-sm">
                     <tr v-for="whouse in warehouse.warehouses"><img
@@ -160,6 +159,7 @@ export default {
                 district: ''
             },
             hoveredText: null,
+            hoveredRowId: null,
             isSmallScreen: false,
             wareHouses: [],
             createNew: false,
@@ -175,13 +175,17 @@ export default {
     },
     methods: {
         ...mapMutations(['scrollToTop']),
-        setHoveredText(text, event) {
+        setHoveredText(text, rowId, event) {
             this.hoveredText = text;
+            this.hoveredRowId = rowId;
             this.isSmallScreen = true; // Adjust the breakpoint as needed
         },
-        clearHoveredText() {
-            this.hoveredText = null;
-            this.isSmallScreen = false;
+        clearHoveredText(rowId) {
+            if (rowId === this.hoveredRowId) {
+                this.hoveredText = null;
+                this.hoveredRowId = null;
+                this.isSmallScreen = false;
+            }
         },
         getRenderedText(text) {
             return this.hoveredText ? this.hoveredText : this.truncateText(text, 50);
@@ -319,14 +323,11 @@ export default {
 
 <style>
 .tooltip {
-    position: fixed;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 5px;
-    border-radius: 5px;
-    top: 0;
-    left: 0;
-    transform: translate(-50%, -50%);
+    position: absolute;
+    background-color: rgba(230, 227, 227, 0.8);
+    color: #000;
+    padding: 1px;
+    font-size: 12px;
     z-index: 9999;
 }
 </style>

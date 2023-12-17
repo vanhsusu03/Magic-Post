@@ -234,8 +234,6 @@ export default {
         },
         async handleCreateDC() {
             try {
-                // this.form.districtId = 5;
-                // this.form.address
                 this.refreshToken();
                 let res = await axios.post('/deliveryCenters', this.form, {
                     headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
