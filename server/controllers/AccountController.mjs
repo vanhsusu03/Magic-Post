@@ -5,7 +5,7 @@ import sequelize from 'sequelize'
 import { format } from 'date-fns'
 import db from '../models/index.mjs'
 
-const { Account, Account_type, Warehouse, Province_municipality } = db.models
+const { Account, Account_type, Warehouse, Province_municipality, Delivery_center, District } = db.models
 
 const AccountController = {
     isProhibited: (accountTypeId, acc) => {
@@ -276,39 +276,47 @@ const AccountController = {
         }
     },
 
-    getAllAccountFromDeliveryCenter: async (req, res) => {
+    getAllManagerAccountFromDeliveryCenter: async (req, res) => {
         try {
             const ans = await Account.findAll({
                 attributes: [
                     [sequelize.col('account.account_id'), 'accountId'],
                     [sequelize.col('account.account_type_id'), 'accountTypeId'],
                     [sequelize.col('account.username'), 'username'],
-                    [sequelize.col('account.delivery_center_id'), 'delivery_center_id'],
-                    [sequelize.col('account.warehouse_id'), 'warehouse_id'],
-                    [sequelize.col('account.first_name'), 'first_name'],
-                    [sequelize.col('account.last_name'), 'last_name'],
+                    [sequelize.col('account.delivery_center_id'), 'deliveryCenterId'],
+                    [sequelize.col('account.warehouse_id'), 'warehouseId'],
+                    [sequelize.col('account.first_name'), 'firstName'],
+                    [sequelize.col('account.last_name'), 'lastName'],
                     [sequelize.col('account.email'), 'email'],
                     [sequelize.col('account.phone'), 'phone'],
-                    [sequelize.col('account.citizen_identity_card_number'), 'citizen_identity_card_number'],
-                    [sequelize.col('account.registration_time'), 'registration_time']
-                ], 
+                    [sequelize.col('account.citizen_identity_card_number'), 'citizenIdentityCardNumber'],
+                    [sequelize.col('account.registration_time'), 'registrationTime'],
+                ],
                 include: {
-                    model: Warehouse,
+                    model: Delivery_center,
                     attributes: [
-                        [sequelize.col('province_municipality_id'), 'provinceMunicipalityId'],
+                        [sequelize.col('district_id'), 'districtId'],
                     ],
                     required: true,
                     include: {
-                        model: Province_municipality,
+                        model: District,
                         attributes: [
-                            [sequelize.col('province_municipality'), 'provinceMunicipality'],
-                            // Add other attributes as needed
+                            [sequelize.col('province_municipality_id'), 'provinceMunicipalityId'],
+                            [sequelize.col('district'), 'district'],
                         ],
                         required: true,
+                        include: {
+                            model: Province_municipality,
+                            attributes: [
+                                [sequelize.col('province_municipality'), 'provinceMunicipality'],
+                                // Add other attributes as needed
+                            ],
+                            required: true,
+                        }
                     }
                 },
                 where: {
-                    account_type_id: 5
+                    account_type_id: 3
                 },
                 order: [['accountId', 'ASC']]
             });
@@ -322,7 +330,7 @@ const AccountController = {
         }
     },
 
-    getAllAccountFromWarehouse: async (req, res) => {
+    getAllManagerAccountFromWarehouse: async (req, res) => {
         try {
             const ans = await Account.findAll({
                 attributes: [

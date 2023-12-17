@@ -26,7 +26,7 @@
                 <option class="text-gray-900" :value="2">Tài khoản trưởng điểm giao dịch</option>
             </select>
             <!-- HEAD COMP MANAGE  -->
-            <div class="tabcontentt" id="course">
+            <div class="tabcontentt" id="course" v-if="accounts && accounts.length">
                 <table v-if="this.accountTypeSelected == 1">
                     <tr>
                         <th class="py-2 px-4 border">Mã điểm TK</th>
@@ -40,9 +40,16 @@
                     </tr>
                     <tr v-for="account in displayedItemList">
                         <td class="py-2 px-4 border">{{ account.warehouseId }}</td>
-                        <td class="py-2 px-4 border">{{ account.warehouse.province_municipality.provinceMunicipality }}</td>
-                        <td class="py-2 px-4 border">WH_{{ account.warehouse.provinceMunicipalityId }}_MANGER_{{
-                            account.accountId }}</td>
+                        <td class="py-2 px-4 border">
+                            {{ account.warehouse && account.warehouse.province_municipality
+                                ? account.warehouse.province_municipality.provinceMunicipality
+                                : 'N/A' }}
+                        </td>
+                        <td class="py-2 px-4 border">
+                            WH_{{ account.warehouse && account.warehouse.provinceMunicipalityId
+                                ? account.warehouse.provinceMunicipalityId
+                                : 'N/A' }}_MANAGER_{{ account.accountId }}
+                        </td>
                         <td class="py-2 px-4 border truncate">{{ account.firstName + ' ' + account.lastName }}</td>
                         <td class="py-2 px-4 border truncate">{{ truncateText(account.email, 20) }}</td>
                         <td class="py-2 px-4 border truncate">{{ account.phone }}</td>
@@ -58,6 +65,7 @@
                     <tr>
                         <th class="py-2 px-4 border">Mã điểm GD</th>
                         <th class="py-2 px-4 border">Tỉnh/Thành phố</th>
+                        <th class="py-2 px-4 border">Quận/Huyện</th>
                         <th class="py-2 px-4 border">Mã tài khoản</th>
                         <th class="py-2 px-4 border">Tên</th>
                         <th class="py-2 px-4 border">Email</th>
@@ -66,10 +74,30 @@
                         <th class="py-2 px-4 border">Xóa</th>
                     </tr>
                     <tr v-for="account in displayedItemList">
-                        <td class="py-2 px-4 border">{{ account.warehouseId }}</td>
-                        <td class="py-2 px-4 border">{{ account.warehouse.province_municipality.provinceMunicipality }}</td>
-                        <td class="py-2 px-4 border">WH_{{ account.warehouse.provinceMunicipalityId }}_MANGER_{{
-                            account.accountId }}</td>
+                        <td class="py-2 px-4 border">{{ account.deliveryCenterId }}</td>
+                        <td class="py-2 px-4 border">
+                            {{
+                                account.delivery_center &&
+                                account.delivery_center.district &&
+                                account.delivery_center.district.province_municipality
+                                ? account.delivery_center.district.province_municipality.provinceMunicipality
+                                : 'N/A'
+                            }}
+                        </td>
+                        <td class="py-2 px-4 border">{{
+                            account.delivery_center &&
+                            account.delivery_center.district
+                            ? account.delivery_center.district.district
+                            : 'N/A' }}</td>
+                        <td class="py-2 px-4 border">
+                            DC_{{ account.delivery_center &&
+                                account.delivery_center.district &&
+                                account.delivery_center.district.provinceMunicipalityId
+                                ?
+                                `${account.delivery_center.district.provinceMunicipalityId}/${account.delivery_center.districtId}_MANAGER_${account.accountId}`
+                                : 'N/A'
+                            }}
+                        </td>
                         <td class="py-2 px-4 border truncate">{{ account.firstName + ' ' + account.lastName }}</td>
                         <td class="py-2 px-4 border truncate">{{ truncateText(account.email, 20) }}</td>
                         <td class="py-2 px-4 border truncate">{{ account.phone }}</td>
@@ -80,7 +108,7 @@
                         </td>
                     </tr>
                 </table>
-                <div class="">
+                <div v-if="this.accountTypeSelected != 0" class="">
                     <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                         @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Previous Page</button>
                     <span class="pl-10 pr-10">Trang <strong>{{ currentPage }}</strong> trong tổng số <strong>{{ totalPages
@@ -181,8 +209,8 @@
                         class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300"
                         tabindex="-1" aria-hidden="true" data-select2-id="select2-data-office-province">
                         <option class="text-gray-900" :value="0">Điểm giao dịch</option>
-                        <option class="text-gray-900 w-2/4" v-for="deliveryCenter in deliveryCenters" :value="deliveryCenter.deliveryCenterId"
-                            :key="deliveryCenter.deliveryCenterId">{{
+                        <option class="text-gray-900 w-2/4" v-for="deliveryCenter in deliveryCenters"
+                            :value="deliveryCenter.deliveryCenterId" :key="deliveryCenter.deliveryCenterId">{{
                                 truncateText(deliveryCenter.address, 80) }}</option>
                     </select>
                 </div>
@@ -270,6 +298,13 @@ export default {
                 phone: '',
                 citizenIdentityCardNumber: '',
             },
+            warehouse: {
+                provinceMunicipality: '',
+                provinceMunicipalityId: 0,
+            },
+            deliveryCenter: {
+
+            },
             repassword: '',
             accountTypeSelected: 0,
             accountCreateType: 0,
@@ -298,6 +333,7 @@ export default {
             createNew: false,
             itemsPerPage: 4,
             currentPage: 1,
+            isShow: false,
         }
     },
     methods: {
@@ -329,17 +365,15 @@ export default {
             }
         },
         async fetchAccountsData() {
-            try {
-                if (this.accountTypeSelected == 1 || this.accountCreateType == 1) {
-                    let res = await axios.get('/warehouses/manager', { withCredentials: true });
-                    this.accounts = res.data;
-                } else if (this.accountTypeSelected == 2 || this.accountCreateType == 2) {
-                    let res = await axios.get('/warehouses/manager', { withCredentials: true });
-                    this.accounts = res.data;
-                }
-            } catch (err) {
-                alert(err.respone.data.error);
+            if (this.accountTypeSelected == 1 || this.accountCreateType == 1) {
+                let res = await axios.get('/warehouses/manager', { withCredentials: true });
+                this.accounts = res.data;
             }
+            if (this.accountTypeSelected == 2 || this.accountCreateType == 2) {
+                let res = await axios.get('/deliveryCenters/manager', { withCredentials: true });
+                this.accounts = res.data;
+            }
+
         },
         async refreshToken() {
             let res = await axios.post('/refresh', {
@@ -356,7 +390,6 @@ export default {
         },
         async handleCreateAccount() {
             try {
-                this.refreshToken();
                 let res = await axios.post('/signup', this.form, {
                     headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
                 }, { withCredentials: true });
@@ -366,7 +399,11 @@ export default {
                     this.createdANewAcc();
                 }
             } catch (err) {
-                if (err.response.data.error == 'Username is already exists') {
+                if (err.response.status == 500) {
+                    await this.refreshToken();
+                    await this.handleCreateAccount();
+                }
+                else if (err.response.data.error == 'Username is already exists') {
                     this.userNameError.push("Tên đăng nhập đã tồn tại, hãy chọn tên khác!")
                 } else if (err.respone.data.error == 'Phone is already exists') {
                     this.phoneError.push('Số điện thoại bị trùng! Hãy nhập số khác')
@@ -497,8 +534,15 @@ export default {
             if (this.districtSelectedId == 0) {
                 this.districtError.push("Hãy chọn Quận/Huyện tương ứng!");
             }
-            if(this.deliverycenterSelectedId == 0 ) {
+            if (this.deliverycenterSelectedId == 0) {
                 this.deliverycenterError.push("Hãy chọn điểm giao dịch tương ứng!")
+            }
+
+            if (this.accountCreateType == 1) {
+                this.deleveryCenterError = [];
+                this.districtError = [];
+            } else if (this.accountCreateType == 2) {
+                this.warehouseError = [];
             }
             if (!this.form.firstName) {
                 this.firstNameError.push("Hãy nhập tên họ. Ví dụ: Lê, Nguyễn, .v.v.");
