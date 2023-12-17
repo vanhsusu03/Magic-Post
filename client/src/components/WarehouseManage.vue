@@ -15,7 +15,7 @@
         </div>
 
         <hr class="w-9/12 mx-auto">
-        <div class="" id="course">
+        <div class="w-9/12 mx-auto" id="course">
             <table class="px-auto">
                 <tr>
                     <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Chỉnh sửa

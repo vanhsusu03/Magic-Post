@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!this.createNew" class="w-10/12 h-10/12">
+    <div v-if="!this.createNew" class="w-10/12 h-10/12 mx-auto">
         <div class="w-8/12 grid grid-cols-4 mx-auto">
             <span class="col-span-3 max-w-fit">
                 <h1 class="font-semibold py-4 text-center lg:text-xl md:text-base sm:text-sm text-xs">
@@ -14,9 +14,9 @@
             </span>
         </div>
 
-        <hr class="w-9/12 mx-auto">
+        <hr class="my-4">
 
-        <div class="" id="course">
+        <div class="w-9/12 mx-auto" id="course">
             <table class="px-auto">
                 <tr>
                     <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Chỉnh sửa
@@ -34,7 +34,7 @@
                 <tr v-for="deliveryCenter in deliveryCenters">
                     <td class="py-2 px-4 border items-center justify-center"> <img class="w-2/5 mx-auto"
                             src="../assets/img/note.png"></td>
-                    <td>{{ deliveryCenter.provinceMunicipalityId }}</td>
+                    <td class="">{{ deliveryCenter.provinceMunicipalityId }}</td>
                     <td>{{ deliveryCenter.districtId }}</td>
                     <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs">
                 <tr class="my-auto mx-auto md:text-base sm:text-sm text-xs"
@@ -72,6 +72,7 @@
 
         </div>
     </div>
+
     <div v-else class="md:max-w-5xl sm:max-w-3xl max-w-xl w-11/12 mx-auto">
         <div class="py-2 grid gird-cols-6">
             <span class="col-start-1 py-2">
@@ -86,7 +87,9 @@
                 </button>
             </span>
         </div>
+
         <hr class="my-2">
+
         <div class="tabcontent" id="course">
             <form @submit="handleSubmit" class="bg-white items-center shadow-lg rounded px-8 pt-6 pb-8 mb-4" novalidate
                 autocapitalize="off">
@@ -115,7 +118,7 @@
 
                 <!-- Select district and display -->
                 <div id="district" class="common-shadow-input w-2/5 h-[43px] select2-stupid-at-home">
-                    <select id="slDistrict" name="district_id" v-model="districtSelected" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300s
+                    <select id="slDistrict" name="district_id" v-model="districtSelected" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300
                             cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true">
                         <option class="text-gray-900" value="">Quận/Huyện</option>
                         <option class="text-gray-900" v-if="districts && districts.length" v-for="district in districts"
@@ -147,8 +150,8 @@
                 <input type="text" id="address" class="sub w-2/5" v-model="form.address" required>
                 <p class="error" v-if="addressError.length > 0">{{ addressError[0] }}</p>
                 <br>
-                <br>
 
+                <br>
                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
                     md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg">Tạo giao dịch</button>
             </form>
