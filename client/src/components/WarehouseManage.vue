@@ -88,7 +88,6 @@
         <div class="" id="course">
             <form @submit="handleSubmit" class="bg-white items-center shadow-lg rounded px-8 pt-6 pb-8 mb-4" novalidate
                 autocapitalize="off">
-
                 <label for="province" class="md:text-base sm:text-sm text-xs">Tỉnh/Thành phố:</label>
                 <br>
                 <div id="province" class="w-2/5 common-shadow-input h-[43px] select2-stupid-at-home"
@@ -118,7 +117,6 @@
                 </div>
                 <p class="error" v-if="districtError.length > 0">{{ districtError[0] }}</p>
                 <br>
-
                 <label for="address" class="md:text-base sm:text-sm text-xs">Địa chỉ cụ thể: <br /> </label>
                 <input type="text" ref="inputText" id="address" class="sub w-2/5" v-model="form.address">
                 <p class="error" v-if="addressError.length > 0">{{ addressError[0] }}</p>
@@ -151,6 +149,8 @@ export default {
                 districtSelectedId: 0,
                 district: ''
             },
+            hoveredText: null,
+            isSmallScreen: false,
             wareHouses: [],
             createNew: false,
             provinces: [],
@@ -165,6 +165,17 @@ export default {
     },
     methods: {
         ...mapMutations(['scrollToTop']),
+        setHoveredText(text, event) {
+            this.hoveredText = text;
+            this.isSmallScreen = true; // Adjust the breakpoint as needed
+        },
+        clearHoveredText() {
+            this.hoveredText = null;
+            this.isSmallScreen = false;
+        },
+        getRenderedText(text) {
+            return this.hoveredText ? this.hoveredText : this.truncateText(text, 50);
+        },
         startManage() {
             this.createdANewWH();
             this.getAllWarehouse();
@@ -270,10 +281,6 @@ export default {
             }
             //this.scrollToTop();
         },
-
-        test() {
-            console.log("asd");
-        }
     },
 
     computed: {
@@ -295,3 +302,4 @@ export default {
 </script>
 
 <style></style>
+

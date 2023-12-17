@@ -1,4 +1,5 @@
 <template>
+
     <div v-if="!this.createNew" class="w-10/12 h-10/12 mx-auto">
         <div class="w-8/12 grid grid-cols-4 mx-auto">
             <span class="col-span-3 max-w-fit">
@@ -13,7 +14,6 @@
                 </button>
             </span>
         </div>
-
         <hr class="my-4">
 
         <div class="w-9/12 mx-auto" id="course">
@@ -34,9 +34,9 @@
                 <tr v-for="deliveryCenter in deliveryCenters">
                     <td class="py-2 px-4 border items-center justify-center"> <img class="w-2/5 mx-auto"
                             src="../assets/img/note.png"></td>
-                    <td class="">{{ deliveryCenter.provinceMunicipalityId }}</td>
-                    <td>{{ deliveryCenter.districtId }}</td>
-                    <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs">
+                    <td class="py-2 px-4 border items-center justify-center">{{ deliveryCenter.provinceMunicipalityId }}</td>
+                    <td class="py-2 px-4 border items-center justify-center">{{ deliveryCenter.districtId }}</td>
+                    <td class="py-2 px-4 border text-center md:text-lg sm:text-base text-sm">
                 <tr class="my-auto mx-auto md:text-base sm:text-sm text-xs"
                     v-for="delivery_center in deliveryCenter.delivery_centers">
                     <td class="py-6">{{ delivery_center.deliveryCenterId }}</td>
@@ -72,7 +72,6 @@
 
         </div>
     </div>
-
     <div v-else class="md:max-w-5xl sm:max-w-3xl max-w-xl w-11/12 mx-auto">
         <div class="py-2 grid gird-cols-6">
             <span class="col-start-1 py-2">
@@ -87,13 +86,10 @@
                 </button>
             </span>
         </div>
-
         <hr class="my-2">
-
         <div class="tabcontent" id="course">
             <form @submit="handleSubmit" class="bg-white items-center shadow-lg rounded px-8 pt-6 pb-8 mb-4" novalidate
                 autocapitalize="off">
-
                 <label for="province" class="md:text-base sm:text-sm text-xs">Tỉnh/Thành phố:</label>
                 <br>
 
@@ -118,11 +114,11 @@
 
                 <!-- Select district and display -->
                 <div id="district" class="common-shadow-input w-2/5 h-[43px] select2-stupid-at-home">
-                    <select id="slDistrict" name="district_id" v-model="districtSelected" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300
+                    <select id="slDistrict" name="district_id" v-model="districtSelected" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300s
                             cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true">
                         <option class="text-gray-900" value="">Quận/Huyện</option>
                         <option class="text-gray-900" v-if="districts && districts.length" v-for="district in districts"
-                            :value="district.districtId" :key="district.districtId">{{
+                            :value="district" :key="district.districtId">{{
                                 district.district }}</option>
                     </select>
                 </div>
@@ -138,7 +134,7 @@
                             cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true">
                         <option class="text-gray-900" value="">Điểm tập kết tương ứng</option>
                         <option class="text-gray-900" v-if="warehouses && warehouses.length" v-for="warehouse in warehouses"
-                            :value="warehouse.warehouseId" :key="warehouse.warehouseId">{{
+                            :value="warehouse" :key="warehouse.warehouseId">{{
                                 warehouse.address }}</option>
                     </select>
                 </div>
@@ -150,7 +146,6 @@
                 <input type="text" id="address" class="sub w-2/5" v-model="form.address" required>
                 <p class="error" v-if="addressError.length > 0">{{ addressError[0] }}</p>
                 <br>
-
                 <br>
                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
                     md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg">Tạo giao dịch</button>
@@ -176,11 +171,11 @@ export default {
                 provinceMunicipality: '',
             },
             districtSelected: {
-                districtSelectedId: 0,
+                districtId: 0,
                 district: '',
             },
             warehouseSelected: {
-                warehouseSelectedId: 0,
+                warehouseId: 0,
                 warehouse: '',
             },
             deliveryCenters: [],
@@ -241,9 +236,6 @@ export default {
                 // this.form.address
                 this.refreshToken();
                 let res = await axios.post('/deliveryCenters', this.form, {
-                    accountTypeId: this.leadership.accountTypeId,
-                    withCredentials: true
-                }, {
                     headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
                 }, { withCredentials: true });
                 this.getAllDeliveryCenter();
@@ -292,8 +284,8 @@ export default {
             this.createNew = !this.createNew;
         },
         preSubmit() {
-            this.form.districtId = this.districtSelected.districtSelectedId;
-            this.form.warehouseId = this.warehouseSelected.warehouseSelectedId;
+            this.form.districtId = this.districtSelected.districtId;
+            this.form.warehouseId = this.warehouseSelected.warehouseId;
         },
         async handleSubmit(event) {
 

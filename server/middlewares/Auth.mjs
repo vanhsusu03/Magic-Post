@@ -5,6 +5,7 @@ const { Account } = db.models
 
 export const isAuth = async (req, res, next) => {
 	try {
+		console.log('req.headers.author: ' + req.headers.authorization);
 		const accessTokenFromHeader = req.headers.authorization.split(' ')[1]
 		if (!accessTokenFromHeader) {
 			res.status(401).json('Access token not found')

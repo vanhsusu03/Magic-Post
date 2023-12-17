@@ -225,9 +225,9 @@ router.post('/login', AccountController.logIn)
  */
 router.post('/refresh', AccountController.refreshToken)
 
-router.get('/deliverycenters/manager',AccountController.getAllAccountFromDeliveryCenter)
+router.get('/deliveryCenters/manager',AccountController.getAllManagerAccountFromDeliveryCenter)
 
-router.get('/warehouses/manager',AccountController.getAllAccountFromWarehouse)
+router.get('/warehouses/manager',AccountController.getAllManagerAccountFromWarehouse)
 
 /**
  * @swagger
