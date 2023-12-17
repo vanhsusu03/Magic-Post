@@ -1,14 +1,14 @@
 <template>
-    <div v-if="!this.createNew" class="">
+    <div v-if="!this.createNew" class="w-10/12 h-10/12">
         <div class="w-8/12 grid grid-cols-4 mx-auto">
             <span class="col-span-3 max-w-fit">
-                <h1 class="font-semibold py-4 text-center lg:text-2xl md:text-xl sm:text-lg text-base">
+                <h1 class="font-semibold py-4 text-center lg:text-xl md:text-base sm:text-sm text-xs">
                     Danh sách điểm giao dịch toàn quốc
                 </h1>
             </span>
             <span class="col-span-1">
                 <button v-on:click="this.createdANewDC()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 my-4 
-                    md:text-lg sm:text-base text-sm rounded btn">
+                    md:text-base sm:text-sm text-xs rounded btn">
                     Tạo điểm giao dịch
                 </button>
             </span>
@@ -19,35 +19,35 @@
         <div class="" id="course">
             <table class="px-auto">
                 <tr>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Chỉnh sửa
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Chỉnh sửa
                     </th>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Mã định
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Mã định
                         danh Tỉnh/Thành phố</th>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Mã
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Mã
                         quận/huyện</th>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Mã điểm
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Mã điểm
                         giao dịch</th>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Địa chỉ
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Địa chỉ
                         cụ thể</th>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Xóa</th>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Xóa</th>
                 </tr>
                 <tr v-for="deliveryCenter in deliveryCenters">
                     <td class="py-2 px-4 border items-center justify-center"> <img class="w-2/5 mx-auto"
                             src="../assets/img/note.png"></td>
                     <td>{{ deliveryCenter.provinceMunicipalityId }}</td>
                     <td>{{ deliveryCenter.districtId }}</td>
-                    <td class="py-2 px-4 border text-center md:text-lg sm:text-base text-sm">
-                <tr class="my-auto mx-auto md:text-lg sm:text-base text-sm"
+                    <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs">
+                <tr class="my-auto mx-auto md:text-base sm:text-sm text-xs"
                     v-for="delivery_center in deliveryCenter.delivery_centers">
                     <td class="py-6">{{ delivery_center.deliveryCenterId }}</td>
                     <!-- <td>{{ whouse.address }}</td> -->
                 </tr>
                 </td>
-                <td class="py-4 px-4 border md:text-lg sm:text-base text-sm">
+                <td class="py-4 px-4 border md:text-base sm:text-sm text-xs">
                     <tr class="my-4" v-for="delivery_center in deliveryCenter.delivery_centers">{{ delivery_center.address
                     }}</tr>
                 </td>
-                <td class="py-2 px-4 border items-center md:text-lg sm:text-base text-sm">
+                <td class="py-2 px-4 border items-center md:text-base sm:text-sm text-xs">
                     <tr v-for="delivery_center in deliveryCenter.delivery_centers"><img
                             class="lg:w-2/5 md:w-3/5 sm:w-4/5 w-10/12 mx-auto cursor-pointer hover:opacity-90 py-6"
                             src="../assets/img/trash.png" alt=""></tr>
@@ -58,13 +58,13 @@
             <div class="my-4">
                 <div class="max-w-fit mx-auto">
                     <button
-                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-lg sm:text-base text-sm"
+                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-base sm:text-sm text-xs"
                         @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Previous Page</button>
-                    <span class="pl-10 pr-10 md:text-lg sm:text-base text-sm">Trang <strong>{{ currentPage }}</strong> trong
+                    <span class="pl-10 pr-10 md:text-base sm:text-sm text-xs">Trang <strong>{{ currentPage }}</strong> trong
                         tổng số <strong>{{ totalPages
                         }}</strong></span>
                     <button
-                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-lg sm:text-base text-sm"
+                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-base sm:text-sm text-xs"
                         @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Next Page</button>
                 </div>
 
@@ -75,13 +75,13 @@
     <div v-else class="md:max-w-5xl sm:max-w-3xl max-w-xl w-11/12 mx-auto">
         <div class="py-2 grid gird-cols-6">
             <span class="col-start-1 py-2">
-                <h1 class="inline-flex font-semibold lg:text-2xl md:text-xl sm:text-lg text-base">
+                <h1 class="inline-flex font-semibold lg:text-xl md:text-base sm:text-sm text-xs">
                     Tạo mới điểm giao dịch
                 </h1>
             </span>
             <span class="col-start-6">
                 <button v-on:click="this.createdANewDC()" class="bg-blue-500 hover:bg-blue-700 hover:shadow-xl text-white font-bold 
-                    md:text-lg sm:text-base text-sm py-2 px-4 rounded btn">
+                    md:text-base sm:text-sm text-xs py-2 px-4 rounded btn">
                     Hủy bỏ
                 </button>
             </span>
@@ -91,7 +91,7 @@
             <form @submit="handleSubmit" class="bg-white items-center shadow-lg rounded px-8 pt-6 pb-8 mb-4" novalidate
                 autocapitalize="off">
 
-                <label for="province" class="md:text-lg sm:text-base text-sm">Tỉnh/Thành phố:</label>
+                <label for="province" class="md:text-base sm:text-sm text-xs">Tỉnh/Thành phố:</label>
                 <br>
 
                 <!-- Select province and display -->
@@ -110,7 +110,7 @@
 
                 <p class="error" v-if="this.provinceError.length > 0">{{ provinceError[0] }}</p>
                 <br>
-                <label for="district" class="md:text-lg sm:text-base text-sm">Quận/Huyện:</label>
+                <label for="district" class="md:text-base sm:text-sm text-xs">Quận/Huyện:</label>
                 <br>
 
                 <!-- Select district and display -->
@@ -127,7 +127,7 @@
 
                 <p class="error" v-if="districtError.length > 0">{{ districtError[0] }}</p>
                 <br>
-                <label for="warehouse" class="md:text-lg sm:text-base text-sm">Điểm tập kết tương ứng: <br /> </label>
+                <label for="warehouse" class="md:text-base sm:text-sm text-xs">Điểm tập kết tương ứng: <br /> </label>
 
                 <!-- Select warehouse and display -->
                 <div id="warehouse" class="common-shadow-input w-2/5 h-[43px] select2-stupid-at-home">
@@ -150,7 +150,7 @@
                 <br>
 
                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
-                    md:text-lg sm:text-base text-sm cursor-pointer hover:shadow-lg">Tạo giao dịch</button>
+                    md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg">Tạo giao dịch</button>
             </form>
         </div>
     </div>

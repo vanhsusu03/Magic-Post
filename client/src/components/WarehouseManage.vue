@@ -1,14 +1,14 @@
 <template>
-    <div v-if="!this.createNew" class="">
+    <div v-if="!this.createNew" class="h-10/12 w-10/12">
         <div class="w-8/12 grid grid-cols-4 mx-auto">
             <span class="col-span-3 max-w-fit">
-                <h1 class="font-semibold py-4 text-center lg:text-2xl md:text-xl sm:text-lg text-base">
+                <h1 class="font-semibold py-4 text-center lg:text-xl md:text-lg sm:text-base text-sm">
                     Danh sách điểm tập kết toàn quốc
                 </h1>
             </span>
             <span class="col-span-1">
                 <button v-on:click="this.createdANewWH()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 my-4 
-                    md:text-lg sm:text-base text-sm rounded btn">
+                    md:text-base sm:text-sm text-xs rounded btn">
                     Tạo điểm tập kết
                 </button>
             </span>
@@ -18,36 +18,36 @@
         <div class="" id="course">
             <table class="px-auto">
                 <tr>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Chỉnh sửa
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Chỉnh sửa
                     </th>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Mã định
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Mã định
                         danh Tỉnh/Thành phố</th>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">
                         Tỉnh/Thành phố</th>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Mã điểm
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Mã điểm
                         TK</th>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Địa chỉ
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Địa chỉ
                         cụ thể</th>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-lg sm:text-base text-sm">Xóa</th>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Xóa</th>
                 </tr>
                 <tr class="" v-for="warehouse in displayedItemList">
                     <td class="py-2 px-4 border items-center justify-center"> <img class="w-2/5 mx-auto"
                             src="../assets/img/note.png">
                     </td>
-                    <td class="py-2 px-4 border text-center md:text-lg sm:text-base text-sm"> {{
+                    <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs"> {{
                         warehouse.provinceMunicipalityId }}</td>
-                    <td class="py-2 px-4 border text-center md:text-lg sm:text-base text-sm">{{
+                    <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs">{{
                         warehouse.provinceMunicipality }}</td>
-                    <td class="py-2 px-4 border text-center md:text-lg sm:text-base text-sm">
-                        <tr class="my-auto mx-auto md:text-lg sm:text-base text-sm" v-for="whouse in warehouse.warehouses">
+                    <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs">
+                        <tr class="my-auto mx-auto md:text-base sm:text-sm text-xs" v-for="whouse in warehouse.warehouses">
                             <td class="py-6">{{ whouse.warehouseId }}</td>
                             <!-- <td>{{ whouse.address }}</td> -->
                         </tr>
                     </td>
-                    <td class="py-4 px-4 border md:text-lg sm:text-base text-sm">
+                    <td class="py-4 px-4 border md:text-base sm:text-sm text-xs">
                         <tr class="my-4" v-for="whouse in warehouse.warehouses">{{ whouse.address }}</tr>
                     </td>
-                    <td class="py-2 px-4 border items-center md:text-lg sm:text-base text-sm">
+                    <td class="py-2 px-4 border items-center md:text-base sm:text-sm text-xs">
                         <tr v-for="whouse in warehouse.warehouses"><img
                                 class="lg:w-2/5 md:w-3/5 sm:w-4/5 w-10/12 mx-auto cursor-pointer hover:opacity-90 py-6"
                                 src="../assets/img/trash.png" alt="" @click="test()"></tr>
@@ -57,13 +57,13 @@
             <div class="my-4">
                 <div class="max-w-fit mx-auto">
                     <button
-                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-lg sm:text-base text-sm"
+                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-base sm:text-sm text-xs"
                         @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Previous Page</button>
-                    <span class="pl-10 pr-10 md:text-lg sm:text-base text-sm">Trang <strong>{{ currentPage }}</strong> trong
+                    <span class="pl-10 pr-10 md:text-base sm:text-sm text-xs">Trang <strong>{{ currentPage }}</strong> trong
                         tổng số <strong>{{ totalPages
                         }}</strong></span>
                     <button
-                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-lg sm:text-base text-sm"
+                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-base sm:text-sm text-xs"
                         @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Next Page</button>
                 </div>
 
@@ -73,13 +73,13 @@
     <div v-else class="md:max-w-5xl sm:max-w-3xl max-w-xl w-11/12 mx-auto">
         <div class="py-2 grid gird-cols-6">
             <span class="col-start-1 py-2">
-                <h1 class="inline-flex font-semibold lg:text-2xl md:text-xl sm:text-lg text-base">
+                <h1 class="inline-flex font-semibold lg:text-xl md:text-lg sm:text-base text-sm">
                     Tạo mới điểm tập kết
                 </h1>
             </span>
             <span class="col-start-6">
                 <button v-on:click="this.createdANewWH()" class="bg-blue-500 hover:bg-blue-700 hover:shadow-xl text-white font-bold 
-                    md:text-lg sm:text-base text-sm py-2 px-4 rounded btn">
+                    md:text-base sm:text-sm text-xs py-2 px-4 rounded btn">
                     Hủy bỏ
                 </button>
             </span>
@@ -89,7 +89,7 @@
             <form @submit="handleSubmit" class="bg-white items-center shadow-lg rounded px-8 pt-6 pb-8 mb-4" novalidate
                 autocapitalize="off">
 
-                <label for="province" class="md:text-lg sm:text-base text-sm">Tỉnh/Thành phố:</label>
+                <label for="province" class="md:text-base sm:text-sm text-xs">Tỉnh/Thành phố:</label>
                 <br>
                 <div id="province" class="w-2/5 common-shadow-input h-[43px] select2-stupid-at-home"
                     data-select2-id="select2-data-73-3wmt">
@@ -105,7 +105,7 @@
                 </div>
                 <p class="error" v-if="this.provinceError.length > 0">{{ provinceError[0] }}</p>
                 <br>
-                <label for="district" class="md:text-lg sm:text-base text-sm">Quận/Huyện:</label>
+                <label for="district" class="md:text-base sm:text-sm text-xs">Quận/Huyện:</label>
                 <br>
                 <div id="district" class="common-shadow-input w-2/5 h-[43px] select2-stupid-at-home">
                     <select id="slDistrict" name="district_id" v-model="districtSelected" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300s
@@ -119,13 +119,13 @@
                 <p class="error" v-if="districtError.length > 0">{{ districtError[0] }}</p>
                 <br>
 
-                <label for="address" class="md:text-lg sm:text-base text-sm">Địa chỉ cụ thể: <br /> </label>
+                <label for="address" class="md:text-base sm:text-sm text-xs">Địa chỉ cụ thể: <br /> </label>
                 <input type="text" ref="inputText" id="address" class="sub w-2/5" v-model="form.address">
                 <p class="error" v-if="addressError.length > 0">{{ addressError[0] }}</p>
                 <br>
                 <br>
                 <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
-                    md:text-lg sm:text-base text-sm cursor-pointer hover:shadow-lg">Tạo điểm
+                    md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg">Tạo điểm
                     tập kết</button>
             </form>
         </div>
@@ -268,7 +268,7 @@ export default {
             if (page >= 1 && page <= this.totalPages) {
                 this.currentPage = page;
             }
-            this.scrollToTop();
+            //this.scrollToTop();
         },
 
         test() {
