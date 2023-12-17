@@ -16,7 +16,6 @@ const routes = [
     { path: "/aboutus", name: "About Us", component: AboutUs }, 
     { path: "/customer/searching", name: "CustomerSearching", component: CustomerSearching}, 
     { path: "/contact", name: "Contact", component: Contact },
-    { path: "/leader/manage/account", name: "LeaderManageAccount", component: LeaderManageAccount},
     { path: "/login", name: "Login", component: Login}
     //addition in here
 ]

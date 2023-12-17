@@ -18,16 +18,16 @@
             <table>
                 <tr>
                     <th class="border">Chỉnh sửa</th>
-                    <th class="py-2 px-4 border">Mã định danh Tỉnh/Thành phố</th>
+                    <th class="py-2 px-4 border ">Mã định danh Tỉnh/Thành phố</th>
                     <th class="py-2 px-4 border">Tỉnh/Thành phố</th>
                     <th class="py-2 px-4 border">Mã điểm TK</th>
-                    <th class="py-2 px-4 border">Địa chỉ cụ thể</th>
+                    <th class="py-2 px-4 border truncate">Địa chỉ cụ thể</th>
                     <th class="py-2 px-4 border">Xóa</th>
                 </tr>
                 <tr v-for="warehouse in displayedItemList">
                     <td class="py-2 px-4 border items-center justify-center"> <img class="w-2/4"
                             src="../assets/img/note.png" alt=""> </td>
-                    <td class="py-2 px-4 border"> {{ warehouse.provinceMunicipalityId }}</td>
+                    <td class="py-2 px-4 border truncate"> {{ warehouse.provinceMunicipalityId }}</td>
                     <td class="py-2 px-4 border">{{ warehouse.provinceMunicipality }}</td>
                     <td class="py-2 px-4 border">
                 <tr v-for="whouse in warehouse.warehouses">
@@ -35,10 +35,10 @@
                     <!-- <td>{{ whouse.address }}</td> -->
                 </tr>
                 </td>
-                <td class="py-2 px-4 border">
+                <td class="py-2 px-4 border truncate">
                     <tr v-for="whouse in warehouse.warehouses">{{ whouse.address }}</tr>
                 </td>
-                <td class="py-2 px-4 border">
+                <td class="py-2 px-4 border truncate">
                     <tr v-for="whouse in warehouse.warehouses"><img class="w-2/4" src="../assets/img/trash.png" alt=""></tr>
                 </td>
                 </tr>
