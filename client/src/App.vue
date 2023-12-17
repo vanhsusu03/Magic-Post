@@ -1,8 +1,8 @@
 <template>
-  <!-- <Header></Header>
-  <router-view></router-view> -->
-  <DeliveryCenterManage></DeliveryCenterManage>
-  <!-- <Footer></Footer> -->
+  <Header></Header>
+  <router-view></router-view>
+  <!-- <DeliveryCenterManage></DeliveryCenterManage> -->
+  <Footer></Footer>
   <!-- <img alt="Vue logo" src="./assets/logo.png">
   <HelloWorld msg="Welcome to Your Vue.js App" /> -->
 </template>

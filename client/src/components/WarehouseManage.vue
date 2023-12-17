@@ -182,7 +182,7 @@ export default {
         },
         async handleCreateWH() {
             try {
-                axios.post('/warehouses', this.form, { withCredentials: true });
+                await axios.post('/warehouses', this.form, { withCredentials: true });
                 this.getAllWarehouse();
                 this.createdANewWH();
             } catch (err) {
