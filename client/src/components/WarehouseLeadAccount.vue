@@ -1,165 +1,104 @@
 <template>
-    <div v-if="!this.createNew" class="custom-warehouse pl-5">
-        <div class="head">
-            <span>
-                <h1 class="inline-flex font-semibold lg:text-3xl md:text-xl sm:text-sm text-xs">
+    <div v-if="!this.createNew" class="w-10/12 h-10/12 mx-auto">
+        <div class="w-8/12 grid grid-cols-6 mx-auto">
+            <span class="col-start-1 col-end-5 max-w-fit">
+                <h1 class="font-semibold py-2 mt-2 text-center lg:text-xl md:text-base sm:text-sm text-xs">
                     Danh sách tài khoản nhân viên
                 </h1>
             </span>
-            <span>
-                <button v-on:click="this.createdANewAcc()"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn">
+            <span class="col-start-6">
+                <button v-on:click="this.createdANewAcc()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mt-2 
+                    mx-4 md:text-base sm:text-sm text-xs rounded btn">
                     Thêm tài khoản
                 </button>
             </span>
         </div>
-        <!-- <hr> -->
-        <br>
-        <br>
-        <div v-if="leadership">
-            <h2>Chọn loại tài khoản:</h2>
-            <select id="office-province" name="province_id" v-model="accountTypeSelected" @change="fetchAccountsData()"
-                class="search-select w-4/12 h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300"
-                tabindex="-1" aria-hidden="true" data-select2-id="select2-data-office-province">
-                <option class="text-gray-900" :value="0" selected>Loại tài khoản</option>
-                <option class="text-gray-900" :value="1">Tài khoản trưởng điểm tập kết</option>
-                <option class="text-gray-900" :value="2">Tài khoản trưởng điểm giao dịch</option>
-            </select>
-            <!-- HEAD COMP MANAGE  -->
-            <div class="tabcontentt" id="course" v-if="accounts && accounts.length">
-                <table v-if="this.accountTypeSelected == 1">
-                    <tr>
-                        <th class="py-2 px-4 border">Mã điểm TK</th>
-                        <th class="py-2 px-4 border">Tỉnh/Thành phố</th>
-                        <th class="py-2 px-4 border">Mã tài khoản</th>
-                        <th class="py-2 px-4 border">Tên</th>
-                        <th class="py-2 px-4 border">Email</th>
-                        <th class="py-2 px-4 border">SĐT</th>
-                        <th class="py-2 px-4 border">Chỉnh sửa</th>
-                        <th class="py-2 px-4 border">Xóa</th>
-                    </tr>
-                    <tr v-for="account in displayedItemList">
-                        <td class="py-2 px-4 border">{{ account.warehouseId }}</td>
-                        <td class="py-2 px-4 border">
-                            {{ account.warehouse && account.warehouse.province_municipality
-                                ? account.warehouse.province_municipality.provinceMunicipality
-                                : 'N/A' }}
-                        </td>
-                        <td class="py-2 px-4 border">
-                            WH_{{ account.warehouse && account.warehouse.provinceMunicipalityId
-                                ? account.warehouse.provinceMunicipalityId
-                                : 'N/A' }}_MANAGER_{{ account.accountId }}
-                        </td>
-                        <td class="py-2 px-4 border truncate">{{ account.firstName + ' ' + account.lastName }}</td>
-                        <td class="py-2 px-4 border truncate">{{ truncateText(account.email, 20) }}</td>
-                        <td class="py-2 px-4 border truncate">{{ account.phone }}</td>
-                        <td class="py-2 px-4 border items-center justify-center"> <img class="w-2/4"
-                                src="../assets/img/note.png" alt=""> </td>
-                        <td class="py-2 px-4 border">
-                            <img class="w-2/4" src="../assets/img/trash.png" alt="">
-                        </td>
-                    </tr>
-                </table>
 
-                <table v-if="this.accountTypeSelected == 2">
-                    <tr>
-                        <th class="py-2 px-4 border">Mã điểm GD</th>
-                        <th class="py-2 px-4 border">Tỉnh/Thành phố</th>
-                        <th class="py-2 px-4 border">Quận/Huyện</th>
-                        <th class="py-2 px-4 border">Mã tài khoản</th>
-                        <th class="py-2 px-4 border">Tên</th>
-                        <th class="py-2 px-4 border">Email</th>
-                        <th class="py-2 px-4 border">SĐT</th>
-                        <th class="py-2 px-4 border">Chỉnh sửa</th>
-                        <th class="py-2 px-4 border">Xóa</th>
-                    </tr>
-                    <tr v-for="account in displayedItemList">
-                        <td class="py-2 px-4 border">{{ account.deliveryCenterId }}</td>
-                        <td class="py-2 px-4 border">
-                            {{
-                                account.delivery_center &&
-                                account.delivery_center.district &&
-                                account.delivery_center.district.province_municipality
-                                ? account.delivery_center.district.province_municipality.provinceMunicipality
-                                : 'N/A'
-                            }}
-                        </td>
-                        <td class="py-2 px-4 border">{{
-                            account.delivery_center &&
-                            account.delivery_center.district
-                            ? account.delivery_center.district.district
-                            : 'N/A' }}</td>
-                        <td class="py-2 px-4 border">
-                            DC_{{ account.delivery_center &&
-                                account.delivery_center.district &&
-                                account.delivery_center.district.provinceMunicipalityId
-                                ?
-                                `${account.delivery_center.district.provinceMunicipalityId}/${account.delivery_center.districtId}_MANAGER_${account.accountId}`
-                                : 'N/A'
-                            }}
-                        </td>
-                        <td class="py-2 px-4 border truncate">{{ account.firstName + ' ' + account.lastName }}</td>
-                        <td class="py-2 px-4 border truncate">{{ truncateText(account.email, 20) }}</td>
-                        <td class="py-2 px-4 border truncate">{{ account.phone }}</td>
-                        <td class="py-2 px-4 border items-center justify-center"> <img class="w-2/4"
-                                src="../assets/img/note.png" alt=""> </td>
-                        <td class="py-2 px-4 border">
-                            <img class="w-2/4" src="../assets/img/trash.png" alt="">
-                        </td>
-                    </tr>
-                </table>
-                <div v-if="this.accountTypeSelected != 0" class="">
-                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+        <hr class="my-2 mx-auto w-9/12">
+        
+        <div class="w-9/12 mx-auto" id="course">
+            <table class="px-auto">
+                <tr>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs truncate">Mã điểm TK</th>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs truncate">Tỉnh/Thành phố</th>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs truncate">Mã tài khoản</th>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs truncate">Tên</th>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs truncate">Email</th>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs truncate">SĐT</th>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs truncate">Chỉnh sửa</th>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs truncate">Xóa</th>
+                </tr>
+
+                <tr v-for="account in displayedItemList">
+                    <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs">
+                        {{ account.warehouseId }}</td>
+                    <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs">
+                        {{ account.warehouse.province_municipality.provinceMunicipality }}</td>
+                    <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs">
+                        WH_{{ account.warehouse.provinceMunicipalityId }}_MANGER_{{account.accountId }}</td>
+                    <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs">
+                        {{ account.firstName + ' ' + account.lastName }}</td>
+                    <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs truncate">
+                        {{ truncateText(account.email, 20) }}</td>
+                    <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs truncate">
+                        {{ account.phone }}</td>
+                    <td class="py-2 px-4 border items-center justify-center"> 
+                        <img class="lg:w-2/5 md:w-3/5 sm:w-4/5 w-10/12 mx-auto cursor-pointer hover:opacity-90 py-6"
+                            src="../assets/img/note.png" alt=""> </td>
+                    <td class="py-2 px-4 border items-center justify-center">
+                        <img class="lg:w-2/5 md:w-3/5 sm:w-4/5 w-10/12 mx-auto cursor-pointer hover:opacity-90 py-6" src="../assets/img/trash.png" alt="">
+                    </td>
+                </tr>
+            </table>
+
+            <div>
+                <div class="max-w-fit mx-auto">
+                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-base sm:text-sm text-xs"
                         @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Previous Page</button>
                     <span class="pl-10 pr-10">Trang <strong>{{ currentPage }}</strong> trong tổng số <strong>{{ totalPages
                     }}</strong></span>
-                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-base sm:text-sm text-xs"
                         @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Next Page</button>
                 </div>
             </div>
+            
         </div>
+        
     </div>
-    <div v-else class="custom-delivery-center pl-5">
-        <div class="head">
-            <span>
-                <h1 class="inline-flex font-semibold lg:text-3xl md:text-xl sm:text-sm text-xs">
+    
+    <div v-else class="md:max-w-5xl sm:max-w-3xl max-w-xl w-11/12 mx-auto">
+        <div class="py-2 grid gird-cols-6">
+            <span class="col-start-1 col-end-5 py-2">
+                <h1 class="inline-flex font-semibold lg:text-xl md:text-lg sm:text-base text-sm">
                     Tạo mới tài khoản
                 </h1>
-                <br>
-                <br>
-                <h2>Chọn loại tài khoản:</h2>
-                <select id="office-province" name="province_id" v-model="accountCreateType"
-                    @change="handleWhenChangeStatusAccountCreate()"
-                    class="search-select w-4/12 h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300"
-                    tabindex="-1" aria-hidden="true" data-select2-id="select2-data-office-province">
-                    <option class="text-gray-900" :value="0" selected>Loại tài khoản</option>
-                    <option class="text-gray-900" :value="1">Tài khoản trưởng điểm tập kết</option>
-                    <option class="text-gray-900" :value="2">Tài khoản trưởng điểm giao dịch</option>
-                </select>
             </span>
-            <span>
+            <span class="col-start-6 mx-auto">
                 <button v-on:click="this.createdANewAcc()"
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn">
+                    class="bg-blue-500 hover:bg-blue-700 hover:shadow-xl text-white font-bold 
+                    md:text-base sm:text-sm text-xs py-2 px-4 rounded btn">
                     Hủy bỏ
                 </button>
             </span>
         </div>
-        <!-- <hr> -->
+
+        <hr class="my-2 mx-auto">
+
         <div class="tabcontent" id="course">
-            <form ref="accForm" v-if="this.accountCreateType != 0" @submit="handleSubmit"
+            <form ref="accForm" @submit="handleSubmit"
                 class="bg-white items-center shadow-lg rounded px-8 pt-6 pb-8 mb-4" novalidate autocapitalize="off">
-                <h1 v-if="this.accountCreateType == 1">Tạo tài khoản trưởng điểm tập kết</h1>
-                <h1 v-if="this.accountCreateType == 2">Tạo tài khoản trưởng điểm giao dịch</h1>
-                <br>
                 <h2><strong>Nơi làm việc:</strong></h2>
                 <br>
+
                 <label for="province" class="info">Tỉnh/Thành phố:</label>
                 <br>
+
                 <div id="province" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
                     data-select2-id="select2-data-73-3wmt">
                     <select id="office-province" name="province_id" v-model="provinceSelectedId"
                         @change="this.solveWhenProvinceChange()"
-                        class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300"
+                        class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+                            cursor-pointer hover:shadow-lg"
                         tabindex="-1" aria-hidden="true" data-select2-id="select2-data-office-province">
                         <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
                         <option class="text-gray-900" v-for="province in provinces" :value="province.provinceMunicipalityId"
@@ -167,15 +106,19 @@
                                 province.provinceMunicipality }}</option>
                     </select>
                 </div>
+
                 <p class="error" v-if="this.provinceError.length > 0">{{ provinceError[0] }}</p>
-                <br v-if="this.accountCreateType == 1">
-                <label v-if="this.accountCreateType == 1" for="warehouse" class="info">Điểm tập kết:</label>
                 <br>
-                <div v-if="this.accountCreateType == 1" id="warehouse"
+
+                <label for="warehouse" class="info">Điểm tập kết:</label>
+                <br>
+
+                <div id="warehouse"
                     class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
                     data-select2-id="select2-data-73-3wmt">
                     <select id="office-province" name="province_id" v-model="warehouseSelectedId"
-                        class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300"
+                        class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+                            cursor-pointer hover:shadow-lg"
                         tabindex="-1" aria-hidden="true" data-select2-id="select2-data-office-province">
                         <option class="text-gray-900" :value="0">Điểm tập kết</option>
                         <option class="text-gray-900 w-2/4" v-for="warehouse in wareHouses" :value="warehouse.warehouseId"
@@ -184,40 +127,14 @@
                     </select>
                 </div>
 
-                <label v-if="this.accountCreateType == 2" for="district" class="info">Quận/Huyện:</label>
-                <br>
-                <div v-if="this.accountCreateType == 2" id="district"
-                    class="common-shadow-input w-2/4 h-[43px] select2-stupid-at-home">
-                    <select id="slDistrict" name="district_id" v-model="districtSelectedId"
-                        @change="getAllDeliveryCenterOfADistrict()"
-                        class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300s"
-                        tabindex="-1" aria-hidden="true">
-                        <option class="text-gray-900" value="auto">Quận/Huyện</option>
-                        <option class="text-gray-900" v-if="districts && districts.length" v-for="district in districts"
-                            :value="district.districtId" :key="district.districtId">{{
-                                district.district }}</option>
-                    </select>
-                </div>
                 <p class="error" v-if="districtError.length > 0">{{ districtError[0] }}</p>
                 <br>
-                <label v-if="this.accountCreateType == 2" for="dc" class="info">Điểm giao dịch làm việc:</label>
-                <br v-if="this.accountCreateType == 2">
-                <div v-if="this.accountCreateType == 2" id="deliverycenter"
-                    class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
-                    data-select2-id="select2-data-73-3wmt">
-                    <select id="office-province" name="province_id" v-model="deliverycenterSelectedId"
-                        class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300"
-                        tabindex="-1" aria-hidden="true" data-select2-id="select2-data-office-province">
-                        <option class="text-gray-900" :value="0">Điểm giao dịch</option>
-                        <option class="text-gray-900 w-2/4" v-for="deliveryCenter in deliveryCenters"
-                            :value="deliveryCenter.deliveryCenterId" :key="deliveryCenter.deliveryCenterId">{{
-                                truncateText(deliveryCenter.address, 80) }}</option>
-                    </select>
-                </div>
-                <p class="error" v-if="this.deliverycenterError.length > 0">{{ deliverycenterError[0] }}</p>
-                <br>
+
+                <p class="error" v-if="this.deliverycenterError.length > 0">{{ deliverycenterError[0] }}<br></p>
+
                 <h2><strong>Thông tin cá nhân:</strong></h2>
                 <br>
+
                 <label for="username">Tên đăng nhập</label>
                 <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" v-model="form.username"
                     class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
@@ -225,6 +142,7 @@
                           sm:text-sm sm:leading-6">
                 <p class="error" v-if="userNameError.length > 0">{{ userNameError[0] }}</p>
                 <br>
+
                 <label for="password">Mật khẩu</label>
                 <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" v-model="form.password"
                     class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
@@ -232,6 +150,7 @@
                           sm:text-sm sm:leading-6">
                 <p class="error" v-if="passwordError.length > 0">{{ passwordError[0] }}</p>
                 <br>
+
                 <label for="re-password">Nhập lại mật khẩu</label>
                 <input type="password" id="re-password" name="re-password" placeholder="Nhập lại mật khẩu"
                     v-model="repassword" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
@@ -239,30 +158,35 @@
                           sm:text-sm sm:leading-6">
                 <p class="error" v-if="repasswordError.length > 0">{{ repasswordError[0] }}</p>
                 <br>
+
                 <label for="firstname">Họ</label>
                 <input type="text" id="firstname" name="firstname" placeholder="Nhập tên họ" v-model="form.firstName" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                          ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                           sm:text-sm sm:leading-6">
                 <p class="error" v-if="firstNameError.length > 0">{{ firstNameError[0] }}</p>
                 <br>
+
                 <label for="lastname">Tên đệm</label>
                 <input type="text" id="lastname" name="lastname" placeholder="Nhập tên đệm" v-model="form.lastName" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                          ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                           sm:text-sm sm:leading-6">
                 <p class="error" v-if="lastNameError.length > 0">{{ lastNameError[0] }}</p>
                 <br>
+
                 <label for="email">Email</label>
                 <input type="text" id="email" name="email" placeholder="Nhập email" v-model="form.email" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                          ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                           sm:text-sm sm:leading-6">
                 <p class="error" v-if="emailError.length > 0">{{ emailError[0] }}</p>
                 <br>
+
                 <label for="phone">Số điện thoại</label>
                 <input type="text" id="phone" name="phone" placeholder="Nhập số điện thoại" v-model="form.phone" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                          ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                           sm:text-sm sm:leading-6">
                 <p class="error" v-if="phoneError.length > 0">{{ phoneError[0] }}</p>
                 <br>
+
                 <label for="citizenCard">Số CCCD:</label>
                 <input type="text" id="citizen" name="citizen" placeholder="Nhập số CCCD vào đây"
                     v-model="form.citizenIdentityCardNumber" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
@@ -272,7 +196,8 @@
                 <br>
 
                 <br>
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Tạo tài
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
+                    md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg">Tạo tài
                     khoản</button>
             </form>
         </div>
@@ -297,13 +222,6 @@ export default {
                 email: '',
                 phone: '',
                 citizenIdentityCardNumber: '',
-            },
-            warehouse: {
-                provinceMunicipality: '',
-                provinceMunicipalityId: 0,
-            },
-            deliveryCenter: {
-
             },
             repassword: '',
             accountTypeSelected: 0,
@@ -330,10 +248,9 @@ export default {
             emailError: [],
             phoneError: [],
             citizenCardImgError: [],
-            createNew: false,
+            createNew: true,
             itemsPerPage: 4,
             currentPage: 1,
-            isShow: false,
         }
     },
     methods: {
@@ -358,22 +275,16 @@ export default {
             this.deliveryCenters = null;
         },
         solveWhenProvinceChange() {
-            if (this.accountCreateType == 1) {
-                this.getAllWarehouseofAProvinces();
-            } else if (this.accountCreateType == 2) {
-                this.getAllDistrictsOfAProvince();
-            }
+            this.getAllWarehouseofAProvinces();
         },
         async fetchAccountsData() {
-            if (this.accountTypeSelected == 1 || this.accountCreateType == 1) {
+            try { 
                 let res = await axios.get('/warehouses/manager', { withCredentials: true });
                 this.accounts = res.data;
+                
+            } catch (err) {
+                alert(err.respone.data.error);
             }
-            if (this.accountTypeSelected == 2 || this.accountCreateType == 2) {
-                let res = await axios.get('/deliveryCenters/manager', { withCredentials: true });
-                this.accounts = res.data;
-            }
-
         },
         async refreshToken() {
             let res = await axios.post('/refresh', {
@@ -390,6 +301,7 @@ export default {
         },
         async handleCreateAccount() {
             try {
+                this.refreshToken();
                 let res = await axios.post('/signup', this.form, {
                     headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
                 }, { withCredentials: true });
@@ -399,11 +311,7 @@ export default {
                     this.createdANewAcc();
                 }
             } catch (err) {
-                if (err.response.status == 500) {
-                    await this.refreshToken();
-                    await this.handleCreateAccount();
-                }
-                else if (err.response.data.error == 'Username is already exists') {
+                if (err.response.data.error == 'Username is already exists') {
                     this.userNameError.push("Tên đăng nhập đã tồn tại, hãy chọn tên khác!")
                 } else if (err.respone.data.error == 'Phone is already exists') {
                     this.phoneError.push('Số điện thoại bị trùng! Hãy nhập số khác')
@@ -534,15 +442,8 @@ export default {
             if (this.districtSelectedId == 0) {
                 this.districtError.push("Hãy chọn Quận/Huyện tương ứng!");
             }
-            if (this.deliverycenterSelectedId == 0) {
+            if(this.deliverycenterSelectedId == 0 ) {
                 this.deliverycenterError.push("Hãy chọn điểm giao dịch tương ứng!")
-            }
-
-            if (this.accountCreateType == 1) {
-                this.deleveryCenterError = [];
-                this.districtError = [];
-            } else if (this.accountCreateType == 2) {
-                this.warehouseError = [];
             }
             if (!this.form.firstName) {
                 this.firstNameError.push("Hãy nhập tên họ. Ví dụ: Lê, Nguyễn, .v.v.");
@@ -641,48 +542,4 @@ export default {
 }
 </script>
 
-<style>
-* {
-    /* display: block; */
-}
-
-/* h1 {
-    font-size: 30px;
-} */
-
-.custom-warehouse {
-    width: 100%;
-    /* Set the width to 100% to take up the full width */
-    /* Add other styling if needed */
-}
-
-/* .btn {
-    float: right;
-    margin-right: 20%;
-} */
-
-/* .sub, .province, .district {
-  border-radius: 5px;
-} */
-.tabcontentt {
-    float: left;
-    padding: 0px 12px;
-    border: 1px solid #ccc;
-    width: 80%;
-    border-left: none;
-    height: auto;
-    /* display: none; */
-    /* position: relative; */
-}
-
-/* table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 70%;
-    margin-left: 50%;
-    transform: translateX(-50%);
-    margin-top: 10px;
-    margin-bottom: 10px;
-    counter-reset: tableCount;
-} */
-</style>
+<style></style>

@@ -7,13 +7,13 @@ export default {
 </script>
 
 <template>
-    <div class="bg-cyan-700 px-4 pt-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-full md:px-24 lg:px-8">
+    <div class="bg-cyan-700 px-4 pt-16 mx-auto sm:max-w-full md:max-w-full lg:max-w-full md:px-24 lg:px-8">
         <div class="grid gap-10 row-gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-3">
             <div class="sm:col-span-2 lg:col-span-1">
                 <div class="mt-6 lg:max-w-sm">
                     <img src="../assets/img/logo.png" alt="" class="mx-auto h-20 w-auto">
 
-                    <p class="text-sm text-slate-100">
+                    <p class="text-sm text-center pt-4 text-slate-100">
                         Delivery all you need
                     </p>
                 </div>
@@ -59,8 +59,8 @@ export default {
                 
             </div>
         </div>
-        <div class="flex flex-col-reverse justify-between pt-5 pb-10 border-t flex-row">
-            <p class="text-sm text-slate-100">
+        <div class="flex flex-col-reverse justify-between py-5 border-t flex-row">
+            <p class="text-sm text-slate-100 text-center">
                 © Copyright 2023 Magic Post. All rights reserved.
             </p>
             
