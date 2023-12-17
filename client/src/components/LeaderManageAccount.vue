@@ -100,7 +100,8 @@
                 <br>
                 <br>
                 <h2>Chọn loại tài khoản:</h2>
-                <select id="office-province" name="province_id" v-model="accountCreateType" @change=""
+                <select id="office-province" name="province_id" v-model="accountCreateType"
+                    @change="handleWhenChangeStatusAccountCreate()"
                     class="search-select w-4/12 h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300"
                     tabindex="-1" aria-hidden="true" data-select2-id="select2-data-office-province">
                     <option class="text-gray-900" :value="0" selected>Loại tài khoản</option>
@@ -129,7 +130,7 @@
                 <div id="province" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
                     data-select2-id="select2-data-73-3wmt">
                     <select id="office-province" name="province_id" v-model="provinceSelectedId"
-                        @change="this.getAllWarehouseofAProvinces()"
+                        @change="this.solveWhenProvinceChange()"
                         class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300"
                         tabindex="-1" aria-hidden="true" data-select2-id="select2-data-office-province">
                         <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
@@ -139,10 +140,11 @@
                     </select>
                 </div>
                 <p class="error" v-if="this.provinceError.length > 0">{{ provinceError[0] }}</p>
+                <br v-if="this.accountCreateType == 1">
+                <label v-if="this.accountCreateType == 1" for="warehouse" class="info">Điểm tập kết:</label>
                 <br>
-                <label for="warehouse" class="info">Điểm tập kết:</label>
-                <br>
-                <div id="warehouse" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
+                <div v-if="this.accountCreateType == 1" id="warehouse"
+                    class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
                     data-select2-id="select2-data-73-3wmt">
                     <select id="office-province" name="province_id" v-model="warehouseSelectedId"
                         class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300"
@@ -153,7 +155,38 @@
                                 truncateText(warehouse.address, 80) }}</option>
                     </select>
                 </div>
-                <p class="error" v-if="this.warehouseError.length > 0">{{ warehouseError[0] }}</p>
+
+                <label v-if="this.accountCreateType == 2" for="district" class="info">Quận/Huyện:</label>
+                <br>
+                <div v-if="this.accountCreateType == 2" id="district"
+                    class="common-shadow-input w-2/4 h-[43px] select2-stupid-at-home">
+                    <select id="slDistrict" name="district_id" v-model="districtSelectedId"
+                        @change="getAllDeliveryCenterOfADistrict()"
+                        class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300s"
+                        tabindex="-1" aria-hidden="true">
+                        <option class="text-gray-900" value="auto">Quận/Huyện</option>
+                        <option class="text-gray-900" v-if="districts && districts.length" v-for="district in districts"
+                            :value="district.districtId" :key="district.districtId">{{
+                                district.district }}</option>
+                    </select>
+                </div>
+                <p class="error" v-if="districtError.length > 0">{{ districtError[0] }}</p>
+                <br>
+                <label v-if="this.accountCreateType == 2" for="dc" class="info">Điểm giao dịch làm việc:</label>
+                <br v-if="this.accountCreateType == 2">
+                <div v-if="this.accountCreateType == 2" id="deliverycenter"
+                    class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
+                    data-select2-id="select2-data-73-3wmt">
+                    <select id="office-province" name="province_id" v-model="deliverycenterSelectedId"
+                        class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300"
+                        tabindex="-1" aria-hidden="true" data-select2-id="select2-data-office-province">
+                        <option class="text-gray-900" :value="0">Điểm giao dịch</option>
+                        <option class="text-gray-900 w-2/4" v-for="deliveryCenter in deliveryCenters" :value="deliveryCenter.deliveryCenterId"
+                            :key="deliveryCenter.deliveryCenterId">{{
+                                truncateText(deliveryCenter.address, 80) }}</option>
+                    </select>
+                </div>
+                <p class="error" v-if="this.deliverycenterError.length > 0">{{ deliverycenterError[0] }}</p>
                 <br>
                 <h2><strong>Thông tin cá nhân:</strong></h2>
                 <br>
@@ -202,9 +235,9 @@
                           sm:text-sm sm:leading-6">
                 <p class="error" v-if="phoneError.length > 0">{{ phoneError[0] }}</p>
                 <br>
-                <label for="citizenCard">Link ảnh CCCD:</label>
-                <input type="text" id="citizen" name="citizen" placeholder="Gắn link vào đây"
-                    v-model="form.citizenIdentityCardImage" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                <label for="citizenCard">Số CCCD:</label>
+                <input type="text" id="citizen" name="citizen" placeholder="Nhập số CCCD vào đây"
+                    v-model="form.citizenIdentityCardNumber" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                          ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                           sm:text-sm sm:leading-6">
                 <p class="error" v-if="citizenCardImgError.length > 0">{{ citizenCardImgError[0] }}</p>
@@ -235,18 +268,22 @@ export default {
                 lastName: '',
                 email: '',
                 phone: '',
-                citizenIdentityCardImage: '',
+                citizenIdentityCardNumber: '',
             },
             repassword: '',
             accountTypeSelected: 0,
             accountCreateType: 0,
             provinceSelectedId: 0,
+            districtSelectedId: 0,
             warehouseSelectedId: 0,
             deliverycenterSelectedId: 0,
             accounts: [],
             provinces: [],
+            districts: [],
             wareHouses: [],
+            deliveryCenters: [],
             provinceError: [],
+            districtError: [],
             warehouseError: [],
             userNameError: [],
             passwordError: [],
@@ -264,7 +301,33 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['scrollToTop']),
+        ...mapMutations(['scrollToTop', 'setLogged', 'setLeadership', 'setLeadershipAccessToken',
+            'setLeadershipRefreshToken', 'setManagerDC', 'setManagerWH', 'setTellerDC', 'setStaffWH']),
+        handleWhenChangeStatusAccountCreate() {
+            this.resetError();
+            this.provinceSelectedId = 0;
+            this.districtSelectedId = 0;
+            this.warehouseSelectedId = 0;
+            this.deliverycenterSelectedId = 0;
+            this.form.username = "";
+            this.form.password = "";
+            this.repassword = "";
+            this.form.firstName = "";
+            this.form.lastName = "";
+            this.form.email = "";
+            this.form.phone = "";
+            this.form.citizenIdentityCardNumber = "";
+            this.districts = null;
+            this.wareHouses = null;
+            this.deliveryCenters = null;
+        },
+        solveWhenProvinceChange() {
+            if (this.accountCreateType == 1) {
+                this.getAllWarehouseofAProvinces();
+            } else if (this.accountCreateType == 2) {
+                this.getAllDistrictsOfAProvince();
+            }
+        },
         async fetchAccountsData() {
             try {
                 if (this.accountTypeSelected == 1 || this.accountCreateType == 1) {
@@ -278,14 +341,28 @@ export default {
                 alert(err.respone.data.error);
             }
         },
+        async refreshToken() {
+            let res = await axios.post('/refresh', {
+                refreshToken: this.leadershipToken.refreshToken,
+                withCredentials: true
+            }, {
+                headers:
+                {
+                    'x_authorization': `${this.leadershipToken.accessToken}`,
+                }, withCredentials: true
+            });
 
+            this.setLeadershipAccessToken(res.data);
+        },
         async handleCreateAccount() {
             try {
-                let res = await axios.post('/signup', this.form, { withCredentials: true });
+                this.refreshToken();
+                let res = await axios.post('/signup', this.form, {
+                    headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
+                }, { withCredentials: true });
                 if (res.data) {
                     this.fetchAccountsData();
                     this.accountCreateType = 0;
-                    this.$refs.accForm.reset();
                     this.createdANewAcc();
                 }
             } catch (err) {
@@ -313,7 +390,17 @@ export default {
                 console.error('Error fetching provinces:', error.message);
             }
         },
-
+        async getAllDistrictsOfAProvince() {
+            this.districts = null;
+            if (this.provinceSelectedId > 0) {
+                try {
+                    const res = await axios.get(`/provinces/${this.provinceSelectedId}/districts`, { withCredentials: true });
+                    this.districts = res.data;
+                } catch (error) {
+                    console.error('getDistrictofAProvince:', error.message);
+                }
+            }
+        },
         async getAllWarehouseofAProvinces() {
             this.wareHouses = null;
             if (this.provinceSelectedId > 0) {
@@ -325,10 +412,25 @@ export default {
                 }
             }
         },
+
+        async getAllDeliveryCenterOfADistrict() {
+            this.deliveryCenters = [];
+            if (this.districtSelectedId > 0) {
+                try {
+                    const res = await axios.get(`/deliveryCenters/${this.districtSelectedId}`, { withCredentials: true });
+                    this.deliveryCenters = res.data;
+                } catch (err) {
+                    console.log('getDCfromDistrict: ', err.respone.data.error)
+                }
+            }
+
+        },
         createdANewAcc() {
             this.resetError();
             this.accountCreateType = 0;
             this.accountTypeSelected = 0;
+            this.provinceSelectedId = 0;
+            this.districtSelectedId = 0;
             this.warehouseSelectedId = 0;
             this.deliverycenterSelectedId = 0;
             this.form.username = "";
@@ -338,8 +440,12 @@ export default {
             this.form.lastName = "";
             this.form.email = "";
             this.form.phone = "";
-            this.form.citizenIdentityCardImage = "";
+            this.form.citizenIdentityCardNumber = "";
+            this.districts = null;
+            this.wareHouses = null;
+            this.deliveryCenters = null;
             this.createNew = !this.createNew;
+
         },
         preSubmit() {
             if (this.accountCreateType == 1) {
@@ -352,6 +458,7 @@ export default {
         },
         resetError() {
             this.provinceError = [];
+            this.districtError = [];
             this.warehouseError = [];
             this.userNameError = [];
             this.passwordError = [];
@@ -364,6 +471,7 @@ export default {
         },
         checkEmptyError() {
             if (this.provinceError.length != 0
+                || this.districtError.length != 0
                 || this.warehouseError.length != 0
                 || this.passwordError.length != 0
                 || this.repasswordError.length != 0
@@ -380,6 +488,18 @@ export default {
         validateRegisterAccount() {
             this.resetError();
 
+            if (this.provinceSelectedId == 0) {
+                this.provinceError.push("Hãy chọn Tỉnh/Thành phố làm việc!");
+            }
+            if (this.warehouseSelectedId == 0) {
+                this.warehouseError.push("Hãy chọn điểm tập kết làm việc!");
+            }
+            if (this.districtSelectedId == 0) {
+                this.districtError.push("Hãy chọn Quận/Huyện tương ứng!");
+            }
+            if(this.deliverycenterSelectedId == 0 ) {
+                this.deliverycenterError.push("Hãy chọn điểm giao dịch tương ứng!")
+            }
             if (!this.form.firstName) {
                 this.firstNameError.push("Hãy nhập tên họ. Ví dụ: Lê, Nguyễn, .v.v.");
             } else if (!/^[A-Za-zÀ-ỹ]+$/.test(this.form.firstName.replace(/\s/g, ""))) {
@@ -428,9 +548,9 @@ export default {
                 this.phoneError.push('Số điện thoại chỉ được bao gồm chữ số!');
             }
 
-            if (!this.form.citizenIdentityCardImage) {
+            if (!this.form.citizenIdentityCardNumber) {
                 this.citizenCardImgError.push("Hãy nhập số CCCD!")
-            } else if (!/[0-9]{10}/.test(this.form.citizenIdentityCardImage)) {
+            } else if (!/[0-9]{10}/.test(this.form.citizenIdentityCardNumber)) {
                 this.citizenCardImgError.push('CCCD không bao gồm chữ cái');
             }
         },
@@ -460,7 +580,7 @@ export default {
     },
 
     computed: {
-        ...mapState(['isLogin', 'leadership', 'manager_DC', 'manager_WH', 'staff_WH', 'teller_DC']),
+        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH', 'teller_DC']),
         totalPages() {
             return Math.ceil(this.accounts.length / this.itemsPerPage);
         },

@@ -37,6 +37,7 @@
 
 import { Router } from 'express'
 import DeliveryCenterController from "../controllers/DeliveryCenterController.mjs"
+import { isAuth, isLeadership } from "../middlewares/Auth.mjs"
 
 const router = Router()
 
@@ -97,7 +98,7 @@ router.get('/deliveryCenters', DeliveryCenterController.getAllDeliveryCenters)
  *                          message: "Internal Server Error"
  *                          error: "Error details"
  */
-router.post('/deliveryCenters', DeliveryCenterController.createDeliveryCenter)
+router.post('/deliveryCenters', isAuth, isLeadership, DeliveryCenterController.createDeliveryCenter)
 
 /**
  * @swagger
@@ -144,6 +145,47 @@ router.post('/deliveryCenters', DeliveryCenterController.createDeliveryCenter)
  *                          message: "Internal Server Error"
  *                          error: "Error details"
  */
-router.put('/deliveryCenters/:deliveryCenterId', DeliveryCenterController.updateDeliveryCenter)
+router.put('/deliveryCenters/:deliveryCenterId', isAuth, isLeadership, DeliveryCenterController.updateDeliveryCenter)
 
+/**
+ * @swagger
+ * /deliveryCenters/{deliveryCenterId}:
+ *  delete:
+ *      summary: Remove a Delivery Center
+ *      tags: [Delivery center]
+ *      description: Remove a delivery center by its ID.
+ *      parameters:
+ *        - in: path
+ *          name: deliveryCenterId
+ *          required: true
+ *          description: The ID of the delivery center to be removed.
+ *          schema:
+ *              type: integer
+ *      responses:
+ *          '200':
+ *              description: Successful removal of the delivery center
+ *          '401':
+ *              description: Unauthorized - Access token not found or invalid
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          response: "Access token not found"
+ *          '403':
+ *              description: Forbidden - Leadership access required
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          response:
+ *                              message: "Leadership access required"
+ *          '500':
+ *              description: Internal Server Error
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          response: "Something went wrong while removing the delivery center"
+ * 
+ */
+router.delete('/deliveryCenters/:deliveryCenterId', isAuth, isLeadership, DeliveryCenterController.removeADeliveryCenter)
+
+router.get('/deliveryCenters/:districtId', DeliveryCenterController.getDeliveryCentersByDistrict)
 export default router

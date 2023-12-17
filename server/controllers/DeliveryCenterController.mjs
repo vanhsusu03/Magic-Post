@@ -88,7 +88,7 @@ const DeliveryCenterController = {
         try {
             const deliveryCenterId = Number(req.params.deliveryCenterId)
             const { warehouseId, address } = req.body
-            
+
             if (address && warehouseId) {
                 await Delivery_center.update({
                     warehouse_id: warehouseId,
@@ -133,6 +133,64 @@ const DeliveryCenterController = {
                     message: 'Nothing to update',
                 })
             }
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
+    /**
+    * Remove a delivery center from the database by its id This is used to remove a delivery center from the database
+    * 
+    * @param req - Request object from express server with all data required for deletion
+    * @param res - Response object from express server with error code and message
+    * 
+    * @return { Object } Data from AWS with status code and error message if there was an error in the deletion
+    */
+    removeADeliveryCenter: async (req, res) => {
+        try {
+            const deliveryCenterId = Number(req.params.deliveryCenterId)
+
+            await Delivery_center.destroy({
+                where: {
+                    delivery_center_id: deliveryCenterId
+                }
+            })
+
+            res.status(200).json({
+                message: 'success',
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
+    getDeliveryCentersByDistrict: async (req, res) => {
+        try {
+            const districtId = Number(req.params.districtId);
+
+            const ans = await Delivery_center.findAll({
+                attributes: [
+                    [sequelize.col('delivery_center_id'), 'deliveryCenterId'],
+                    [sequelize.col('district_id'), 'districtId'],
+                    [sequelize.col('warehouse_id'), 'warehouseId'],
+                    [sequelize.col('address'), 'address'],
+                ],
+                where: {
+                    district_id: districtId
+                },
+                order: [
+                    [sequelize.col('delivery_center_id'), 'ASC'],
+                ],
+            })
+            res.status(200).json(ans)
         } catch (err) {
             console.log(err)
             res.status(500).json({

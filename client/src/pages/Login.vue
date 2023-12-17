@@ -69,12 +69,16 @@ export default {
     },
 
     methods: {
-        ...mapMutations(['scrollToTop', 'setLogged', 'setLeadership', 'setManagerDC', 'setManagerWH', 'setTellerDC', 'setStaffWH']),
+        ...mapMutations(['scrollToTop', 'setLogged', 'setLeadership', 'setLeadershipAccessToken',
+        'setLeadershipRefreshToken','setManagerDC', 'setManagerWH', 'setTellerDC', 'setStaffWH']),
         async handleLogin() {
             try {
                 let res = await axios.post('/login', this.form, { withCredentials: true });
                 let user = res.data.account;
+                console.log(user);
                 if (user.accountTypeId == 2) {
+                    this.setLeadershipAccessToken(res.data.accessToken);
+                    this.setLeadershipRefreshToken(res.data.refreshToken);
                     this.setLeadership(user);
                 } else if (user.accountTypeId == 3) {
                     this.setManagerDC(user);

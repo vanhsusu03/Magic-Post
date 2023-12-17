@@ -50,7 +50,7 @@
  *              phone:
  *                  type: string
  *                  description: The phone number of the account holder.
- *              citizenIdentityCardImage:
+ *              citizenIdentityCardNumber:
  *                  type: string
  *                  description: The URL of the citizen identity card image.
  *              registrationTime:
@@ -67,7 +67,7 @@
  *              - firstName
  *              - lastName
  *              - phone
- *              - citizenIdentityCardImage
+ *              - citizenIdentityCardNumber
  *          example:
  *              accountId: 1
  *              accountTypeId: 1
@@ -79,7 +79,7 @@
  *              lastName: "Doe"
  *              email: "john.doe@example.com"
  *              phone: "0123456789"
- *              citizenIdentityCardImage: "image_url_1"
+ *              citizenIdentityCardNumber: "image_url_1"
  *              registrationTime: "2023-01-01T12:00:00"
  *              refreshToken: "refresh_token_string"
  */
@@ -129,7 +129,7 @@ const router = Router()
  *                          message: "Internal Server Error"
  *                          error: "Error details"
  */
-router.post('/signup', AccountController.signUp)
+router.post('/signup', isAuth, AccountController.signUp)
 
 /**
  * @swagger
@@ -228,6 +228,44 @@ router.post('/refresh', AccountController.refreshToken)
 router.get('/deliverycenters/manager',AccountController.getAllAccountFromDeliveryCenter)
 
 router.get('/warehouses/manager',AccountController.getAllAccountFromWarehouse)
+
+/**
+ * @swagger
+ * /offices/{officeId}/accounts/{accountTypeId}:
+ *  get:
+ *      summary: Get Account Information by Office
+ *      tags: [Account]
+ *      description: Retrieve account information based on the office (warehouse or delivery center) ID and account type ID.
+ *      parameters:
+ *        - in: path
+ *          name: officeId
+ *          schema:
+ *              type: integer
+ *          required: true
+ *          description: The ID of the office (warehouse or delivery center).
+ *        - in: path
+ *          name: accountTypeId
+ *          schema:
+ *              type: integer
+ *          required: true
+ *          description: The ID of the account type.     
+ *      responses:
+ *          '200':
+ *              description: Successful retrieval of account information
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/Account'
+ *          '500':
+ *              description: Internal Server Error
+ *              content:
+ *                  application/json:
+ *                      example:
+ *                          response: "Something went wrong while retrieving account information"
+ */
+router.get('/offices/:officeId/accounts/:accountTypeId', isAuth, AccountController.getInfoByOffice)
 
 // router.get('/profile', isAuth, async (req, res) => {
 // 	res.json(req.account)

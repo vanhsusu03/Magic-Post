@@ -56,10 +56,10 @@ export default function (sequelize, DataTypes) {
       allowNull: false,
       unique: "phone"
     },
-    citizen_identity_card_image: {
+    citizen_identity_card_number: {
       type: DataTypes.STRING(300),
       allowNull: false,
-      unique: "citizen_identity_card_image"
+      unique: "citizen_identity_card_number"
     },
     registration_time: {
       type: DataTypes.DATE,
@@ -95,11 +95,11 @@ export default function (sequelize, DataTypes) {
         name: "phone"
       }]
     }, {
-      name: "citizen_identity_card_image",
+      name: "citizen_identity_card_number",
       unique: true,
       using: "BTREE",
       fields: [{
-        name: "citizen_identity_card_image"
+        name: "citizen_identity_card_number"
       }]
     }, {
       name: "fk_account_delivery_center",
