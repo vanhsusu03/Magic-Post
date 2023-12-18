@@ -380,7 +380,107 @@ const AccountController = {
                 error: err.message
             })
         }
-    }
+    },
+
+    getAllStaffAccountFromDeliveryCenter: async (req, res) => {
+        try {
+            const ans = await Account.findAll({
+                attributes: [
+                    [sequelize.col('account.account_id'), 'accountId'],
+                    [sequelize.col('account.account_type_id'), 'accountTypeId'],
+                    [sequelize.col('account.username'), 'username'],
+                    [sequelize.col('account.delivery_center_id'), 'deliveryCenterId'],
+                    [sequelize.col('account.warehouse_id'), 'warehouseId'],
+                    [sequelize.col('account.first_name'), 'firstName'],
+                    [sequelize.col('account.last_name'), 'lastName'],
+                    [sequelize.col('account.email'), 'email'],
+                    [sequelize.col('account.phone'), 'phone'],
+                    [sequelize.col('account.citizen_identity_card_number'), 'citizenIdentityCardNumber'],
+                    [sequelize.col('account.registration_time'), 'registrationTime'],
+                ],
+                include: {
+                    model: Delivery_center,
+                    attributes: [
+                        [sequelize.col('district_id'), 'districtId'],
+                    ],
+                    required: true,
+                    include: {
+                        model: District,
+                        attributes: [
+                            [sequelize.col('province_municipality_id'), 'provinceMunicipalityId'],
+                            [sequelize.col('district'), 'district'],
+                        ],
+                        required: true,
+                        include: {
+                            model: Province_municipality,
+                            attributes: [
+                                [sequelize.col('province_municipality'), 'provinceMunicipality'],
+                                // Add other attributes as needed
+                            ],
+                            required: true,
+                        }
+                    }
+                },
+                where: {
+                    account_type_id: 4
+                },
+                order: [['accountId', 'ASC']]
+            });
+            res.status(200).json(ans);
+        } catch (err) {
+            console.log(err);
+            res.status(400).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
+    getAllStaffAccountFromWarehouse: async (req, res) => {
+        try {
+            const ans = await Account.findAll({
+                attributes: [
+                    [sequelize.col('account.account_id'), 'accountId'],
+                    [sequelize.col('account.account_type_id'), 'accountTypeId'],
+                    [sequelize.col('account.username'), 'username'],
+                    [sequelize.col('account.delivery_center_id'), 'deliveryCenterId'],
+                    [sequelize.col('account.warehouse_id'), 'warehouseId'],
+                    [sequelize.col('account.first_name'), 'firstName'],
+                    [sequelize.col('account.last_name'), 'lastName'],
+                    [sequelize.col('account.email'), 'email'],
+                    [sequelize.col('account.phone'), 'phone'],
+                    [sequelize.col('account.citizen_identity_card_number'), 'identityCardlink'],
+                    [sequelize.col('account.registration_time'), 'registrationTime']
+                ],
+                include: {
+                    model: Warehouse,
+                    attributes: [
+                        [sequelize.col('province_municipality_id'), 'provinceMunicipalityId'],
+                    ],
+                    required: true,
+                    include: {
+                        model: Province_municipality,
+                        attributes: [
+                            [sequelize.col('province_municipality'), 'provinceMunicipality'],
+                            // Add other attributes as needed
+                        ],
+                        required: true,
+                    }
+                },
+                where: {
+                    account_type_id: 6
+                },
+                order: [['accountId', 'ASC']]
+            });
+            res.status(200).json(ans);
+        } catch (err) {
+            console.log(err);
+            res.status(400).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
     // logOut: async (req, res) => {
     //     try {
     //         const token = req.headers.authorization.split(' ')[1]
