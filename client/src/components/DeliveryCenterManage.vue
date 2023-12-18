@@ -1,20 +1,19 @@
 <template>
 
     <div v-if="!this.createNew" class="w-10/12 h-10/12 mx-auto">
-        <div class="w-8/12 grid grid-cols-4 mx-auto">
-            <span class="col-span-3 max-w-fit">
+        <div class="w-8/12 grid grid-cols-6 mx-auto">
+            <span class="col-start-1 col-end-5 max-w-fit">
                 <h1 class="font-semibold py-4 text-center lg:text-xl md:text-base sm:text-sm text-xs">
                     Danh sách điểm giao dịch toàn quốc
                 </h1>
             </span>
-            <span class="col-span-1">
+            <span class="col-start-6">
                 <button v-on:click="this.createdANewDC()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 my-4 
                     md:text-base sm:text-sm text-xs rounded btn">
                     Tạo điểm giao dịch
                 </button>
             </span>
-        </div>
-        <hr class="my-4">
+        </div><hr class="my-4">
 
         <div class="w-9/12 mx-auto" id="course">
             <table class="px-auto">

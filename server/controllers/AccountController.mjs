@@ -44,6 +44,12 @@ const AccountController = {
             if (email && await Account.findOne({ where: { email: email } })) {
                 throw new Error('Email is already exists')
             }
+            // if (phone && await Account.findOne({ where: { phone: phone } })) {
+            //     throw new Error('Phone number is already exists')
+            // }
+            if (citizenIdentityCardNumber && await Account.findOne({ where: { citizenIdentityCardNumber: citizenIdentityCardNumber }})) {
+                throw new Error('Identity number is already exists')
+            }
 
             const hashedPassword = await bcrypt.hash("" + password, parseInt(10))
             const now = new Date()
