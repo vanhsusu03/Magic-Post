@@ -3,7 +3,7 @@
         <SideBarManage class="col-span-2 md:col-span-1" :selecteds="selecteds" @update:selecteds="updateSelecteds">
         </SideBarManage>
         <div class="col-span-4" v-if="selecteds[0]">Content for Thống kê</div>
-        <LeaderManageAccount class="col-span-4" v-if="selecteds[1]"></LeaderManageAccount>
+        <WarehouseLeadAccount class="col-span-4" v-if="selecteds[1]"></WarehouseLeadAccount>
         <DeliveryCenterManage class="col-span-4" v-if="selecteds[2]"></DeliveryCenterManage>
         <WareHouseManage class="col-span-4" v-if="selecteds[3]"></WareHouseManage>
         <div class="col-span-4" v-if="selecteds[4]">Content for Thống kê</div>
@@ -17,6 +17,7 @@ import DeliveryCenterManage from '../components/DeliveryCenterManage.vue';
 import WareHouseManage from '../components/WarehouseManage.vue';
 import LeaderManageAccount from '@/components/LeaderManageAccount.vue';
 import { mapState } from 'vuex';
+import WarehouseLeadAccount from '@/components/WarehouseLeadAccount.vue';
 export default {
     name: 'ManagerHome',
     data() {
@@ -25,11 +26,12 @@ export default {
         };
     },
     components: {
-        SideBarManage,
-        DeliveryCenterManage,
-        WareHouseManage,
-        LeaderManageAccount,
-    },
+    SideBarManage,
+    DeliveryCenterManage,
+    WareHouseManage,
+    LeaderManageAccount,
+    WarehouseLeadAccount
+},
     methods: {
         updateSelecteds(newSelecteds) {
             this.selecteds = newSelecteds;
