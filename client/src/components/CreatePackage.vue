@@ -48,38 +48,38 @@
                             class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
                             Xóa</th>
                     </tr>
-                    <tr v-for="account in displayedItemList">
+                    <!-- <tr v-for="package in displayedItemList">
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">{{
-                            account.deliveryCenterId }}</td>
+                            package.deliveryCenterId }}</td>
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
                             {{
-                                account.delivery_center &&
-                                account.delivery_center.district &&
-                                account.delivery_center.district.province_municipality
-                                ? account.delivery_center.district.province_municipality.provinceMunicipality
+                                package.delivery_center &&
+                                package.delivery_center.district &&
+                                package.delivery_center.district.province_municipality
+                                ? package.delivery_center.district.province_municipality.provinceMunicipality
                                 : 'N/A'
                             }}
                         </td>
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">{{
-                            account.delivery_center &&
-                            account.delivery_center.district
-                            ? account.delivery_center.district.district
+                            package.delivery_center &&
+                            package.delivery_center.district
+                            ? package.delivery_center.district.district
                             : 'N/A' }}</td>
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
-                            DC_{{ account.delivery_center &&
-                                account.delivery_center.district &&
-                                account.delivery_center.district.provinceMunicipalityId
+                            DC_{{ package.delivery_center &&
+                                package.delivery_center.district &&
+                                package.delivery_center.district.provinceMunicipalityId
                                 ?
-                                `${account.delivery_center.district.provinceMunicipalityId}/${account.delivery_center.districtId}_MANAGER_${account.accountId}`
+                                `${package.delivery_center.district.provinceMunicipalityId}/${package.delivery_center.districtId}_MANAGER_${package.packageId}`
                                 : 'N/A'
                             }}
                         </td>
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                            account.firstName + ' ' + account.lastName }}</td>
+                            package.firstName + ' ' + package.lastName }}</td>
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                            truncateText(account.email, 20) }}</td>
+                            truncateText(package.email, 20) }}</td>
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                            account.phone }}</td>
+                            package.phone }}</td>
                         <td class="py-2 px-4 border items-center justify-center"> <img
                                 class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer"
                                 src="../assets/img/note.png" alt=""> </td>
@@ -87,7 +87,7 @@
                             <img class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer hover:opacity-90 py-6"
                                 src="../assets/img/trash.png" alt="">
                         </td>
-                    </tr>
+                    </tr> -->
                 </table>
 
                 <div class="my-4">
@@ -127,64 +127,53 @@
                 <form ref="accForm" @submit="handleSubmit"
                     class="bg-white items-center shadow-lg rounded px-8 pt-6 pb-8 mb-4" novalidate autocapitalize="off">
                     <h1 class="text-lg"><strong>Thông tin phía gửi:</strong></h1><br>
-                    <h1><strong>Thông tin người gửi:</strong></h1><br>
                     <h1><strong>Nơi gửi:</strong></h1><br>
-                    <label for="province" class="info">Tỉnh/Thành phố: <strong>{{ this.tellerDC }}</strong></label><br>
-                    <div id="province" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
-                        data-select2-id="select2-data-73-3wmt">
-                        <select id="office-province" name="province_id" v-model="provinceSelectedId"
-                            @change="this.solveWhenProvinceChange()" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
-                                md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1"
-                            aria-hidden="true" data-select2-id="select2-data-office-province">
-                            <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
-                            <option class="text-gray-900" v-for="province in provinces"
-                                :value="province.provinceMunicipalityId" :key="province.provinceMunicipalityId">{{
-                                    province.provinceMunicipality }}</option>
-                        </select>
-                    </div>
-
-                    <p class="error" v-if="this.provinceError.length > 0">{{ provinceError[0] }}<br></p>
+                    <label for="province" class="info">Tỉnh/Thành phố: <strong>{{
+                        this.tellerDC[0].delivery_center.district.district }}-{{
+        this.tellerDC[0].delivery_center.district.province_municipality.provinceMunicipality
+    }}</strong></label><br>
+                    <label for="delivCent" class="info">Địa chỉ điểm giao dịch: <strong>{{
+                        this.deliveryCenter[0].address }}</strong></label>
+                    <br>
+                    <br>
+                    <h1><strong>Thông tin người gửi:</strong></h1><br>
+                    <label for="">Tên người gửi</label>
+                    <input type="text" id="senderName" name="senderName" placeholder="Nhập tên người gửi"
+                        v-model="form.senderName" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                          sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="createPackageError.senderNameError.length > 0">{{
+                        createPackageError.senderNameError[0] }}<br></p>
                     <br>
 
-                    <label for="district" class="info">Tỉnh/Thành phố:</label><br>
-                    <div id="district" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
-                        data-select2-id="select2-data-73-3wmt">
-                        <select id="district" name="district" v-model="districtSelectedId"
-                            @change="this.getAllDeliveryCenterOfADistrict()" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
-                                md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1"
-                            aria-hidden="true" data-select2-id="select2-data-office-province">
-                            <option class="text-gray-900" :value="0">Quận/Huyện</option>
-                            <option class="text-gray-900" v-for="district in districts" :value="district.districtId"
-                                :key="district.district">{{
-                                    district.district }}</option>
-                        </select>
-                    </div>
-                    <p class="error" v-if="this.districtError.length > 0">{{ districtError[0] }}</p><br>
-
-                    <label for="deliveryCenter" class="info">Tỉnh/Thành phố:</label><br>
-                    <div id="deliveryCenter" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
-                        data-select2-id="select2-data-73-3wmt">
-                        <select id="deleveryCenter" name="deleveryCenter" v-model="deliverycenterSelectedId"
-                            @change="this.getAllDeliveryCenterOfADistrict()" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
-                                md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1"
-                            aria-hidden="true" data-select2-id="select2-data-office-province">
-                            <option class="text-gray-900" :value="0">Điểm giao dịch</option>
-                            <option class="text-gray-900" v-for="delivery_center in deliveryCenters"
-                                :value="delivery_center.deliveryCenterId" :key="delivery_center.deliveryCenterId">{{
-                                    delivery_center.address }}</option>
-                        </select>
-                    </div>
-                    <p class="error" v-if="this.deliverycenterError.length > 0">{{ deliverycenterError[0] }}</p>
+                    <label for="">Số điện thoại người gửi</label>
+                    <input type="text" id="senderPhone" name="senderPhone" placeholder="Nhập số điện thoại người gửi"
+                        v-model="form.senderPhone" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                          sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="createPackageError.senderPhoneError.length > 0">{{
+                        createPackageError.senderPhoneError[0] }}<br></p>
                     <br>
 
-                    <h2><strong>Thông tin đơn gửi:</strong></h2><br>
+                    <label for="">Địa chỉ người gửi</label>
+                    <input type="text" id="senderAddress" name="senderAddress" placeholder="Nhập địa chỉ người gửi"
+                        v-model="form.senderAddress" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                          sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="createPackageError.senderAddressError.length > 0">{{
+                        createPackageError.senderAddressError[0] }}<br></p>
+                    <br>
 
+                    <h2><strong>Thông tin đơn gửi:</strong></h2>
+                    <br>
+                    <label for="">Loại hàng:</label>
+                    <br>
+                    <br>
                     <div class="flex">
                         <div class="flex items-center h-5 ">
-                            <input type="radio" id="packageTypeIdMerchandise" value="Hàng hóa"
-                                aria-describedby="packageTypeInfo" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 
+                            <input type="radio" id="packageTypeIdMerchandise" aria-describedby="packageTypeInfo" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 
                             dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                v-model="packageType" @click="test">
+                                v-model="form.packageTypeId" :value="2">
                         </div>
                         <div class="ms-2 text-sm mr-4">
                             <label for="packageTypeIdMerchandise" class="font-medium text-gray-900 dark:text-gray-300">Hàng
@@ -194,10 +183,9 @@
                         </div>
 
                         <div class="flex items-center h-5 ml-4">
-                            <input type="radio" id="packageTypeIdDocument" value="Tài liệu"
-                                aria-describedby="packageTypeInfo" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 
+                            <input type="radio" id="packageTypeIdDocument" aria-describedby="packageTypeInfo" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 
                             dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                v-model="packageType" @click="test">
+                                v-model="form.packageTypeId" :value="1">
                         </div>
                         <div class="ms-2 text-sm">
                             <label for="packageTypeIdDocument" class="font-medium text-gray-900 dark:text-gray-300">Tài
@@ -205,58 +193,86 @@
                             <p id="packageTypeInfo" class="text-xs font-normal text-gray-500 dark:text-gray-300">Trọng lượng
                                 tối đa: 2kg</p>
                         </div>
-                    </div><br>
+                    </div>
+                    <p class="error" v-if="createPackageError.packageTypeIdError.length > 0">{{
+                        createPackageError.packageTypeIdError[0] }}<br></p><br>
 
-                    <label for="weight">Trọng lượng:</label>
-                    <input type="text" id="weight" name="weight" placeholder="Nhập trọng lượng" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                    <label for="weight">Trọng lượng (Nhập theo gram):</label>
+                    <input type="text" id="weight" name="weight" placeholder="Nhập trọng lượng (theo gram)"
+                        v-model="form.weightGram" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                         sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="createPackageError.weightGramError.length > 0">{{
+                        createPackageError.weightGramError[0] }}<br></p><br>
 
                     <label for="cost">Phí vận chuyển:</label>
-                    <input type="text" id="cost" name="cost" placeholder="Nhập phí vận chuyển" v-model="repassword" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                    <input type="text" id="cost" name="cost" placeholder="Nhập phí vận chuyển" v-model="form.cost" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                         sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="createPackageError.costError.length > 0">{{
+                        createPackageError.costError[0] }}<br></p><br>
 
-                    <label for="senderName">Họ tên người gửi:</label>
-                    <input type="text" id="senderName" name="senderName" placeholder="Nhập tên họ" v-model="form.firstName"
-                        class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
-                        ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
-                        sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
-                    <p class="error" v-if="firstNameError.length > 0">{{ firstNameError[0] }}<br></p><br>
+                    <h1 class="text-lg"><strong>Thông tin phía nhận:</strong></h1><br>
+                    <h1><strong>Nơi nhận:</strong></h1><br>
+                    <label for="province" class="info">Tỉnh/Thành phố:</label>
+                    <div id="province" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
+                        data-select2-id="select2-data-73-3wmt">
+                        <select id="office-province" name="province_id" v-model="provinceSelectedId"
+                            @change="this.solveWhenProvinceChange()" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+            md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true"
+                            data-select2-id="select2-data-office-province">
+                            <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
+                            <option class="text-gray-900" v-for="province in provinces"
+                                :value="province.provinceMunicipalityId" :key="province.provinceMunicipalityId">{{
+                                    province.provinceMunicipality }}</option>
+                        </select>
+                    </div>
+                    <p class="error" v-if="this.createPackageError.provinceError.length > 0">{{
+                        createPackageError.provinceError[0] }}</p><br>
 
-                    <label for="senderAddress">Địa chỉ người gửi:</label>
-                    <input type="text" id="senderAddress" name="senderAddress" placeholder="Nhập địa chỉ"
-                        v-model="form.address" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
-                        ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
-                        sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <label for="district" class="info">Quận/Huyện:</label><br>
+                    <div id="district" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
+                        data-select2-id="select2-data-73-3wmt">
+                        <select id="district" name="district" v-model="districtSelectedId"
+                            @change="this.getTargetDeliveryCenter()" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+                                    md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1"
+                            aria-hidden="true" data-select2-id="select2-data-office-province">
+                            <option class="text-gray-900" :value="0">Quận/Huyện</option>
+                            <option class="text-gray-900" v-for="district in districts" :value="district.districtId"
+                                :key="district.districtId">{{
+                                    district.district }}</option>
+                        </select>
+                    </div>
+                    <p class="error" v-if="this.createPackageError.districtError.length > 0">{{
+                        createPackageError.districtError[0] }}</p><br>
+                    <br>
+                    <h1><strong>Thông tin người nhận:</strong></h1><br>
 
-                    <label for="senderPhone">Số điện thoại người gửi:</label>
-                    <input type="text" id="senderPhone" name="senderPhone" placeholder="Nhập số điện thoại"
-                        v-model="form.phone" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
-                        ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
-                        sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
-                    <p class="error" v-if="phoneError.length > 0">{{ phoneError[0] }}<br></p><br>
+                    <label for="">Tên người gửi</label>
+                    <input type="text" id="receiverName" name="receiverName" placeholder="Nhập họ tên người nhận"
+                        v-model="form.receiverName" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+     ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+      sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="createPackageError.receiverNameError.length > 0">{{
+                        createPackageError.receiverNameError[0] }}<br></p>
+                    <br>
 
+                    <label for="">Số điện thoại người nhận:</label>
+                    <input type="text" id="receiverPhone" name="receiverPhone" placeholder="Nhập số điện thoại người nhận"
+                        v-model="form.receiverPhone" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+     ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+      sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="createPackageError.receiverPhoneError.length > 0">{{
+                        createPackageError.receiverPhoneError[0] }}<br></p>
+                    <br>
 
-                    <label for="receiverName">Họ tên người nhận:</label>
-                    <input type="text" id="receiverName" name="receiverName" placeholder="Nhập tên họ"
-                        v-model="form.firstName" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
-                        ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
-                        sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
-                    <p class="error" v-if="firstNameError.length > 0">{{ firstNameError[0] }}<br></p><br>
-
-                    <label for="receiverAddress">Địa chỉ người nhận:</label>
-                    <input type="text" id="receiverAddress" name="receiverAddress" placeholder="Nhập địa chỉ"
-                        v-model="form.address" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
-                        ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
-                        sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
-
-                    <label for="receiverPhone">Số điện thoại người nhận:</label>
-                    <input type="text" id="receiverPhone" name="receiverPhone" placeholder="Nhập số điện thoại"
-                        v-model="form.phone" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
-                        ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
-                        sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
-                    <p class="error" v-if="phoneError.length > 0">{{ phoneError[0] }}<br></p><br>
+                    <label for="">Địa chỉ cụ thể người nhận:</label>
+                    <input type="text" id="receiverAddress" name="receiverAddress" placeholder="Nhập địa chỉ người nhận"
+                        v-model="form.receiverAddress" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+     ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+      sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="createPackageError.receiverAddressError.length > 0">{{
+                        createPackageError.receiverAddressError[0] }}<br></p>
 
                     <br>
                     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
@@ -291,32 +307,31 @@ export default {
                 receiverPhone: '',
                 location: '',
             },
-            packageType: '',
-            repassword: '',
-            accountTypeSelected: 0,
-            accountCreateType: 0,
+            createPackageError: {
+                packageTypeIdError: [],
+                deliveryCenterSendIdError: [],
+                deliveryCenterReceiveIdError: [],
+                weightGramError: [],
+                costError: [],
+                codAmountError: [],
+                senderAddressError: [],
+                receiverAddressError: [],
+                senderNameError: [],
+                receiverNameError: [],
+                senderPhoneError: [],
+                receiverPhoneError: [],
+                provinceError: [],
+                districtError: [],
+                deliveryCenterError: [],
+            },
             provinceSelectedId: 0,
             districtSelectedId: 0,
-            warehouseSelectedId: 0,
             deliverycenterSelectedId: 0,
-            accounts: [],
+            packages: [],
             provinces: [],
             districts: [],
-            wareHouses: [],
+            deliveryCenter: [],
             deliveryCenters: [], //dùng
-            provinceError: [],
-            districtError: [],
-            warehouseError: [],
-            userNameError: [],
-            passwordError: [],
-            repasswordError: [],
-            deliverycenterError: [],
-            warehouseError: [],
-            firstNameError: [],
-            lastNameError: [],
-            emailError: [],
-            phoneError: [],
-            citizenCardImgError: [],
             createNew: false,
             itemsPerPage: 4,
             currentPage: 1,
@@ -325,27 +340,12 @@ export default {
     },
     methods: {
         ...mapMutations(['scrollToTop', 'setLogged', 'setLeadership', 'setLeadershipAccessToken',
-            'setLeadershipRefreshToken', 'setManagerDC', 'setManagerWH', 'setTellerDC', 'setStaffWH']),
-        handleWhenChangeStatusAccountCreate() {
-            this.resetError();
-            this.provinceSelectedId = 0;
-            this.districtSelectedId = 0;
-            this.warehouseSelectedId = 0;
-            this.deliverycenterSelectedId = 0;
-            this.form.username = "";
-            this.form.password = "";
-            this.repassword = "";
-            this.form.firstName = "";
-            this.form.lastName = "";
-            this.form.email = "";
-            this.form.phone = "";
-            this.form.citizenIdentityCardNumber = "";
-            this.districts = null;
-            this.wareHouses = null;
-            this.deliveryCenters = null;
-        },
+            'setLeadershipRefreshToken', 'setManagerDC', 'setDCManagerAccessToken', 'setDCManagerRefreshToken',
+            'setManagerWH', 'setWHManagerAccessToken', 'setWHManagerRefreshToken', 'setTellerDC', 'setTellerDCAccessToken',
+            'setTellerDCRefreshToken', 'setStaffWH']),
         solveWhenProvinceChange() {
             this.getAllDistrictsOfAProvince();
+            this.districtSelectedId = 0;
         },
         async getTellerDC() {
             try {
@@ -362,10 +362,25 @@ export default {
                 }
             }
         },
-        async fetchAccountsData() {
+        async getDeliveryCenterHere() {
+            try {
+                let res = await axios.get(`/deliveryCentersHere/${this.teller_DC.deliveryCenterId}`, {
+                    headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
+                }, { withCredentials: true });
+                if (res.data) {
+                    this.deliveryCenter = res.data;
+                }
+            } catch (err) {
+                if (err.response.data.error == 'jwt expired') {
+                    await this.refreshToken();
+                    await this.getDeliveryCenterHere();
+                }
+            }
+        },
+        async fetchPackagesData() {
             try {
                 let res = await axios.get('/warehouses/staff', { withCredentials: true });
-                this.accounts = res.data;
+                this.packages = res.data;
 
             } catch (err) {
                 alert(err.respone.data.error);
@@ -373,35 +388,31 @@ export default {
         },
         async refreshToken() {
             let res = await axios.post('/refresh', {
-                refreshToken: this.leadershipToken.refreshToken,
+                refreshToken: this.tellerDCToken.refreshToken,
                 withCredentials: true
             }, {
                 headers:
                 {
-                    'x_authorization': `${this.leadershipToken.accessToken}`,
+                    'x_authorization': `${this.tellerDCToken.accessToken}`,
                 }, withCredentials: true
             });
 
-            this.setLeadershipAccessToken(res.data);
+            this.setTellerDCAccessToken(res.data);
         },
-        async handleCreateAccount() {
+        async handleCreatePackage() {
             try {
-                this.refreshToken();
-                let res = await axios.post('/signup', this.form, {
-                    headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
+                let res = await axios.post('/packages', this.form, {
+                    headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
                 }, { withCredentials: true });
                 if (res.data) {
-                    this.fetchAccountsData();
-                    this.accountCreateType = 0;
+                    // this.fetchAccountsData();
+                    alert("THANH CONG");
                     this.createPackageBill();
                 }
             } catch (err) {
-                if (err.response.data.error == 'Username is already exists') {
-                    this.userNameError.push("Tên đăng nhập đã tồn tại, hãy chọn tên khác!")
-                } else if (err.respone.data.error == 'Phone is already exists') {
-                    this.phoneError.push('Số điện thoại bị trùng! Hãy nhập số khác')
-                } else if (err.respone.data.error == 'Email is already exists') {
-                    this.emailError.push('Email bị trùng! Hãy chọn email khác!')
+                if (err.response.data.error == 'jwt expired') {
+                    await this.refreshToken();
+                    await this.handleCreatePackage();
                 }
             }
         },
@@ -435,7 +446,9 @@ export default {
             this.wareHouses = null;
             if (this.provinceSelectedId > 0) {
                 try {
-                    const res = await axios.get(`/warehouses/${this.provinceSelectedId}`, { withCredentials: true });
+                    const res = await axios.get(`/warehouses/${this.provinceSelectedId}`, {
+                        headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
+                    }, { withCredentials: true });
                     this.wareHouses = res.data;
                 } catch (error) {
                     console.error('getDistrictofAProvince:', error.message);
@@ -443,12 +456,15 @@ export default {
             }
         },
 
-        async getAllDeliveryCenterOfADistrict() {
-            this.deliveryCenters = [];
+        async getTargetDeliveryCenter() {
+            this.deliveryCenters = null;
             if (this.districtSelectedId > 0) {
                 try {
-                    const res = await axios.get(`/deliveryCenters/${this.districtSelectedId}`, { withCredentials: true });
+                    const res = await axios.get(`/deliveryCenters/${this.districtSelectedId}`, {
+                        headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
+                    }, { withCredentials: true });
                     this.deliveryCenters = res.data;
+                    this.form.deliveryCenterReceiveId = this.deliveryCenters[0].deliveryCenterId;
                 } catch (err) {
                     console.log('getDCfromDistrict: ', err.respone.data.error)
                 }
@@ -457,129 +473,108 @@ export default {
         },
         createPackageBill() {
             this.resetError();
-            this.accountCreateType = 0;
-            this.accountTypeSelected = 0;
             this.provinceSelectedId = 0;
             this.districtSelectedId = 0;
-            this.warehouseSelectedId = 0;
             this.deliverycenterSelectedId = 0;
-            this.form.username = "";
-            this.form.password = "";
-            this.repassword = "";
-            this.form.firstName = "";
-            this.form.lastName = "";
-            this.form.email = "";
-            this.form.phone = "";
-            this.form.citizenIdentityCardNumber = "";
-            this.districts = null;
+            this.form.packageTypeId = 0;
+            this.form.deliveryCenterSendId = 0;
+            this.form.deliveryCenterReceiveId = 0;
+            this.form.weightGram = 0;
+            this.form.cost = 0;
+            this.form.codAmount = 0;
+            this.form.senderAddress = '',
+                this.form.receiverAddress = '',
+                this.form.senderName = '',
+                this.form.receiverName = '',
+                this.form.senderPhone = '',
+                this.form.receiverPhone = '',
+                this.form.location = '',
+                this.districts = null;
             this.wareHouses = null;
             this.deliveryCenters = null;
             this.createNew = !this.createNew;
-
-        },
-        preSubmit() {
-            this.form.accountTypeId = 6;
-            this.form.warehouseId = this.warehouseSelectedId;
         },
         resetError() {
-            this.provinceError = [];
-            this.districtError = [];
-            this.warehouseError = [];
-            this.userNameError = [];
-            this.passwordError = [];
-            this.repasswordError = [];
-            this.firstNameError = [];
-            this.lastNameError = [];
-            this.emailError = [];
-            this.phoneError = [];
-            this.citizenCardImgError = [];
+            for (var i in this.createPackageError) {
+                this.createPackageError[i] = [];
+            }
         },
         checkEmptyError() {
-            if (this.provinceError.length != 0
-                || this.districtError.length != 0
-                || this.warehouseError.length != 0
-                || this.passwordError.length != 0
-                || this.repasswordError.length != 0
-                || this.userNameError.length != 0
-                || this.firstNameError.length != 0
-                || this.lastNameError.length != 0
-                || this.emailError.length != 0
-                || this.phoneError.length != 0
-                || this.citizenCardImgError.length != 0) {
-                return false;
+            for (var i in this.createPackageError) {
+                if (this.createPackageError[i].length != 0) {
+                    return false;
+                }
             }
             return true;
         },
-        validateRegisterAccount() {
+        validateAndPreSubmitCreatePackage() {
             this.resetError();
 
             if (this.provinceSelectedId == 0) {
-                this.provinceError.push("Hãy chọn Tỉnh/Thành phố làm việc!");
+                this.createPackageError.provinceError.push("Hãy chọn Tỉnh/Thành phố nơi người nhận!");
             }
-            if (this.warehouseSelectedId == 0) {
-                this.warehouseError.push("Hãy chọn điểm tập kết làm việc!");
-            }
-            // if (this.districtSelectedId == 0) {
-            //     this.districtError.push("Hãy chọn Quận/Huyện tương ứng!");
-            // }
-
-            if (!this.form.firstName) {
-                this.firstNameError.push("Hãy nhập tên họ. Ví dụ: Lê, Nguyễn, .v.v.");
-            } else if (!/^[A-Za-zÀ-ỹ]+$/.test(this.form.firstName.replace(/\s/g, ""))) {
-                this.firstNameError.push("Tên họ chỉ được bao gồm chữ cái!");
+            if (this.districtSelectedId == 0) {
+                this.createPackageError.districtError.push("Hãy chọn Quận/Huyện nơi người nhận!");
             }
 
-            // For the last name
-            if (!this.form.lastName) {
-                this.lastNameError.push('Hãy nhập tên đệm. Ví dụ: Văn A, Tuấn Anh, .v.v.');
-            } else if (!/^[A-Za-zÀ-ỹ]+$/.test(this.form.lastName.replace(/\s/g, ""))) {
-                this.lastNameError.push('Tên đệm chỉ được bao gồm chữ cái!');
+            if (this.form.packageTypeId == 0) {
+                this.createPackageError.packageTypeIdError.push('Hãy chọn loại hàng gửi!')
+            }
+            if (this.form.weightGram == 0) {
+                this.createPackageError.weightGramError.push('Nhập trọng lượng hàng (theo gram)')
+            }
+            this.form.codAmount = 30000
+            this.form.deliveryCenterSendId = this.deliveryCenter[0].deliveryCenterId;
+
+            if (!this.form.senderName) {
+                this.createPackageError.senderNameError.push("Hãy nhập tên người gửi!");
+            } else if (!/^[A-Za-zÀ-ỹ]+$/.test(this.form.senderName.replace(/\s/g, ""))) {
+                this.createPackageError.senderNameError.push("Tên chỉ được bao gồm chữ cái!");
             }
 
-            if (!this.form.email) {
-                this.emailError.push('Hãy nhập email.');
-            } else if (!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(this.form.email)) {
-                this.emailError.push('Email sai định dạng!');
+            if (!this.form.receiverName) {
+                this.createPackageError.receiverNameError.push("Hãy nhập tên người nhận!");
+            } else if (!/^[A-Za-zÀ-ỹ]+$/.test(this.form.receiverName.replace(/\s/g, ""))) {
+                this.createPackageError.receiverNameError.push("Tên chỉ được bao gồm chữ cái!");
             }
 
-            //username 
-            if (!this.form.username) {
-                this.userNameError.push('Hãy nhập tên đăng nhập.');
+            if (!this.form.senderAddress) {
+                this.createPackageError.senderAddressError.push("Hãy nhập địa chỉ người gửi!")
+            } else {
+                this.form.senderAddress += ', ' + this.tellerDC[0].delivery_center.district.district + ', ' +
+                    this.tellerDC[0].delivery_center.district.province_municipality.provinceMunicipality;
             }
 
-            //password
-            if (!this.form.password) {
-                this.passwordError.push('Hãy nhập mật khẩu!');
-            } else if (this.form.password.length < 8) {
-                this.passwordError.push('Mật khẩu phải dài tối thiểu 8 kí tự!');
-            }
-
-            if (!this.repassword) {
-                this.repasswordError.push('Hãy nhập lại mật khẩu!');
-            } else if (this.form.password != this.repassword) {
-                this.repasswordError.push('Mật khẩu nhập lại không đúng!');
+            if (!this.form.receiverAddress) {
+                this.createPackageError.receiverAddressError.push("Hãy nhập địa chỉ người nhận!")
             }
 
             //phone 
-            if (!this.form.phone) {
-                this.phoneError.push('Hãy nhập số điện thoại!');
-            } else if (!this.form.phone.startsWith('0')) {
-                this.phoneError.push('Số điện thoại phải bắt đầu bằng 0!');
-            } else if (this.form.phone.length != 10) {
-                this.phoneError.push('Số điện thoại phải bao gồm 10 chữ số!');
-            } else if (!/[0-9]{10}/.test(this.form.phone)) {
-                this.phoneError.push('Số điện thoại chỉ được bao gồm chữ số!');
+            if (!this.form.senderPhone) {
+                this.createPackageError.senderPhoneError.push('Hãy nhập số điện thoại người gửi!');
+            } else if (!this.form.senderPhone.startsWith('0')) {
+                this.createPackageError.senderPhoneError.push('Số điện thoại phải bắt đầu bằng 0!');
+            } else if (this.form.senderPhone.length != 10) {
+                this.createPackageError.senderPhoneError.push('Số điện thoại phải bao gồm 10 chữ số!');
+            } else if (!/[0-9]{10}/.test(this.form.senderPhone)) {
+                this.createPackageError.senderPhoneError.push('Số điện thoại chỉ được bao gồm chữ số!');
             }
 
-            if (!this.form.citizenIdentityCardNumber) {
-                this.citizenCardImgError.push("Hãy nhập số CCCD!")
-            } else if (!/[0-9]{10}/.test(this.form.citizenIdentityCardNumber)) {
-                this.citizenCardImgError.push('CCCD không bao gồm chữ cái');
+            if (!this.form.receiverPhone) {
+                this.createPackageError.receiverPhoneError.push('Hãy nhập số điện thoại người nhận!');
+            } else if (!this.form.receiverPhone.startsWith('0')) {
+                this.createPackageError.receiverPhoneError.push('Số điện thoại phải bắt đầu bằng 0!');
+            } else if (this.form.receiverPhone.length != 10) {
+                this.createPackageError.receiverPhoneError.push('Số điện thoại phải bao gồm 10 chữ số!');
+            } else if (!/[0-9]{10}/.test(this.form.receiverPhone)) {
+                this.createPackageError.receiverPhoneError.push('Số điện thoại chỉ được bao gồm chữ số!');
             }
+
+            this.form.location = this.deliveryCenter[0].address;
         },
         async handleSubmit(event) {
 
-            this.validateRegisterAccount();
+            this.validateAndPreSubmitCreatePackage();
 
             if (!this.checkEmptyError()) {
                 event.preventDefault();
@@ -587,8 +582,7 @@ export default {
             else {
                 event.preventDefault();
                 this.scrollToTop();
-                this.preSubmit();
-                await this.handleCreateAccount();
+                await this.handleCreatePackage();
             }
         },
         goToPage(page) {
@@ -608,17 +602,18 @@ export default {
     computed: {
         ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH', 'teller_DC', 'tellerDCToken']),
         totalPages() {
-            return Math.ceil(this.accounts.length / this.itemsPerPage);
+            return Math.ceil(this.packages.length / this.itemsPerPage);
         },
         displayedItemList() {
             const startIndex = (this.currentPage - 1) * this.itemsPerPage;
             const endIndex = startIndex + this.itemsPerPage;
-            return this.accounts.slice(startIndex, endIndex);
+            return this.packages.slice(startIndex, endIndex);
         },
     },
     created() {
         this.getProvinces();
         this.getTellerDC();
+        this.getDeliveryCenterHere();
     }
 }
 </script>

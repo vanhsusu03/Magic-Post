@@ -199,6 +199,35 @@ const DeliveryCenterController = {
             })
         }
     },
+
+    getDeliveryCentersById: async (req, res) => {
+        try {
+            const deliveryCenterId = Number(req.params.deliveryCenterId);
+            // console.log("ITS BUG:  " + this.deliveryCenterId)
+            const ans = await Delivery_center.findAll({
+                attributes: [
+                    [sequelize.col('delivery_center_id'), 'deliveryCenterId'],
+                    [sequelize.col('district_id'), 'districtId'],
+                    [sequelize.col('warehouse_id'), 'warehouseId'],
+                    [sequelize.col('address'), 'address'],
+                ],
+                where: {
+                    delivery_center_id: deliveryCenterId
+                },
+                order: [
+                    [sequelize.col('delivery_center_id'), 'ASC'],
+                ],
+            })
+            res.status(200).json(ans)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
 }
 
 export default DeliveryCenterController
