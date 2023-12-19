@@ -4,17 +4,24 @@
             <div class="w-8/12 grid grid-cols-6 mx-auto">
                 <span class="col-start-1 col-end-5 max-w-fit">
                     <h1 class="font-semibold py-2 mt-2 text-center lg:text-2xl md:text-xl sm:text-lg text-base">
-                        Danh sách tài khoản nhân viên tại điểm tập kết
+                        Danh sách tài khoản nhân viên tại điểm giao dịch
                     </h1>
                     <br>
-                    <h2><strong>Mã điểm tập kết:</strong> {{ manager_WH.warehouseId }}</h2>
-                    <h2 v-if="WHmanager && WHmanager.length > 0"><strong>Nơi làm việc (Tỉnh/Thành phố): </strong>{{
-                        WHmanager[0].warehouse.province_municipality.provinceMunicipality }}</h2>
-                    <h2 v-if="WHmanager && WHmanager.length > 0"><strong>Mã trưởng điểm: </strong>WH_{{
-                        WHmanager[0].warehouse &&
-                        WHmanager[0].warehouse.provinceMunicipalityId
-                        ? WHmanager[0].warehouse.provinceMunicipalityId
-                        : 'N/A' }}_MANAGER_{{ WHmanager[0].accountId }}</h2>
+                    <h2><strong>Mã điểm giao dịch:</strong> {{ manager_DC.deliveryCenterId }}</h2>
+                    <h2 v-if="DCmanager && DCmanager.length > 0"><strong>Nơi làm việc (Tỉnh/Thành phố): </strong>
+                        {{ DCmanager[0].delivery_center.district.provinceMunicipalityId }} - {{
+                            DCmanager[0].delivery_center.district.province_municipality.provinceMunicipality }}</h2>
+                    <h2 v-if="DCmanager && DCmanager.length > 0"><strong>Nơi làm việc (Quận/Huyện): </strong>{{
+                        DCmanager[0].delivery_center.district.district }}</h2>
+                    <h2 v-if="DCmanager && DCmanager.length > 0"><strong>Mã trưởng điểm: </strong>DC_{{
+                        DCmanager[0].delivery_center &&
+                        DCmanager[0].delivery_center.district &&
+                        DCmanager[0].delivery_center.district.provinceMunicipalityId
+                        ?
+                        `${DCmanager[0].delivery_center.district.provinceMunicipalityId}/${DCmanager[0].delivery_center.districtId}_MANAGER_${DCmanager[0].accountId}`
+                        : 'N/A'
+                    }}
+                    </h2>
                 </span>
                 <span class="col-start-6">
                     <button v-on:click="this.createdANewAcc()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mt-2 
@@ -88,7 +95,7 @@
             <div class="py-2 grid gird-cols-6">
                 <span class="col-start-1 col-end-5 py-2">
                     <h1 class="inline-flex font-semibold lg:text-xl md:text-lg sm:text-base text-sm">
-                        Tạo mới tài khoản nhân viên tại điểm tập kết số {{ manager_WH.warehouseId }}
+                        Tạo mới tài khoản nhân viên tại điểm giao dịch số {{ manager_DC.deliveryCenterId }}
                     </h1>
                 </span>
                 <br>
@@ -177,7 +184,7 @@
 import { mapMutations, mapState } from 'vuex';
 import axios from 'axios';
 export default {
-    name: 'WarehouseManagerManageAccount',
+    name: 'DeliveryCenterManagerManageAccount',
     data() {
         return {
             form: {
@@ -205,7 +212,7 @@ export default {
             createNew: false,
             itemsPerPage: 4,
             currentPage: 1,
-            WHmanager: [],
+            DCmanager: [],
         }
     },
     methods: {
@@ -214,8 +221,8 @@ export default {
             'setManagerWH', 'setWHManagerAccessToken', 'setWHManagerRefreshToken', 'setTellerDC', 'setStaffWH']),
         async fetchAccountsData() {
             try {
-                let res = await axios.get(`/offices/${this.manager_WH.warehouseId}/accounts/6`, {
-                    headers: { "Authorization": `Bearer ${this.managerWHToken.accessToken}` }
+                let res = await axios.get(`/offices/${this.manager_DC.deliveryCenterId}/accounts/4`, {
+                    headers: { "Authorization": `Bearer ${this.managerDCToken.accessToken}` }
                 }, { withCredentials: true });
                 this.accounts = res.data;
 
@@ -229,9 +236,9 @@ export default {
         },
         async getManager() {
             try {
-                let res = await axios.get(`/office/${this.manager_WH.warehouseId}/manager/${this.manager_WH.accountTypeId}`, { withCredentials: true });
+                let res = await axios.get(`/office/${this.manager_DC.deliveryCenterId}/manager/${this.manager_DC.accountTypeId}`, { withCredentials: true });
                 if (res.data) {
-                    this.WHmanager = res.data;
+                    this.DCmanager = res.data;
                 }
             } catch (err) {
                 console.log(err.response.data.error);
@@ -239,21 +246,21 @@ export default {
         },
         async refreshToken() {
             let res = await axios.post('/refresh', {
-                refreshToken: this.managerWHToken.refreshToken,
+                refreshToken: this.managerDCToken.refreshToken,
                 withCredentials: true
             }, {
                 headers:
                 {
-                    'x_authorization': `${this.managerWHToken.accessToken}`,
+                    'x_authorization': `${this.managerDCToken.accessToken}`,
                 }, withCredentials: true
             });
 
-            this.setWHManagerAccessToken(res.data);
+            this.setDCManagerAccessToken(res.data);
         },
         async handleCreateAccount() {
             try {
                 let res = await axios.post('/signup', this.form, {
-                    headers: { "Authorization": `Bearer ${this.managerWHToken.accessToken}` }
+                    headers: { "Authorization": `Bearer ${this.managerDCToken.accessToken}` }
                 }, { withCredentials: true });
                 if (res.data) {
                     this.fetchAccountsData();
@@ -296,8 +303,8 @@ export default {
 
         },
         preSubmit() {
-            this.form.accountTypeId = 6;
-            this.form.warehouseId = this.WHmanager[0].warehouseId;
+            this.form.accountTypeId = 4;
+            this.form.deliveryCenterId = this.DCmanager[0].deliveryCenterId;
         },
         resetError() {
             this.userNameError = [];

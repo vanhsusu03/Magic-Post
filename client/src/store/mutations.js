@@ -18,8 +18,21 @@ export default {
   setManagerDC(state, matchManagerDC) {
     state.manager_DC = matchManagerDC;
   },
+  setDCManagerAccessToken(state, matchDCManagerAccessToken) {
+    state.managerDCToken.accessToken = matchDCManagerAccessToken;
+  },
+  setDCManagerRefreshToken(state, matchDCManagerRefreshToken) {
+    state.managerDCToken.refreshToken = matchDCManagerRefreshToken;
+  }
+  ,
   setManagerWH(state, matchManagerWH) {
     state.manager_WH = matchManagerWH;
+  },
+  setWHManagerAccessToken(state, matchWHManagerAccessToken) {
+    state.managerWHToken.accessToken = matchWHManagerAccessToken;
+  },
+  setWHManagerRefreshToken(state, matchWHManagerRefreshToken) {
+    state.managerWHToken.refreshToken = matchWHManagerRefreshToken;
   },
   setTellerDC(state, matchTellerDC) {
     state.teller_DC = matchTellerDC;

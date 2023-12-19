@@ -70,7 +70,8 @@ export default {
 
     methods: {
         ...mapMutations(['scrollToTop', 'setLogged', 'setLeadership', 'setLeadershipAccessToken',
-        'setLeadershipRefreshToken','setManagerDC', 'setManagerWH', 'setTellerDC', 'setStaffWH']),
+            'setLeadershipRefreshToken', 'setManagerDC', 'setDCManagerAccessToken', 'setDCManagerRefreshToken',
+            'setManagerWH', 'setWHManagerAccessToken', 'setWHManagerRefreshToken', 'setTellerDC', 'setStaffWH']),
         async handleLogin() {
             try {
                 let res = await axios.post('/login', this.form, { withCredentials: true });
@@ -82,10 +83,14 @@ export default {
                     this.setLeadership(user);
                 } else if (user.accountTypeId == 3) {
                     this.setManagerDC(user);
+                    this.setDCManagerAccessToken(res.data.accessToken);
+                    this.setDCManagerRefreshToken(res.data.refreshToken);
                 } else if (user.accountTypeId == 4) {
                     this.setTellerDC(user);
                 } else if (user.accountTypeId == 5) {
                     this.setManagerWH(user);
+                    this.setWHManagerAccessToken(res.data.accessToken);
+                    this.setWHManagerRefreshToken(res.data.refreshToken);
                 } else if (user.accountTypeId == 6) {
                     this.setStaffWH(user);
                 }
