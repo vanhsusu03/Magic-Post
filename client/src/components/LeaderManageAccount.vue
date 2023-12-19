@@ -56,10 +56,11 @@
                         <td class="py-2 px-4 border items-center justify-center truncate md:text-base sm:text-sm text-xs border">{{ account.firstName + ' ' + account.lastName }}</td>
                         <td class="py-2 px-4 border items-center justify-center truncate md:text-base sm:text-sm text-xs border">{{ truncateText(account.email, 20) }}</td>
                         <td class="py-2 px-4 border items-center justify-center truncate md:text-base sm:text-sm text-xs border">{{ account.phone }}</td>
-                        <td class="py-2 px-4 border items-center justify-center"> <img class="lg:w-1/5 w-full mx-auto cursor-pointer"
-                                src="../assets/img/note.png" alt=""> </td>
+                        <td class="py-2 px-4 border items-center justify-center"> <img class="lg:w-1/5 w-full mx-auto cursor-pointer hover:opacity-30"
+                                src="../assets/img/note.png" alt="" @click="updateAccount(account)"> </td>
                         <td class="py-2 px-4 border items-center md:text-base sm:text-sm text-xs">
-                            <img class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer hover:opacity-90 py-6" src="../assets/img/trash.png" alt="">
+                            <img class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer hover:opacity-30 py-6" 
+                            src="../assets/img/trash.png" alt="" @click="deleteAccount(account)">
                         </td>
                     </tr>
                 </table>
@@ -104,10 +105,14 @@
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{ account.firstName + ' ' + account.lastName }}</td>
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{ truncateText(account.email, 20) }}</td>
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{ account.phone }}</td>
-                        <td class="py-2 px-4 border items-center justify-center"> <img class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer"
-                                src="../assets/img/note.png" alt=""> </td>
+                        <td class="py-2 px-4 border items-center justify-center" > 
+                            <img class="2xl:w-2/5 xl:w-3/5 lg:w-4/5 w-full mx-auto cursor-pointer hover:opacity-30" @click="updateAccount(account)"
+                                src="../assets/img/note.png" alt=""></td>
+                        
+                            
                         <td class="py-2 px-4 border items-center justify-center">
-                            <img class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer hover:opacity-90 py-6" src="../assets/img/trash.png" alt="">
+                            <img class="2xl:w-2/5 xl:w-3/5 lg:w-4/5 w-full mx-auto cursor-pointer hover:opacity-30 py-6" 
+                            src="../assets/img/trash.png" alt="" @click="deleteAccount(account)">
                         </td>
                     </tr>
                 </table>
@@ -145,6 +150,7 @@
             </span>
         </div>
         <hr class="my-2">
+        <div v-if="!this.updating">
             <h2>Chọn loại tài khoản:</h2>
             <select id="office-province" name="province_id" v-model="accountCreateType"
                 @change="handleWhenChangeStatusAccountCreate()"
@@ -155,6 +161,13 @@
                 <option class="text-gray-900" :value="1">Tài khoản trưởng điểm tập kết</option>
                 <option class="text-gray-900" :value="2">Tài khoản trưởng điểm giao dịch</option>
             </select>
+        </div>
+
+        <div v-else>
+            <h2>Cập nhật trưởng điểm giao dịch</h2>
+        </div>
+            
+            
         <br>
         <div class="" id="course">
             <form ref="accForm" v-if="this.accountCreateType != 0" @submit="handleSubmit"
@@ -208,19 +221,39 @@
                     <label for="province" class="info">Tỉnh/Thành phố:</label>
                     <br>
 
-                    <div id="province" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
+                    <div v-if="!this.updating" id="province" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
                         data-select2-id="select2-data-73-3wmt">
                         <select id="office-province" name="province_id" v-model="provinceSelectedId"
                             @change="this.solveWhenProvinceChange()"
                             class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
                             md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg"
                             tabindex="-1" aria-hidden="true" data-select2-id="select2-data-office-province">
+
                             <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
                             <option class="text-gray-900" v-for="province in provinces" :value="province.provinceMunicipalityId"
                                 :key="province.provinceMunicipalityId">{{
                                     province.provinceMunicipality }}</option>
+                        
                         </select>
                     </div>
+
+                    <div v-else id="province" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
+                        data-select2-id="select2-data-73-3wmt">
+                        <select id="office-province" name="province_id" v-model="provinceSelectedId"
+                            @change="this.solveWhenProvinceChange()"
+                            class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+                            md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg"
+                            tabindex="-1" aria-hidden="true" data-select2-id="select2-data-office-province">
+
+                            <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
+                            <option class="text-gray-900" v-for="province in provinces" :value="province.provinceMunicipalityId"
+                                :key="province.provinceMunicipalityId">{{
+                                    province.provinceMunicipality }}</option>
+                            <option class="text-gray-900" :value="accountToUpdate.provinceUpdate"
+                                :key="accountToUpdate.provinceUpdate">{{ accountToUpdate.provinceUpdate }}</option>
+                        </select>
+                    </div>
+
                     <p class="error" v-if="this.provinceError.length > 0">{{ provinceError[0] }}</p>
                     <br>
 
@@ -234,7 +267,7 @@
                             class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300
                             md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg"
                             tabindex="-1" aria-hidden="true">
-                            <option class="text-gray-900" value="auto">Quận/Huyện</option>
+                            <option class="text-gray-900" value="0">Quận/Huyện</option>
                             <option class="text-gray-900" v-if="districts && districts.length" v-for="district in districts"
                                 :value="district.districtId" :key="district.districtId">{{
                                     district.district }}</option>
@@ -267,10 +300,14 @@
                 <h2><strong>Thông tin cá nhân:</strong></h2>
                 <br>
                 <label for="username">Tên đăng nhập</label>
-                <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" v-model="form.username"
+                <input v-if="!this.updating" type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" v-model="form.username"
                     class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                          ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                           sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                <input v-else type="text" id="username" name="username" placeholder="Nhập tên đăng nhập" v-model="form.username"
+                    class="block w-2/4 rounded-md border-0 py-1.5 text-black-300 
+                    bg-gray-300 sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs" readonly>
+
                 <p class="error" v-if="userNameError.length > 0">{{ userNameError[0] }}<br></p>
                 <br>
                 <label for="password">Mật khẩu</label>
@@ -319,9 +356,13 @@
                 <p class="error" v-if="citizenCardImgError.length > 0">{{ citizenCardImgError[0] }}<br></p>
 
                 <br>
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
+                <button v-if="!this.updating" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
                 md:text-base sm:text-sm text-xs hover:shadow-lg cursor-pointer">Tạo tài
                     khoản</button> 
+
+                <button v-else type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
+                md:text-base sm:text-sm text-xs hover:shadow-lg cursor-pointer">Cập nhật tài
+                    khoản</button>
             </form>
         </div>
         </div>
@@ -355,8 +396,23 @@ export default {
             deliveryCenter: {
 
             },
+            accountToUpdate: {
+                provinceUpdate: '',
+                districtUpdate: '',
+                deliveryCenterUpdate: '',
+                usernameUpdate: '',
+                passwordUpdate: '',
+                repasswordUpdate: '',
+                firstNameUpdate: '',
+                lastNameUpdate: '',
+                emailUpdate: '',
+                phoneUpdate: '',
+                citizenIdentityCardNumberUpdate: '',
+            },
             repassword: '',
+            updating: false,
             accountTypeSelected: 0,
+            accountSelectedId: 0,
             accountCreateType: 0,
             provinceSelectedId: 0,
             districtSelectedId: 0,
@@ -516,6 +572,8 @@ export default {
         },
         createdANewAcc() {
             this.resetError();
+            this.accountToUpdate.usernameUpdate = "";
+            this.accountToUpdate.passwordUpdate = "";
             this.accountCreateType = 0;
             this.accountTypeSelected = 0;
             this.provinceSelectedId = 0;
@@ -534,7 +592,7 @@ export default {
             this.wareHouses = null;
             this.deliveryCenters = null;
             this.createNew = !this.createNew;
-
+            this.updating = false;
         },
         preSubmit() {
             if (this.accountCreateType == 1) {
@@ -549,6 +607,7 @@ export default {
             this.provinceError = [];
             this.districtError = [];
             this.warehouseError = [];
+            this.deliverycenterError = [];
             this.userNameError = [];
             this.passwordError = [];
             this.repasswordError = [];
@@ -661,9 +720,52 @@ export default {
                 event.preventDefault();
                 this.scrollToTop();
                 this.preSubmit();
-                await this.handleCreateAccount();
+                if (this.updating) {
+                    await this.handleUpdateAccount();
+                } else {
+                    await this.handleCreateAccount();
+                }
             }
         },
+
+        async handleUpdateAccount() {
+            try {
+                let res = await axios.put(`/updateAccount/${this.accountSelectedId}`, this.form, {
+                    headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
+                }, { withCredentials: true });
+                this.fetchAccountsData();
+                this.accountCreateType = 0;
+                this.createdANewAcc();
+            } catch (err) {
+                if (err.response.data.error == 'jwt expired') {
+                    await this.refreshToken();
+                    await this.handleUpdateAccount();
+                }
+                else if (err.response.data.error == 'Username is already exists') {
+                    this.userNameError.push("Tên đăng nhập đã tồn tại, hãy chọn tên khác!")
+                } else if (err.respone.data.error == 'Phone is already exists') {
+                    this.phoneError.push('Số điện thoại bị trùng! Hãy nhập số khác')
+                } else if (err.respone.data.error == 'Email is already exists') {
+                    this.emailError.push('Email bị trùng! Hãy chọn email khác!')
+                } else if (err.respone.data.error == 'Identity number is already exists') {
+                    this.citizenCardImgError.push('Số CCCD bị trùng! Hãy nhập CCCD khác!')
+                }
+            }
+        },
+
+        async deleteAccount(account) {
+            try {
+                let res = await axios.delete(`/deleteAccount/${account.accountId}`, {
+                    headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
+                }, {withCredentials: true})
+                if (res.data) {
+                    this.fetchAccountsData();
+                }
+            } catch (error) {
+                console.log("delete Error");
+            }
+        },
+
         goToPage(page) {
             if (page >= 1 && page <= this.totalPages) {
                 this.currentPage = page;
@@ -673,6 +775,36 @@ export default {
         truncateText(text, maxLength) {
             return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
         },
+
+        test() {
+            console.log("123");
+        },
+        updateAccount(account) {
+            this.updating = true;
+            this.resetError();
+            this.accountSelectedId = account.accountId;
+            if (account.accountTypeId == 3) {
+                this.accountCreateType = 2;
+            } else if (account.accountTypeId == 5) {
+                this.accountCreateType = 1;
+            }
+            this.accountTypeSelected = 0;
+            this.provinceSelectedId = 0;
+            this.districtSelectedId = 0;
+            this.warehouseSelectedId = 0;
+            this.deliverycenterSelectedId = 0;
+            this.form.username = account.username;
+            this.form.password = "";
+            this.repassword = "";
+            this.form.firstName = account.firstName;
+            this.form.lastName = account.lastName;
+            this.form.email = account.email;
+            this.form.phone = account.phone;
+            this.form.citizenIdentityCardNumber = account.citizenIdentityCardNumber;
+            this.wareHouses = null;
+            this.deliveryCenters = null;
+            this.createNew = !this.createNew;
+        }
     },
 
     computed: {

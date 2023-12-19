@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import randToken from 'rand-token'
-import sequelize from 'sequelize'
+import sequelize, { where } from 'sequelize'
 import { format } from 'date-fns'
 import db from '../models/index.mjs'
 
@@ -166,6 +166,94 @@ const AccountController = {
             })
         }
     },
+
+
+    /**
+    * Update a account
+    * 
+    * @param req - The request object from express server
+    * @param res - The response object from express server ( unused )
+    * 
+    * @return { Object } The signed up account in response to Express HTTP request ( used for validation and database operations
+    */
+    updateAccount: async (req, res) => {
+        try {
+            const accountId = Number(req.params.accountId)
+            const { accountTypeId, username, password,
+                    deliveryCenterId, warehouseId, firstName, lastName,
+                    email, phone, citizenIdentityCardNumber } = req.body
+            const hashedPassword = await bcrypt.hash("" + password, parseInt(10))
+            const account = await Account.update({
+                accountTypeId: accountTypeId,
+                username: username,
+                password: hashedPassword,
+                delivery_center_id: deliveryCenterId == '' ? null : deliveryCenterId,
+                warehouse_id: warehouseId == '' ? null : warehouseId,
+                first_name: firstName,
+                last_name: lastName,
+                email: email == '' ? null : email,
+                phone: phone,
+                citizen_identity_card_number: citizenIdentityCardNumber,
+            }, {
+                where: {
+                    account_id: accountId
+                }
+            })
+            if (account) {
+                res.status(204).json({
+                    accountId: account.account_id,
+                    accountTypeId: account.account_type_id,
+                    username: account.username,
+                    deliveryCenterId: account.delivery_center_id,
+                    warehouseId: account.warehouse_id,
+                    firstName: account.first_name,
+                    lastName: account.last_name,
+                    email: account.email,
+                    phone: account.phone,
+                    citizenIdentityCardNumber: account.citizen_identity_card_number,
+                    registrationTime: account.registration_time,
+                })
+            }
+            
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
+
+    /**
+    * Sign up a account. Checks to make sure username and / or email are not already in use
+    * 
+    * @param req - The request object from express server
+    * @param res - The response object from express server ( unused )
+    * 
+    * @return { Object } The signed up account in response to Express HTTP request ( used for validation and database operations
+    */
+    deleteAccount: async (req,res) => {
+        try {
+            const accountId = Number(req.params.accountId)
+            await Account.destroy({
+                where: {
+                    account_id: accountId
+                }
+            })
+
+            res.status(200).json({
+                message: 'success',
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+    
 
     /**
     * Handles the request to refresh the access token. Verifies the access token and refresh token are valid and returns the new access token

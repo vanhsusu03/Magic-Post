@@ -174,6 +174,10 @@ router.post('/signup', isAuth, AccountController.signUp)
  */
 router.post('/login', AccountController.logIn)
 
+router.put('/updateAccount/:accountId', isAuth, AccountController.updateAccount)
+
+router.delete('/deleteAccount/:accountId', isAuth, AccountController.deleteAccount)
+
 /**
  * @swagger
  * /refresh:
