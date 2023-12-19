@@ -16,6 +16,10 @@ export default {
     },
     staff_WH: [],
     teller_DC: [],
+    tellerDCToken: {
+        accessToken: '',
+        refreshToken:'',
+    },
     isLogin: false,
     packageStatus: []
 };

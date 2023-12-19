@@ -229,11 +229,15 @@ export default {
         },
         async getManager() {
             try {
-                let res = await axios.get(`/office/${this.manager_WH.warehouseId}/manager/${this.manager_WH.accountTypeId}`, { withCredentials: true });
-                if (res.data) {
-                    this.WHmanager = res.data;
-                }
+                let res = await axios.get(`/offices/${this.manager_WH.warehouseId}/accounts/${this.manager_WH.accountTypeId}`, {
+                    headers: { "Authorization": `Bearer ${this.managerWHToken.accessToken}` }
+                }, { withCredentials: true });
+                this.WHmanager = res.data;
             } catch (err) {
+                if (err.response.data.error == 'jwt expired') {
+                    await this.refreshToken();
+                    await this.getManager();
+                }
                 console.log(err.response.data.error);
             }
         },

@@ -236,11 +236,15 @@ export default {
         },
         async getManager() {
             try {
-                let res = await axios.get(`/office/${this.manager_DC.deliveryCenterId}/manager/${this.manager_DC.accountTypeId}`, { withCredentials: true });
-                if (res.data) {
-                    this.DCmanager = res.data;
-                }
+                let res = await axios.get(`/offices/${this.manager_DC.deliveryCenterId}/accounts/${this.manager_DC.accountTypeId}`, {
+                    headers: { "Authorization": `Bearer ${this.managerDCToken.accessToken}` }
+                }, { withCredentials: true });
+                this.DCmanager = res.data;
             } catch (err) {
+                if (err.response.data.error == 'jwt expired') {
+                    await this.refreshToken();
+                    await this.getManager();
+                }
                 console.log(err.response.data.error);
             }
         },

@@ -54,7 +54,7 @@ const DeliveryCenterController = {
     */
     createDeliveryCenter: async (req, res) => {
         try {
-            const { districtId, warehouseId, address } = req.body.form
+            const { districtId, warehouseId, address } = req.body
 
             const deliveryCenter = await Delivery_center.create({
                 district_id: districtId,
