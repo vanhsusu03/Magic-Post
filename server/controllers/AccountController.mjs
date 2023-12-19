@@ -4,6 +4,7 @@ import randToken from 'rand-token'
 import sequelize from 'sequelize'
 import { format } from 'date-fns'
 import db from '../models/index.mjs'
+import { Op } from 'sequelize'
 
 const { Account, Account_type } = db.models
 
@@ -239,14 +240,34 @@ const AccountController = {
                 throw new Error('No permission')
             }
 
-            let condition = {
-                warehouse_id: officeId,
-                account_type_id: accountTypeId
-            }
-            if (accountTypeId == 3 || accountTypeId == 4) {
+            let condition
+            if (officeId) {
                 condition = {
-                    delivery_center_id: officeId,
+                    warehouse_id: officeId,
                     account_type_id: accountTypeId
+                }
+                if (accountTypeId == 3 || accountTypeId == 4) {
+                    condition = {
+                        delivery_center_id: officeId,
+                        account_type_id: accountTypeId
+                    }
+                }
+            } else {
+                condition = {
+                    delivery_center_id: null,
+                    account_type_id: accountTypeId,
+                    warehouse_id: {
+                        [Op.not]: null
+                    }
+                }
+                if (accountTypeId == 3) {
+                    condition = {
+                        warehouse_id: null,
+                        account_type_id: accountTypeId,
+                        delivery_center_id: {
+                            [Op.not]: null
+                        }
+                    }
                 }
             }
 
