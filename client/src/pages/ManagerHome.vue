@@ -3,7 +3,9 @@
         <SideBarManage class="col-span-2 md:col-span-1" :selecteds="selecteds" @update:selecteds="updateSelecteds">
         </SideBarManage>
         <div class="col-span-4" v-if="selecteds[0]">Content for Thống kê</div>
-        <WarehouseLeadAccount class="col-span-4" v-if="selecteds[1]"></WarehouseLeadAccount>
+        <LeaderManageAccount class="col-span-4" v-if="selecteds[1] && leadership"></LeaderManageAccount>
+        <WarehouseManagerManageAccount class="col-span-4" v-if="selecteds[1] && manager_WH"></WarehouseManagerManageAccount>
+        <DeliveryCenterManagerManageAccount class="col-span-4" v-if="selecteds[1] && manager_DC"></DeliveryCenterManagerManageAccount>
         <DeliveryCenterManage class="col-span-4" v-if="selecteds[2]"></DeliveryCenterManage>
         <WareHouseManage class="col-span-4" v-if="selecteds[3]"></WareHouseManage>
         <div class="col-span-4" v-if="selecteds[4]">Content for Thống kê</div>
@@ -17,21 +19,23 @@ import DeliveryCenterManage from '../components/DeliveryCenterManage.vue';
 import WareHouseManage from '../components/WarehouseManage.vue';
 import LeaderManageAccount from '@/components/LeaderManageAccount.vue';
 import { mapState } from 'vuex';
-import WarehouseLeadAccount from '@/components/WarehouseLeadAccount.vue';
+import WarehouseManagerManageAccount from '@/components/WarehouseLeadAccount.vue';
+import DeliveryCenterManagerManageAccount from '@/components/DeliveryCenterLeadAccount.vue';
 export default {
     name: 'ManagerHome',
     data() {
         return {
-            selecteds: [true, false, false, false, false, false],
+            selecteds: [true, false, false, false, false, false, false],
         };
     },
     components: {
-    SideBarManage,
-    DeliveryCenterManage,
-    WareHouseManage,
-    LeaderManageAccount,
-    WarehouseLeadAccount
-},
+        SideBarManage,
+        DeliveryCenterManage,
+        WareHouseManage,
+        LeaderManageAccount,
+        WarehouseManagerManageAccount,
+        DeliveryCenterManagerManageAccount,
+    },
     methods: {
         updateSelecteds(newSelecteds) {
             this.selecteds = newSelecteds;
@@ -40,7 +44,7 @@ export default {
         },
     },
     computed: {
-        ...mapState(['isLogin'])
+        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH', 'teller_DC']),
     }
 };
 </script>
