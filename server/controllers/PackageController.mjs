@@ -152,7 +152,7 @@ const PackageController = {
                     statusId = t + 1
                     if (t != 10 && t != 11) {
                         statusId = 10
-                    } 
+                    }
                 } else {
                     if (t == 8) {
                         statusId = 19
@@ -184,6 +184,7 @@ const PackageController = {
             })
         }
     },
+
 }
 
 export default PackageController

@@ -22,7 +22,7 @@
                     </a>
                 </li>
 
-                <li class="relative px-6 py-3">
+                <li v-if="!teller_DC.username && !staff_WH.username" class="relative px-6 py-3">
                     <span v-show="selecteds[1]"
                         class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
                         aria-hidden="true"></span>
@@ -38,7 +38,7 @@
                     </a>
                 </li>
 
-                <li class="relative px-6 py-3">
+                <li v-if="leadership" class="relative px-6 py-3">
                     <span v-show="selecteds[2]"
                         class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
                         aria-hidden="true"></span>
@@ -55,19 +55,10 @@
                                 0a3,3,0,1,1,3-3A2.9,2.9,0,0,1,34,39Zm6.7-5A7,7,0,0,0,34,29a6.4,6.4,0,0,0-2,.3V26H42v8Z" />
                         </svg>
                         <span class="ml-4">Quản lí điểm giao dịch</span>
-                        <!-- <span v-show="selecteds[2]" class="" aria-hidden="true">Tạo mới điểm giao dịch</span> -->
                     </a>
-                    <!-- <ul>
-                        <li v-show="selecteds[2]"
-                            class="inline-flex pl-9 items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer"
-                            aria-hidden="true">Tạo mới điểm giao dịch</li>
-                        <li v-show="selecteds[2]"
-                            class="inline-flex pl-9 items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer"
-                            aria-hidden="true">Thông tin các điểm giao dịch</li>
-                    </ul> -->
                 </li>
 
-                <li class="relative px-6 py-3">
+                <li v-if="leadership" class="relative px-6 py-3">
                     <span v-show="selecteds[3]"
                         class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
                         aria-hidden="true"></span>
@@ -98,6 +89,22 @@
 
                         </svg>
                         <span class="ml-4">Quản lí điểm tập kết</span>
+                    </a>
+                </li>
+                <li v-if="teller_DC.username" class="relative px-6 py-3">
+                    <span v-show="selecteds[6]"
+                        class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
+                        aria-hidden="true"></span>
+                    <a @click="display(6)"
+                        class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer">
+                        <!-- Replace the existing icon with a parcel icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                            <rect x="2" y="2" width="20" height="9" />
+                            <path d="M2 14L12 7.5L22 14" />
+                        </svg>
+                        <!-- End of icon replacement -->
+                        <span class="ml-4">Quản lí đơn hàng tại điểm giao dịch</span>
                     </a>
                 </li>
 
@@ -161,7 +168,7 @@ export default {
     },
     data() {
         return {
-            selecteds: [true, false, false, false, false, false],
+            selecteds: [true, false, false, false, false, false, false],
         }
     },
 
@@ -180,7 +187,8 @@ export default {
         }
     },
     computed: {
-        ...mapState(['isLogin', 'leadership', 'manager_DC', 'manager_WH', 'staff_WH', 'teller_DC'])
+        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'managerDCToken', 'manager_WH', 'managerWHToken',
+            'staff_WH', 'teller_DC']),
     }
 }
 </script>

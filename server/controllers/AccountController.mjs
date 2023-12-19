@@ -2,36 +2,38 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import randToken from 'rand-token'
 import sequelize from 'sequelize'
+import { Op } from 'sequelize';
 import { format } from 'date-fns'
 import db from '../models/index.mjs'
 import { Op } from 'sequelize'
 
-const { Account, Account_type } = db.models
+const { Account, Account_type, Warehouse, Province_municipality, Delivery_center, District } = db.models
 
 const AccountController = {
     isProhibited: (accountTypeId, acc) => {
-        if (((accountTypeId == 3 || accountTypeId == 5) && acc.account_type_id != 2) 
-                    || (accountTypeId == 4 && acc.account_type_id != 3)
-                    || (accountTypeId == 6 && acc.account_type_id != 5)) {
-                return true
+        if (
+            ((accountTypeId == 3 || accountTypeId == 5) && acc.account_type_id != 2)
+            || (accountTypeId == 4 && acc.account_type_id != 3)
+            || (accountTypeId == 6 && acc.account_type_id != 5)) {
+            return true
         }
         return false
-	},
+    },
 
     /**
-	* Sign up a account. Checks to make sure username and / or email are not already in use
-	* 
-	* @param req - The request object from express server
-	* @param res - The response object from express server ( unused )
-	* 
-	* @return { Object } The signed up account in response to Express HTTP request ( used for validation and database operations
-	*/
-	signUp: async (req, res) => {
+    * Sign up a account. Checks to make sure username and / or email are not already in use
+    * 
+    * @param req - The request object from express server
+    * @param res - The response object from express server ( unused )
+    * 
+    * @return { Object } The signed up account in response to Express HTTP request ( used for validation and database operations
+    */
+    signUp: async (req, res) => {
         try {
             const { accountTypeId, username, password,
                 deliveryCenterId, warehouseId, firstName, lastName,
                 email, phone, citizenIdentityCardNumber } = req.body
-            
+
             if (AccountController.isProhibited(accountTypeId, req.account)) {
                 throw new Error('No permission')
             }
@@ -44,6 +46,12 @@ const AccountController = {
             }
             if (email && await Account.findOne({ where: { email: email } })) {
                 throw new Error('Email is already exists')
+            }
+            // if (phone && await Account.findOne({ where: { phone: phone } })) {
+            //     throw new Error('Phone number is already exists')
+            // }
+            if (citizenIdentityCardNumber && await Account.findOne({ where: { citizen_identity_card_number: citizenIdentityCardNumber } })) {
+                throw new Error('Identity number is already exists')
             }
 
             const hashedPassword = await bcrypt.hash("" + password, parseInt(10))
@@ -89,14 +97,14 @@ const AccountController = {
     },
 
     /**
-	* Logs in a user to HipChat and returns a token to the request body. This is the endpoint that will be used to send requests to HipChat
-	* 
-	* @param req - The request object from express server
-	* @param res - The response object from express server ( response will be written to it )
-	* 
-	* @return { Promise } - resolves when the user has been logged in or rejects with an error if there was
-	*/
-	logIn: async (req, res) => {
+    * Logs in a user to HipChat and returns a token to the request body. This is the endpoint that will be used to send requests to HipChat
+    * 
+    * @param req - The request object from express server
+    * @param res - The response object from express server ( response will be written to it )
+    * 
+    * @return { Promise } - resolves when the user has been logged in or rejects with an error if there was
+    */
+    logIn: async (req, res) => {
         try {
             const { username, password } = req.body;
 
@@ -175,7 +183,7 @@ const AccountController = {
             if (!accessTokenFromHeader) {
                 throw new Error('Access token not found')
             }
-
+            // console.log(req.body);
             const refreshTokenFromBody = req.body.refreshToken
             if (!refreshTokenFromBody) {
                 throw new Error('Refresh token not found')
@@ -221,7 +229,7 @@ const AccountController = {
                 error: err.message
             })
         }
-	},
+    },
 
     /**
     * Gets information account by office id.
@@ -236,9 +244,9 @@ const AccountController = {
             const officeId = Number(req.params.officeId)
             const accountTypeId = Number(req.params.accountTypeId)
 
-            if (AccountController.isProhibited(accountTypeId, req.account)) {
-                throw new Error('No permission')
-            }
+            // if (AccountController.isProhibited(accountTypeId, req.account)) {
+            //     throw new Error('No permission')
+            // }
 
             let condition
             if (officeId) {
@@ -270,24 +278,95 @@ const AccountController = {
                     }
                 }
             }
-
-            const ans = await Account.findAll({
-                attributes: [
-                    [sequelize.col('account_id'), 'accountId'],
-                    [sequelize.col('account_type_id'), 'accountTypeId'],
-                    [sequelize.col('username'), 'username'],
-                    [sequelize.col('delivery_center_id'), 'deliveryCenterId'],
-                    [sequelize.col('warehouse_id'), 'warehouseId'],
-                    [sequelize.col('first_name'), 'firstName'],
-                    [sequelize.col('last_name'), 'lastName'],
-                    [sequelize.col('email'), 'email'],
-                    [sequelize.col('phone'), 'phone'],
-                    [sequelize.col('citizen_identity_card_number'), 'citizenIdentityCardNumber'],
-                    [sequelize.col('registration_time'), 'registrationTime'],
-                ],
-                where: condition,
-            })
-            res.status(200).json(ans)
+            if (accountTypeId == 3 || accountTypeId == 4) {
+                const ans = await Account.findAll({
+                    attributes: [
+                        [sequelize.col('account.account_id'), 'accountId'],
+                        [sequelize.col('account.account_type_id'), 'accountTypeId'],
+                        [sequelize.col('account.username'), 'username'],
+                        [sequelize.col('account.delivery_center_id'), 'deliveryCenterId'],
+                        [sequelize.col('account.warehouse_id'), 'warehouseId'],
+                        [sequelize.col('account.first_name'), 'firstName'],
+                        [sequelize.col('account.last_name'), 'lastName'],
+                        [sequelize.col('account.email'), 'email'],
+                        [sequelize.col('account.phone'), 'phone'],
+                        [sequelize.col('account.citizen_identity_card_number'), 'citizenIdentityCardNumber'],
+                        [sequelize.col('account.registration_time'), 'registrationTime'],
+                    ],
+                    include: {
+                        model: Delivery_center,
+                        attributes: [
+                            [sequelize.col('district_id'), 'districtId'],
+                            [sequelize.col('address'),'address']
+                        ],
+                        where: {
+                            delivery_center_id: condition.delivery_center_id,
+                        },
+                        required: true,
+                        include: {
+                            model: District,
+                            attributes: [
+                                [sequelize.col('province_municipality_id'), 'provinceMunicipalityId'],
+                                [sequelize.col('district'), 'district'],
+                            ],
+                            required: true,
+                            include: {
+                                model: Province_municipality,
+                                attributes: [
+                                    [sequelize.col('province_municipality'), 'provinceMunicipality'],
+                                    // Add other attributes as needed
+                                ],
+                                required: true,
+                            }
+                        }
+                    },
+                    where: {
+                        account_type_id: condition.account_type_id
+                    },
+                    order: [['accountId', 'ASC']]
+                });
+                res.status(200).json(ans);
+            }
+            else if (accountTypeId == 5 || accountTypeId == 6) {
+                const ans = await Account.findAll({
+                    attributes: [
+                        [sequelize.col('account.account_id'), 'accountId'],
+                        [sequelize.col('account.account_type_id'), 'accountTypeId'],
+                        [sequelize.col('account.username'), 'username'],
+                        [sequelize.col('account.delivery_center_id'), 'deliveryCenterId'],
+                        [sequelize.col('account.warehouse_id'), 'warehouseId'],
+                        [sequelize.col('account.first_name'), 'firstName'],
+                        [sequelize.col('account.last_name'), 'lastName'],
+                        [sequelize.col('account.email'), 'email'],
+                        [sequelize.col('account.phone'), 'phone'],
+                        [sequelize.col('account.citizen_identity_card_number'), 'identityCardlink'],
+                        [sequelize.col('account.registration_time'), 'registrationTime']
+                    ],
+                    include: {
+                        model: Warehouse,
+                        attributes: [
+                            [sequelize.col('province_municipality_id'), 'provinceMunicipalityId'],
+                        ],
+                        where: {
+                            warehouse_id: condition.warehouse_id,
+                        },
+                        required: true,
+                        include: {
+                            model: Province_municipality,
+                            attributes: [
+                                [sequelize.col('province_municipality'), 'provinceMunicipality'],
+                                // Add other attributes as needed
+                            ],
+                            required: true,
+                        }
+                    },
+                    where: {
+                        account_type_id: condition.account_type_id
+                    },
+                    order: [['accountId', 'ASC']]
+                });
+                res.status(200).json(ans);
+            }
         } catch (err) {
             console.log(err)
             res.status(500).json({
@@ -296,7 +375,6 @@ const AccountController = {
             })
         }
     },
-
     // logOut: async (req, res) => {
     //     try {
     //         const token = req.headers.authorization.split(' ')[1]
@@ -312,7 +390,7 @@ const AccountController = {
     //             error: err.message
     //         })
     //     }
-	// },
+    // },
 
     // getMyInfo: async(req, res) => {
     //     try {

@@ -69,19 +69,31 @@ export default {
     },
 
     methods: {
-        ...mapMutations(['scrollToTop', 'setLogged', 'setLeadership', 'setManagerDC', 'setManagerWH', 'setTellerDC', 'setStaffWH']),
+        ...mapMutations(['scrollToTop', 'setLogged', 'setLeadership', 'setLeadershipAccessToken',
+            'setLeadershipRefreshToken', 'setManagerDC', 'setDCManagerAccessToken', 'setDCManagerRefreshToken',
+            'setManagerWH', 'setWHManagerAccessToken', 'setWHManagerRefreshToken', 'setTellerDC', 'setTellerDCAccessToken',
+            'setTellerDCRefreshToken', 'setStaffWH']),
         async handleLogin() {
             try {
                 let res = await axios.post('/login', this.form, { withCredentials: true });
-                let user = res.data;
+                let user = res.data.account;
+                console.log(user);
                 if (user.accountTypeId == 2) {
+                    this.setLeadershipAccessToken(res.data.accessToken);
+                    this.setLeadershipRefreshToken(res.data.refreshToken);
                     this.setLeadership(user);
                 } else if (user.accountTypeId == 3) {
                     this.setManagerDC(user);
+                    this.setDCManagerAccessToken(res.data.accessToken);
+                    this.setDCManagerRefreshToken(res.data.refreshToken);
                 } else if (user.accountTypeId == 4) {
                     this.setTellerDC(user);
+                    this.setTellerDCAccessToken(res.data.accessToken);
+                    this.setTellerDCRefreshToken(res.data.refreshToken);
                 } else if (user.accountTypeId == 5) {
                     this.setManagerWH(user);
+                    this.setWHManagerAccessToken(res.data.accessToken);
+                    this.setWHManagerRefreshToken(res.data.refreshToken);
                 } else if (user.accountTypeId == 6) {
                     this.setStaffWH(user);
                 }

@@ -134,6 +134,32 @@ const WarehouseController = {
             })
         }
     },
+
+    getWarehousesByProvinces: async (req, res) => {
+        try {
+            const provinceId = Number(req.params.provinceId);
+
+            const ans = await Warehouse.findAll({
+                attributes: [
+                    [sequelize.col('warehouse_id'), 'warehouseId'],
+                    [sequelize.col('address'), 'address'],
+                ],
+                where: {
+                    province_municipality_id: provinceId,
+                },
+                order: [
+                    [sequelize.col('warehouse_id'), 'ASC'],
+                ],
+            })
+            res.status(200).json(ans)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
 }
 
 export default WarehouseController

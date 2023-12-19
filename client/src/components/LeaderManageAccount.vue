@@ -1,196 +1,747 @@
 <template>
-  <div>
-    <aside class="bg-gray-100 z-20 hidden w-64 h-screen overflow-y-auto dark:bg-gray-800 md:block flex-shrink-0">
-      <div class="py-4 text-gray-500 dark:text-gray-400">
-        <a class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" href="#">
-          Magic Post
-        </a>
-        <ul class="mt-6">
-          <li class="relative px-6 py-3">
-            <span v-show="selecteds[0]" class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
-              aria-hidden="true"></span>
-            <a @click="display(0)" v-if="selecteds"
-              class="inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100 cursor-pointer">
-              <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"
-                stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                </path>
-              </svg>
-              <span class="ml-4">Trang chủ
-              </span>
-            </a>
-          </li>
-        </ul>
-        <ul>
-          <li class="relative px-6 py-3">
-            <span v-show="selecteds[1]" class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
-              aria-hidden="true"></span>
-            <a @click="display(1)"
-              class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer">
-              <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"
-                stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                  d="M9.6,3.32a3.86,3.86,0,1,0,3.86,3.85A3.85,3.85,0,0,0,9.6,3.32M16.35,11a.26.26,0,0,0-.25.21l-.18,1.27a4.63,4.63,0,0,0-.82.45l-1.2-.48a.3.3,0,0,0-.3.13l-1,1.66a.24.24,0,0,0,.06.31l1,.79a3.94,3.94,0,0,0,0,1l-1,.79a.23.23,0,0,0-.06.3l1,1.67c.06.13.19.13.3.13l1.2-.49a3.85,3.85,0,0,0,.82.46l.18,1.27a.24.24,0,0,0,.25.2h1.93a.24.24,0,0,0,.23-.2l.18-1.27a5,5,0,0,0,.81-.46l1.19.49c.12,0,.25,0,.32-.13l1-1.67a.23.23,0,0,0-.06-.3l-1-.79a4,4,0,0,0,0-.49,2.67,2.67,0,0,0,0-.48l1-.79a.25.25,0,0,0,.06-.31l-1-1.66c-.06-.13-.19-.13-.31-.13L19.5,13a4.07,4.07,0,0,0-.82-.45l-.18-1.27a.23.23,0,0,0-.22-.21H16.46M9.71,13C5.45,13,2,14.7,2,16.83v1.92h9.33a6.65,6.65,0,0,1,0-5.69A13.56,13.56,0,0,0,9.71,13m7.6,1.43a1.45,1.45,0,1,1,0,2.89,1.45,1.45,0,0,1,0-2.89Z" />
-              </svg>
-
-              <span class="ml-4">Quản lí tài khoản</span>
-            </a>
-          </li>
-          <li class="relative px-6 py-3">
-            <span v-show="selecteds[2]" class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
-              aria-hidden="true"></span>
-
-            <a @click="display(2)"
-              class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer">
-              <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"
-                stroke-width="2" viewBox="0 0 48 48" stroke="currentColor">
-                <path
-                  d="M35.8,11a3.2,3.2,0,0,0-2.2-1H32V8a2.9,2.9,0,0,0-3-3H5A2.9,2.9,0,0,0,2,8V35a2.9,2.9,0,0,0,3,3H7.3a7,7,0,0,0,13.4,0h6.6a7,7,0,0,0,13.4,0H43a2.9,2.9,0,0,0,3-3V22.2Zm-2.7,3,7.3,8H32V14ZM6,9H28V32.4a7.7,7.7,0,0,0-.7,1.6H20.7A7,7,0,0,0,7.3,34H6Zm8,30a3,3,0,1,1,3-3A2.9,2.9,0,0,1,14,39Zm20,0a3,3,0,1,1,3-3A2.9,2.9,0,0,1,34,39Zm6.7-5A7,7,0,0,0,34,29a6.4,6.4,0,0,0-2,.3V26H42v8Z" />
-              </svg>
-              <span class="ml-4">Quản lí điểm giao dịch</span>
-            </a>
-          </li>
-
-
-          <li class="relative px-6 py-3">
-            <span v-show="selecteds[3]" class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
-              aria-hidden="true"></span>
-            <a @click="display(3)"
-              class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer">
-              <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#858585"
-                class="w-5 h-5" version="1.1" id="Capa_1" viewBox="0 0 489.475 489.475" xml:space="preserve"
-                stroke="#858585">
-
-                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-
-                <g id="SVGRepo_iconCarrier">
-                  <g>
-                    <g>
-                      <path
-                        d="M487.823,468.675v-346.4c0-8.3-4.2-15.6-11.4-18.7l-223.7-102c-5.2-2.1-11.4-2.1-16.6,0l-223.7,102 c-7.3,3.1-11.4,10.4-11.4,18.7v346.4c0,11.4,9.4,20.8,20.8,20.8s20.8-9.4,20.8-20.8v-332.9l203.9-92.6l202.8,92.6v332.9 c0,11.4,9.4,20.8,20.8,20.8S491.023,480.175,487.823,468.675z" />
-                      <path
-                        d="M313.123,285.575c11.4,0,20.8-9.4,20.8-20.8v-134.2c0-11.4-9.4-20.8-20.8-20.8h-134.2c-11.4,0-20.8,9.4-20.8,20.8v134.2 c0,11.4,9.4,20.8,20.8,20.8H313.123z M199.723,152.475h92.6v92.6h-92.6V152.475z" />
-                      <path
-                        d="M213.223,313.675h-134.2c-11.4,0-20.8,9.4-20.8,20.8v134.2c0,11.4,9.4,20.8,20.8,20.8h134.2c11.4,0,20.8-9.4,20.8-20.8 v-134.2C234.023,323.075,224.623,313.675,213.223,313.675z M192.423,448.975h-92.6v-92.6h92.6V448.975z" />
-                      <path
-                        d="M412.923,313.675h-134.2c-11.4,0-20.8,9.4-20.8,20.8v134.2c0,11.4,9.4,20.8,20.8,20.8h134.2c11.4,0,20.8-9.4,20.8-20.8 v-134.2C433.723,323.075,424.423,313.675,412.923,313.675z M392.123,448.975h-92.6v-92.6h92.6V448.975z" />
-                    </g>
-                  </g>
-                </g>
-
-              </svg>
-              <span class="ml-4">Quản lí điểm tập kết</span>
-            </a>
-          </li>
-          <li class="relative px-6 py-3">
-            <span v-show="selecteds[4]" class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
-              aria-hidden="true"></span>
-
-            <a @click="display(4)"
-              class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer">
-              <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round"
-                stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                <path d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path>
-                <path d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path>
-              </svg>
-              <span class="ml-4">Thống kê</span>
-            </a>
-          </li>
-          <li class="relative px-6 py-3">
-            <span v-show="selecteds[5]" class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
-              aria-hidden="true"></span>
-
-            <a @click="display(5)"
-              class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 48 48" fill="none" stroke="">
-
-                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-
-                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-
-                <g id="SVGRepo_iconCarrier">
-                  <rect width="48" height="48" fill="white" fill-opacity="0.01" />
-                  <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M24 44C35.0457 44 44 35.0457 44 24C44 12.9543 35.0457 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44Z"
-                    stroke="#7d7d7d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                  <path
-                    d="M24 23C26.7614 23 29 20.7614 29 18C29 15.2386 26.7614 13 24 13C21.2386 13 19 15.2386 19 18C19 20.7614 21.2386 23 24 23Z"
-                    fill="#ffffff" stroke="#7d7d7d" stroke-width="4" stroke-linejoin="round" />
-                  <path d="M10.022 38.332C10.3657 33.1206 14.7016 29 20 29H28C33.2914 29 37.6229 33.1097 37.9767 38.3113"
-                    stroke="#7d7d7d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
-                </g>
-
-              </svg>
-              <span class="ml-4">Thông tin</span>
-            </a>
-          </li>
-
-          <!-- <li class="relative px-6 py-3">
-              <button class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200" @click="togglePagesMenu" aria-haspopup="true">
-                <span class="inline-flex items-center">
-                  <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                    <path d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
-                  </svg>
-                  <span class="ml-4">Pages</span>
+    <div id="container">
+        <div v-if="!this.createNew" class="w-11/12 h-10/12 mx-auto">
+            <div class="mt-4 w-11/12 grid grid-cols-6 mx-auto">
+                <span class="col-start-1 col-end-5 max-w-fit">
+                    <h1 class="inline-flex font-semibold lg:text-3xl md:text-xl sm:text-sm text-xs">
+                        Danh sách tài khoản nhân viên
+                    </h1>
                 </span>
-                <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                </svg>
-              </button>
-              <template x-if="isPagesMenuOpen">
-                <ul x-transition:enter="transition-all ease-in-out duration-300" x-transition:enter-start="opacity-25 max-h-0" x-transition:enter-end="opacity-100 max-h-xl" x-transition:leave="transition-all ease-in-out duration-300" x-transition:leave-start="opacity-100 max-h-xl" x-transition:leave-end="opacity-0 max-h-0" class="p-2 mt-2 space-y-2 overflow-hidden text-sm font-medium text-gray-500 rounded-md shadow-inner bg-gray-50 dark:text-gray-400 dark:bg-gray-900" aria-label="submenu">
-                  <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                    <a class="w-full" href="pages/login.html">Login</a>
-                  </li>
-                  <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                    <a class="w-full" href="pages/create-account.html">
-                      Create account
-                    </a>
-                  </li>
-                  <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                    <a class="w-full" href="pages/forgot-password.html">
-                      Forgot password
-                    </a>
-                  </li>
-                  <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                    <a class="w-full" href="pages/404.html">404</a>
-                  </li>
-                  <li class="px-2 py-1 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200">
-                    <a class="w-full" href="pages/blank.html">Blank</a>
-                  </li>
-                </ul>
-              </template>
-            </li> -->
-        </ul>
-      </div>
-    </aside>
-  </div>
+                <span class="col-start-6">
+                    <button v-on:click="this.createdANewAcc()"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded btn">
+                        Thêm tài khoản
+                    </button>
+                </span>
+            </div>
+            <hr class="my-4">
+
+            <div class="w-11/12 mx-auto">
+                <div class="mx-auto">
+                    <h2 class="py-2 md:text-base sm:text-sm text-xs">Chọn loại tài khoản:</h2>
+                    <select id="office-province" name="province_id" v-model="accountTypeSelected"
+                        @change="fetchAccountsData()" class="search-select mb-4 w-4/12 h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+                    md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true"
+                        data-select2-id="select2-data-office-province">
+                        <option class="md:text-base sm:text-sm text-xs border text-gray-900" :value="0" selected>Loại tài
+                            khoản</option>
+                        <option class="md:text-base sm:text-sm text-xs border text-gray-900" :value="1">Tài khoản trưởng
+                            điểm tập kết</option>
+                        <option class="md:text-base sm:text-sm text-xs border text-gray-900" :value="2">Tài khoản trưởng
+                            điểm giao dịch</option>
+                    </select>
+                </div>
+
+                <!-- HEAD COMP MANAGE  -->
+                <div class="mx-auto" id="course" v-if="accounts && accounts.length">
+                    <table class="" v-if="this.accountTypeSelected == 1">
+                        <tr>
+                            <th class="bg-green-500 text-white font-bold py-2 px-4  md:text-base sm:text-sm text-xs border">
+                                Mã điểm TK</th>
+                            <th class="bg-green-500 text-white font-bold py-2 px-4  md:text-base sm:text-sm text-xs border">
+                                Tỉnh/Thành phố</th>
+                            <th class="bg-green-500 text-white font-bold py-2 px-4  md:text-base sm:text-sm text-xs border">
+                                Mã tài khoản</th>
+                            <th class="bg-green-500 text-white font-bold py-2 px-4  md:text-base sm:text-sm text-xs border">
+                                Tên</th>
+                            <th class="bg-green-500 text-white font-bold py-2 px-4  md:text-base sm:text-sm text-xs border">
+                                Email</th>
+                            <th class="bg-green-500 text-white font-bold py-2 px-4  md:text-base sm:text-sm text-xs border">
+                                SĐT</th>
+                            <th class="bg-green-500 text-white font-bold py-2 px-4  md:text-base sm:text-sm text-xs border">
+                                Chỉnh sửa</th>
+                            <th class="bg-green-500 text-white font-bold py-2 px-4  md:text-base sm:text-sm text-xs border">
+                                Xóa</th>
+                        </tr>
+                        <tr v-for="account in displayedItemList">
+                            <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs border">
+                                {{ account.warehouseId }}</td>
+                            <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs border">
+                                {{ account.warehouse && account.warehouse.province_municipality
+                                    ? account.warehouse.province_municipality.provinceMunicipality
+                                    : 'N/A' }}
+                            </td>
+                            <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs border">
+                                WH_{{ account.warehouse && account.warehouse.provinceMunicipalityId
+                                    ? account.warehouse.provinceMunicipalityId
+                                    : 'N/A' }}_MANAGER_{{ account.accountId }}
+                            </td>
+                            <td
+                                class="py-2 px-4 border items-center justify-center truncate md:text-base sm:text-sm text-xs border">
+                                {{ account.firstName + ' ' + account.lastName }}</td>
+                            <td
+                                class="py-2 px-4 border items-center justify-center truncate md:text-base sm:text-sm text-xs border">
+                                {{ truncateText(account.email, 20) }}</td>
+                            <td
+                                class="py-2 px-4 border items-center justify-center truncate md:text-base sm:text-sm text-xs border">
+                                {{ account.phone }}</td>
+                            <td class="py-2 px-4 border items-center justify-center"> <img
+                                    class="lg:w-1/5 w-full mx-auto cursor-pointer" src="../assets/img/note.png" alt="">
+                            </td>
+                            <td class="py-2 px-4 border items-center md:text-base sm:text-sm text-xs">
+                                <img class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer hover:opacity-90 py-6"
+                                    src="../assets/img/trash.png" alt="">
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table v-if="this.accountTypeSelected == 2">
+                        <tr>
+                            <th
+                                class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
+                                Mã điểm GD</th>
+                            <th
+                                class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
+                                Tỉnh/Thành phố</th>
+                            <th
+                                class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
+                                Quận/Huyện</th>
+                            <th
+                                class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
+                                Mã tài khoản</th>
+                            <th
+                                class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
+                                Tên</th>
+                            <th
+                                class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
+                                Email</th>
+                            <th
+                                class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
+                                SĐT</th>
+                            <th
+                                class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
+                                Chỉnh sửa</th>
+                            <th
+                                class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
+                                Xóa</th>
+                        </tr>
+                        <tr v-for="account in displayedItemList">
+                            <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">{{
+                                account.deliveryCenterId }}</td>
+                            <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
+                                {{
+                                    account.delivery_center &&
+                                    account.delivery_center.district &&
+                                    account.delivery_center.district.province_municipality
+                                    ? account.delivery_center.district.province_municipality.provinceMunicipality
+                                    : 'N/A'
+                                }}
+                            </td>
+                            <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">{{
+                                account.delivery_center &&
+                                account.delivery_center.district
+                                ? account.delivery_center.district.district
+                                : 'N/A' }}</td>
+                            <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
+                                DC_{{ account.delivery_center &&
+                                    account.delivery_center.district &&
+                                    account.delivery_center.district.provinceMunicipalityId
+                                    ?
+                                    `${account.delivery_center.district.provinceMunicipalityId}/${account.delivery_center.districtId}_MANAGER_${account.accountId}`
+                                    : 'N/A'
+                                }}
+                            </td>
+                            <td
+                                class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
+                                {{ account.firstName + ' ' + account.lastName }}</td>
+                            <td
+                                class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
+                                {{ truncateText(account.email, 20) }}</td>
+                            <td
+                                class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
+                                {{ account.phone }}</td>
+                            <td class="py-2 px-4 border items-center justify-center"> <img
+                                    class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer"
+                                    src="../assets/img/note.png" alt=""> </td>
+                            <td class="py-2 px-4 border items-center justify-center">
+                                <img class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer hover:opacity-90 py-6"
+                                    src="../assets/img/trash.png" alt="">
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="my-4">
+                        <div v-if="this.accountTypeSelected != 0" class="max-w-fit mx-auto">
+                            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded 
+                        cursor-pointer shadow-lg md:text-base sm:text-sm text-xs" @click="goToPage(currentPage - 1)"
+                                :disabled="currentPage === 1">Previous Page</button>
+                            <span class="pl-10 pr-10 md:text-base sm:text-sm text-xs">Trang <strong>{{ currentPage
+                            }}</strong> trong tổng số <strong>{{ totalPages
+}}</strong></span>
+                            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded 
+                        cursor-pointer shadow-lg md:text-base sm:text-sm text-xs" @click="goToPage(currentPage + 1)"
+                                :disabled="currentPage === totalPages">Next Page</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div v-else class="md:max-w-5xl sm:max-w-3xl max-w-xl w-11/12 mx-auto">
+            <div class="py-2 grid gird-cols-6">
+                <span class="col-start-1 col-end-5 py-2">
+                    <h1 class="inline-flex font-semibold lg:text-3xl md:text-xl sm:text-sm text-xs">
+                        Tạo mới tài khoản
+                    </h1>
+                </span>
+                <span class="col-start-6">
+                    <button v-on:click="this.createdANewAcc()" class="bg-blue-500 hover:bg-blue-700 hover:shadow-xl text-white font-bold 
+                    md:text-base sm:text-sm text-xs py-2 px-4 mx-auto rounded btn">
+                        Hủy bỏ
+                    </button>
+                </span>
+            </div>
+            <hr class="my-2">
+            <h2>Chọn loại tài khoản:</h2>
+            <select id="office-province" name="province_id" v-model="accountCreateType"
+                @change="handleWhenChangeStatusAccountCreate()" class="search-select w-4/12 select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+                md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true"
+                data-select2-id="select2-data-office-province">
+                <option class="text-gray-900" :value="0" selected>Loại tài khoản</option>
+                <option class="text-gray-900" :value="1">Tài khoản trưởng điểm tập kết</option>
+                <option class="text-gray-900" :value="2">Tài khoản trưởng điểm giao dịch</option>
+            </select>
+            <br>
+            <div class="" id="course">
+                <form ref="accForm" v-if="this.accountCreateType != 0" @submit="handleSubmit"
+                    class="bg-white items-center shadow-lg rounded px-8 pt-6 pb-8 mb-4" novalidate autocapitalize="off">
+                    <div v-if="this.accountCreateType == 1">
+                        <h2><strong>Nơi làm việc:</strong></h2><br>
+                        <label for="province" class="info">Tỉnh/Thành phố:</label><br>
+
+                        <div id="province" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
+                            data-select2-id="select2-data-73-3wmt">
+                            <select id="office-province" name="province_id" v-model="provinceSelectedId"
+                                @change="this.solveWhenProvinceChange()" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+                            md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1"
+                                aria-hidden="true" data-select2-id="select2-data-office-province">
+                                <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
+                                <option class="text-gray-900" v-for="province in provinces"
+                                    :value="province.provinceMunicipalityId" :key="province.provinceMunicipalityId">{{
+                                        province.provinceMunicipality }}</option>
+                            </select>
+                        </div>
+
+                        <p class="error" v-if="this.provinceError.length > 0">{{ provinceError[0] }}<br></p>
+                        <br>
+
+                        <label for="warehouse" class="info">Điểm tập kết:</label>
+                        <br>
+
+                        <div id="warehouse" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
+                            data-select2-id="select2-data-73-3wmt">
+                            <select id="office-province" name="province_id" v-model="warehouseSelectedId" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+                            md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1"
+                                aria-hidden="true" data-select2-id="select2-data-office-province">
+                                <option class="text-gray-900" :value="0">Điểm tập kết</option>
+                                <option class="text-gray-900 w-2/4" v-for="warehouse in wareHouses"
+                                    :value="warehouse.warehouseId" :key="warehouse.warehouseId">{{
+                                        truncateText(warehouse.address, 80) }}</option>
+                            </select>
+                        </div>
+                        <p class="error" v-if="this.warehouseError.length > 0">{{ warehouseError[0] }}</p>
+                        <br>
+                    </div>
+
+
+                    <div v-if="this.accountCreateType == 2">
+                        <h2><strong>Nơi làm việc:</strong></h2>
+                        <br>
+
+                        <label for="province" class="info">Tỉnh/Thành phố:</label>
+                        <br>
+
+                        <div id="province" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
+                            data-select2-id="select2-data-73-3wmt">
+                            <select id="office-province" name="province_id" v-model="provinceSelectedId"
+                                @change="this.solveWhenProvinceChange()" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+                            md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1"
+                                aria-hidden="true" data-select2-id="select2-data-office-province">
+                                <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
+                                <option class="text-gray-900" v-for="province in provinces"
+                                    :value="province.provinceMunicipalityId" :key="province.provinceMunicipalityId">{{
+                                        province.provinceMunicipality }}</option>
+                            </select>
+                        </div>
+                        <p class="error" v-if="this.provinceError.length > 0">{{ provinceError[0] }}</p>
+                        <br>
+
+                        <label for="district" class="info">Quận/Huyện:</label>
+                        <br>
+
+                        <div id="district" class="common-shadow-input w-2/4 h-[43px] select2-stupid-at-home">
+                            <select id="slDistrict" name="district_id" v-model="districtSelectedId"
+                                @change="getAllDeliveryCenterOfADistrict()" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300
+                            md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1"
+                                aria-hidden="true">
+                                <option class="text-gray-900" value="auto">Quận/Huyện</option>
+                                <option class="text-gray-900" v-if="districts && districts.length"
+                                    v-for="district in districts" :value="district.districtId" :key="district.districtId">{{
+                                        district.district }}</option>
+                            </select>
+                        </div>
+                        <p class="error" v-if="districtError.length > 0">{{ districtError[0] }}</p>
+                        <br>
+
+                        <label for="dc" class="info">Điểm giao dịch làm việc:</label>
+                        <br>
+
+                        <div id="deliverycenter" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
+                            data-select2-id="select2-data-73-3wmt">
+                            <select id="office-province" name="province_id" v-model="deliverycenterSelectedId" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+                            md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1"
+                                aria-hidden="true" data-select2-id="select2-data-office-province">
+                                <option class="text-gray-900" :value="0">Điểm giao dịch</option>
+                                <option class="text-gray-900 w-2/4" v-for="deliveryCenter in deliveryCenters"
+                                    :value="deliveryCenter.deliveryCenterId" :key="deliveryCenter.deliveryCenterId">{{
+                                        truncateText(deliveryCenter.address, 80) }}</option>
+                            </select>
+                        </div>
+                        <p class="error" v-if="this.deliverycenterError.length > 0">{{ deliverycenterError[0] }}</p>
+                        <br>
+
+                    </div>
+
+                    <h2><strong>Thông tin cá nhân:</strong></h2>
+                    <br>
+                    <label for="username">Tên đăng nhập</label>
+                    <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập"
+                        v-model="form.username" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                          sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="userNameError.length > 0">{{ userNameError[0] }}<br></p>
+                    <br>
+                    <label for="password">Mật khẩu</label>
+                    <input type="password" id="password" name="password" placeholder="Nhập mật khẩu" v-model="form.password"
+                        class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                          sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="passwordError.length > 0">{{ passwordError[0] }}<br></p>
+                    <br>
+                    <label for="re-password">Nhập lại mật khẩu</label>
+                    <input type="password" id="re-password" name="re-password" placeholder="Nhập lại mật khẩu"
+                        v-model="repassword" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                          sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="repasswordError.length > 0">{{ repasswordError[0] }}<br></p>
+                    <br>
+                    <label for="firstname">Họ</label>
+                    <input type="text" id="firstname" name="firstname" placeholder="Nhập tên họ" v-model="form.firstName"
+                        class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                          sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="firstNameError.length > 0">{{ firstNameError[0] }}<br></p>
+                    <br>
+                    <label for="lastname">Tên</label>
+                    <input type="text" id="lastname" name="lastname" placeholder="Nhập tên đệm" v-model="form.lastName"
+                        class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                          sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="lastNameError.length > 0">{{ lastNameError[0] }}<br></p>
+                    <br>
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email" placeholder="Nhập email" v-model="form.email" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                          sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="emailError.length > 0">{{ emailError[0] }}<br></p>
+                    <br>
+                    <label for="phone">Số điện thoại</label>
+                    <input type="text" id="phone" name="phone" placeholder="Nhập số điện thoại" v-model="form.phone" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                          sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="phoneError.length > 0">{{ phoneError[0] }}<br></p>
+                    <br>
+                    <label for="citizenCard">Số CCCD:</label>
+                    <input type="text" id="citizen" name="citizen" placeholder="Nhập số CCCD vào đây"
+                        v-model="form.citizenIdentityCardNumber" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
+                          sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <p class="error" v-if="citizenCardImgError.length > 0">{{ citizenCardImgError[0] }}<br></p>
+
+                    <br>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
+                md:text-base sm:text-sm text-xs hover:shadow-lg cursor-pointer">Tạo tài
+                        khoản</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
+import { mapMutations, mapState } from 'vuex';
+import axios from 'axios';
 export default {
-  name: 'LeaderManagerAccount',
+    name: 'LeaderManageAccount',
+    data() {
+        return {
+            form: {
+                accountTypeId: 0,
+                username: '',
+                password: '',
+                deliveryCenterId: '',
+                warehouseId: '',
+                firstName: '',
+                lastName: '',
+                email: '',
+                phone: '',
+                citizenIdentityCardNumber: '',
+            },
+            warehouse: {
+                provinceMunicipality: '',
+                provinceMunicipalityId: 0,
+            },
+            deliveryCenter: {
 
-  data() {
-    return {
-      selecteds: [true, false, false, false, false, false],
-    }
-  },
-
-  methods: {
-    display(t) {
-      for (let i = 0; i < this.selecteds.length; i++) {
-        if (i == t) {
-          this.selecteds[i] = true;
-        } else {
-          this.selecteds[i] = false;
+            },
+            repassword: '',
+            accountTypeSelected: 0,
+            accountCreateType: 0,
+            provinceSelectedId: 0,
+            districtSelectedId: 0,
+            warehouseSelectedId: 0,
+            deliverycenterSelectedId: 0,
+            accounts: [],
+            provinces: [],
+            districts: [],
+            wareHouses: [],
+            deliveryCenters: [],
+            provinceError: [],
+            districtError: [],
+            warehouseError: [],
+            userNameError: [],
+            passwordError: [],
+            repasswordError: [],
+            deliverycenterError: [],
+            warehouseError: [],
+            firstNameError: [],
+            lastNameError: [],
+            emailError: [],
+            phoneError: [],
+            citizenCardImgError: [],
+            createNew: false,
+            itemsPerPage: 4,
+            currentPage: 1,
+            isShow: false,
         }
+    },
+    methods: {
+        ...mapMutations(['scrollToTop', 'setLogged', 'setLeadership', 'setLeadershipAccessToken',
+            'setLeadershipRefreshToken', 'setManagerDC', 'setManagerWH', 'setTellerDC', 'setStaffWH']),
+        handleWhenChangeStatusAccountCreate() {
+            this.resetError();
+            this.provinceSelectedId = 0;
+            this.districtSelectedId = 0;
+            this.warehouseSelectedId = 0;
+            this.deliverycenterSelectedId = 0;
+            this.form.username = "";
+            this.form.password = "";
+            this.repassword = "";
+            this.form.firstName = "";
+            this.form.lastName = "";
+            this.form.email = "";
+            this.form.phone = "";
+            this.form.citizenIdentityCardNumber = "";
+            this.districts = null;
+            this.wareHouses = null;
+            this.deliveryCenters = null;
+        },
+        solveWhenProvinceChange() {
+            if (this.accountCreateType == 1) {
+                this.getAllWarehouseofAProvinces();
+            } else if (this.accountCreateType == 2) {
+                this.getAllDistrictsOfAProvince();
+            }
+        },
+        async fetchAccountsData() {
+            try {
+                if (this.accountTypeSelected == 1 || this.accountCreateType == 1) {
+                    let res = await axios.get(`/offices/${null}/accounts/5`, {
+                        headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
+                    }, { withCredentials: true });
+                    this.accounts = res.data;
+                }
+                if (this.accountTypeSelected == 2 || this.accountCreateType == 2) {
+                    let res = await axios.get(`/offices/${null}/accounts/3`, {
+                        headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
+                    }, { withCredentials: true });
+                    this.accounts = res.data;
+                }
+            } catch (err) {
+                if (err.response.data.error == 'jwt expired') {
+                    await this.refreshToken();
+                    await this.fetchAccountsData();
+                }
+            }
 
-      }
+        },
+        async refreshToken() {
+            let res = await axios.post('/refresh', {
+                refreshToken: this.leadershipToken.refreshToken,
+                withCredentials: true
+            }, {
+                headers:
+                {
+                    'x_authorization': `${this.leadershipToken.accessToken}`,
+                }, withCredentials: true
+            });
+
+            this.setLeadershipAccessToken(res.data);
+        },
+        async handleCreateAccount() {
+            try {
+                let res = await axios.post('/signup', this.form, {
+                    headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
+                }, { withCredentials: true });
+                if (res.data) {
+                    this.fetchAccountsData();
+                    this.accountCreateType = 0;
+                    this.createdANewAcc();
+                }
+            } catch (err) {
+                if (err.response.data.error == 'jwt expired') {
+                    await this.refreshToken();
+                    await this.handleCreateAccount();
+                }
+                else if (err.response.data.error == 'Username is already exists') {
+                    this.userNameError.push("Tên đăng nhập đã tồn tại, hãy chọn tên khác!")
+                } else if (err.response.data.error == 'Phone is already exists') {
+                    this.phoneError.push('Số điện thoại bị trùng! Hãy nhập số khác')
+                } else if (err.response.data.error == 'Email is already exists') {
+                    this.emailError.push('Email bị trùng! Hãy chọn email khác!')
+                } else if (err.response.data.error == 'Identity number is already exists') {
+                    this.citizenCardImgError.push('Số CCCD bị trùng! Hãy nhập CCCD khác!')
+                }
+            }
+        },
+        async handleDeleteWH(id) {
+            try {
+                // let res = await axios.put
+            } catch (err) {
+                alert(err.respone.data.error);
+            }
+        },
+        async getProvinces() {
+            try {
+                const response = await axios.get('/provinces', { withCredentials: true });
+                this.provinces = response.data;
+            } catch (error) {
+                console.error('Error fetching provinces:', error.message);
+            }
+        },
+        async getAllDistrictsOfAProvince() {
+            this.districts = null;
+            if (this.provinceSelectedId > 0) {
+                try {
+                    const res = await axios.get(`/provinces/${this.provinceSelectedId}/districts`, { withCredentials: true });
+                    this.districts = res.data;
+                } catch (error) {
+                    console.error('getDistrictofAProvince:', error.message);
+                }
+            }
+        },
+        async getAllWarehouseofAProvinces() {
+            this.wareHouses = null;
+            if (this.provinceSelectedId > 0) {
+                try {
+                    const res = await axios.get(`/warehouses/${this.provinceSelectedId}`, { withCredentials: true });
+                    this.wareHouses = res.data;
+                } catch (error) {
+                    console.error('getDistrictofAProvince:', error.message);
+                }
+            }
+        },
+
+        async getAllDeliveryCenterOfADistrict() {
+            this.deliveryCenters = [];
+            if (this.districtSelectedId > 0) {
+                try {
+                    const res = await axios.get(`/deliveryCenters/${this.districtSelectedId}`, { withCredentials: true });
+                    this.deliveryCenters = res.data;
+                } catch (err) {
+                    console.log('getDCfromDistrict: ', err.response.data.error)
+                }
+            }
+
+        },
+        createdANewAcc() {
+            this.resetError();
+            this.accountCreateType = 0;
+            this.accountTypeSelected = 0;
+            this.provinceSelectedId = 0;
+            this.districtSelectedId = 0;
+            this.warehouseSelectedId = 0;
+            this.deliverycenterSelectedId = 0;
+            this.form.username = "";
+            this.form.password = "";
+            this.repassword = "";
+            this.form.firstName = "";
+            this.form.lastName = "";
+            this.form.email = "";
+            this.form.phone = "";
+            this.form.citizenIdentityCardNumber = "";
+            this.districts = null;
+            this.wareHouses = null;
+            this.deliveryCenters = null;
+            this.createNew = !this.createNew;
+
+        },
+        preSubmit() {
+            if (this.accountCreateType == 1) {
+                this.form.accountTypeId = 5;
+                this.form.warehouseId = this.warehouseSelectedId;
+            } else if (this.accountCreateType == 2) {
+                this.form.accountTypeId = 3;
+                this.form.deliveryCenterId = this.deliverycenterSelectedId;
+            }
+        },
+        resetError() {
+            this.provinceError = [];
+            this.districtError = [];
+            this.warehouseError = [];
+            this.userNameError = [];
+            this.passwordError = [];
+            this.repasswordError = [];
+            this.firstNameError = [];
+            this.lastNameError = [];
+            this.emailError = [];
+            this.phoneError = [];
+            this.citizenCardImgError = [];
+        },
+        checkEmptyError() {
+            if (this.provinceError.length != 0
+                || this.districtError.length != 0
+                || this.warehouseError.length != 0
+                || this.passwordError.length != 0
+                || this.repasswordError.length != 0
+                || this.userNameError.length != 0
+                || this.firstNameError.length != 0
+                || this.lastNameError.length != 0
+                || this.emailError.length != 0
+                || this.phoneError.length != 0
+                || this.citizenCardImgError.length != 0) {
+                return false;
+            }
+            return true;
+        },
+        validateRegisterAccount() {
+            this.resetError();
+
+            if (this.provinceSelectedId == 0) {
+                this.provinceError.push("Hãy chọn Tỉnh/Thành phố làm việc!");
+            }
+            if (this.warehouseSelectedId == 0) {
+                this.warehouseError.push("Hãy chọn điểm tập kết làm việc!");
+            }
+            if (this.districtSelectedId == 0) {
+                this.districtError.push("Hãy chọn Quận/Huyện tương ứng!");
+            }
+            if (this.deliverycenterSelectedId == 0) {
+                this.deliverycenterError.push("Hãy chọn điểm giao dịch tương ứng!")
+            }
+
+            if (this.accountCreateType == 1) {
+                this.deleveryCenterError = [];
+                this.districtError = [];
+            } else if (this.accountCreateType == 2) {
+                this.warehouseError = [];
+            }
+            if (!this.form.firstName) {
+                this.firstNameError.push("Hãy nhập tên họ. Ví dụ: Lê, Nguyễn, .v.v.");
+            } else if (!/^[A-Za-zÀ-ỹ]+$/.test(this.form.firstName.replace(/\s/g, ""))) {
+                this.firstNameError.push("Tên họ chỉ được bao gồm chữ cái!");
+            }
+
+            // For the last name
+            if (!this.form.lastName) {
+                this.lastNameError.push('Hãy nhập tên đệm. Ví dụ: Văn A, Tuấn Anh, .v.v.');
+            } else if (!/^[A-Za-zÀ-ỹ]+$/.test(this.form.lastName.replace(/\s/g, ""))) {
+                this.lastNameError.push('Tên đệm chỉ được bao gồm chữ cái!');
+            }
+
+            if (!this.form.email) {
+                this.emailError.push('Hãy nhập email.');
+            } else if (!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(this.form.email)) {
+                this.emailError.push('Email sai định dạng!');
+            }
+
+            //username 
+            if (!this.form.username) {
+                this.userNameError.push('Hãy nhập tên đăng nhập.');
+            }
+
+            //password
+            if (!this.form.password) {
+                this.passwordError.push('Hãy nhập mật khẩu!');
+            } else if (this.form.password.length < 8) {
+                this.passwordError.push('Mật khẩu phải dài tối thiểu 8 kí tự!');
+            }
+
+            if (!this.repassword) {
+                this.repasswordError.push('Hãy nhập lại mật khẩu!');
+            } else if (this.form.password != this.repassword) {
+                this.repasswordError.push('Mật khẩu nhập lại không đúng!');
+            }
+
+            //phone 
+            if (!this.form.phone) {
+                this.phoneError.push('Hãy nhập số điện thoại!');
+            } else if (!this.form.phone.startsWith('0')) {
+                this.phoneError.push('Số điện thoại phải bắt đầu bằng 0!');
+            } else if (this.form.phone.length != 10) {
+                this.phoneError.push('Số điện thoại phải bao gồm 10 chữ số!');
+            } else if (!/[0-9]{10}/.test(this.form.phone)) {
+                this.phoneError.push('Số điện thoại chỉ được bao gồm chữ số!');
+            }
+
+            if (!this.form.citizenIdentityCardNumber) {
+                this.citizenCardImgError.push("Hãy nhập số CCCD!")
+            } else if (!/[0-9]{10}/.test(this.form.citizenIdentityCardNumber)) {
+                this.citizenCardImgError.push('CCCD không bao gồm chữ cái');
+            }
+        },
+        async handleSubmit(event) {
+
+            this.validateRegisterAccount();
+
+            if (!this.checkEmptyError()) {
+                event.preventDefault();
+            }
+            else {
+                event.preventDefault();
+                this.scrollToTop();
+                this.preSubmit();
+                await this.handleCreateAccount();
+            }
+        },
+        goToPage(page) {
+            if (page >= 1 && page <= this.totalPages) {
+                this.currentPage = page;
+            }
+            this.scrollToTop();
+        },
+        truncateText(text, maxLength) {
+            return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+        },
+    },
+
+    computed: {
+        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH', 'teller_DC']),
+        totalPages() {
+            return Math.ceil(this.accounts.length / this.itemsPerPage);
+        },
+        displayedItemList() {
+            const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+            const endIndex = startIndex + this.itemsPerPage;
+            return this.accounts.slice(startIndex, endIndex);
+        },
+    },
+    created() {
+        this.getProvinces();
+        this.fetchAccountsData();
     }
-  }
 }
 </script>
+
+<style></style>

@@ -3,9 +3,12 @@
         <SideBarManage class="col-span-2 md:col-span-1" :selecteds="selecteds" @update:selecteds="updateSelecteds">
         </SideBarManage>
         <div class="col-span-4" v-if="selecteds[0]">Content for Thống kê</div>
-        <div class="col-span-4" v-if="selecteds[1]">Content for Thống kê</div>
+        <LeaderManageAccount class="col-span-4" v-if="selecteds[1] && leadership"></LeaderManageAccount>
+        <WarehouseManagerManageAccount class="col-span-4" v-if="selecteds[1] && manager_WH"></WarehouseManagerManageAccount>
+        <DeliveryCenterManagerManageAccount class="col-span-4" v-if="selecteds[1] && manager_DC"></DeliveryCenterManagerManageAccount>
         <DeliveryCenterManage class="col-span-4" v-if="selecteds[2]"></DeliveryCenterManage>
         <WareHouseManage class="col-span-4" v-if="selecteds[3]"></WareHouseManage>
+        <PackageManage_DC class="col-span-4" v-if="selecteds[6]"></PackageManage_DC>
         <div class="col-span-4" v-if="selecteds[4]">Content for Thống kê</div>
         <div class="col-span-4" v-if="selecteds[5]">Content for Thống kê</div>
     </div>
@@ -15,18 +18,26 @@
 import SideBarManage from '../components/SideBarManage.vue';
 import DeliveryCenterManage from '../components/DeliveryCenterManage.vue';
 import WareHouseManage from '../components/WarehouseManage.vue';
+import LeaderManageAccount from '@/components/LeaderManageAccount.vue';
 import { mapState } from 'vuex';
+import WarehouseManagerManageAccount from '@/components/WarehouseLeadAccount.vue';
+import DeliveryCenterManagerManageAccount from '@/components/DeliveryCenterLeadAccount.vue';
+import PackageManage_DC from '@/components/PackageManage_DC.vue';
 export default {
     name: 'ManagerHome',
     data() {
         return {
-            selecteds: [true, false, false, false, false, false],
+            selecteds: [true, false, false, false, false, false, false],
         };
     },
     components: {
         SideBarManage,
         DeliveryCenterManage,
         WareHouseManage,
+        LeaderManageAccount,
+        WarehouseManagerManageAccount,
+        DeliveryCenterManagerManageAccount,
+        PackageManage_DC,
     },
     methods: {
         updateSelecteds(newSelecteds) {
@@ -36,7 +47,7 @@ export default {
         },
     },
     computed: {
-        ...mapState(['isLogin'])
+        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH', 'teller_DC']),
     }
 };
 </script>

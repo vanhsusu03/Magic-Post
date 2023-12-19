@@ -225,7 +225,6 @@ router.post('/login', AccountController.logIn)
  */
 router.post('/refresh', AccountController.refreshToken)
 
-
 /**
  * @swagger
  * /offices/{officeId}/accounts/{accountTypeId}:
@@ -263,6 +262,7 @@ router.post('/refresh', AccountController.refreshToken)
  *                          response: "Something went wrong while retrieving account information"
  */
 router.get('/offices/:officeId/accounts/:accountTypeId', isAuth, AccountController.getInfoByOffice)
+
 
 // router.get('/profile', isAuth, async (req, res) => {
 // 	res.json(req.account)
