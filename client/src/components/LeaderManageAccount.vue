@@ -449,7 +449,7 @@ export default {
                     this.createdANewAcc();
                 }
             } catch (err) {
-                if (err.response.status == 500) {
+                if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
                     await this.handleCreateAccount();
                 }
@@ -460,7 +460,7 @@ export default {
                 } else if (err.respone.data.error == 'Email is already exists') {
                     this.emailError.push('Email bị trùng! Hãy chọn email khác!')
                 } else if (err.respone.data.error == 'Identity number is already exists') {
-                    this.citizenCardImgError.push('ID căn cước bị trùng! Hãy chọn email khác!')
+                    this.citizenCardImgError.push('Số CCCD bị trùng! Hãy nhập CCCD khác!')
                 }
             }
         },

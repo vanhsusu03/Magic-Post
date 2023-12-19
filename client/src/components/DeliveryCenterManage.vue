@@ -231,13 +231,19 @@ export default {
         },
         async handleCreateDC() {
             try {
-                this.refreshToken();
-                let res = await axios.post('/deliveryCenters', this.form, {
+                let res = await axios.post('/deliveryCenters', {
+                    form: this.form,
+                    accountTypeId: this.leadership.accountTypeId,
+                }, {
                     headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
                 }, { withCredentials: true });
                 this.getAllDeliveryCenter();
                 this.createdANewDC();
             } catch (err) {
+                if(err.response.data.error == 'jwt expired') {
+                    await this.refreshToken();
+                    await this.handleCreateDC();
+                }
                 alert(err.response.data.error);
             }
         },

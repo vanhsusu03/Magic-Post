@@ -292,6 +292,9 @@ export default {
                 this.currentPage = page;
             }
             //this.scrollToTop();
+        }, 
+        truncateText(text, maxLength) {
+            return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
         },
     },
 
@@ -316,8 +319,8 @@ export default {
 <style>
 .tooltip {
     position: absolute;
-    background-color: rgba(230, 227, 227, 0.8);
-    color: #000;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
     padding: 1px;
     font-size: 12px;
     z-index: 9999;
