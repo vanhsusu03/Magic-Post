@@ -296,6 +296,7 @@ const AccountController = {
                         model: Delivery_center,
                         attributes: [
                             [sequelize.col('district_id'), 'districtId'],
+                            [sequelize.col('address'),'address']
                         ],
                         where: {
                             delivery_center_id: condition.delivery_center_id,
