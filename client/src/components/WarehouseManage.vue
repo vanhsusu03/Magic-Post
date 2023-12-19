@@ -172,7 +172,10 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['scrollToTop']),
+        ...mapMutations(['scrollToTop', 'setLogged', 'setLeadership', 'setLeadershipAccessToken',
+            'setLeadershipRefreshToken', 'setManagerDC', 'setDCManagerAccessToken', 'setDCManagerRefreshToken',
+            'setManagerWH', 'setWHManagerAccessToken', 'setWHManagerRefreshToken', 'setTellerDC', 'setTellerDCAccessToken',
+            'setTellerDCRefresToken', 'setStaffWH']),
         setHoveredText(text, rowId, event) {
             this.hoveredText = text;
             this.hoveredRowId = rowId;
@@ -203,13 +206,38 @@ export default {
             this.districtSelected.district = '';
             this.getProvinces();
         },
+        async refreshToken() {
+            let res = await axios.post('/refresh', {
+                refreshToken: this.leadershipToken.refreshToken,
+                withCredentials: true
+            }, {
+                headers:
+                {
+                    'x_authorization': `${this.leadershipToken.accessToken}`,
+                }, withCredentials: true
+            });
+
+            this.setLeadershipAccessToken(res.data);
+        },
         async handleCreateWH() {
             try {
-                await axios.post('/warehouses', this.form, { withCredentials: true });
+                const response = await axios.post('/warehouses', this.form, {
+                    headers: {
+                        "Authorization": `Bearer ${this.leadershipToken.accessToken}`,
+                    },
+                    withCredentials: true
+                });
                 this.getAllWarehouse();
                 this.createdANewWH();
             } catch (err) {
-                alert(err.response.data.error);
+                if (err.response && err.response.data.error === 'jwt expired') {
+                    await this.refreshToken();
+                    await this.handleCreateWH();
+                } else if (err.response && err.response.data.error) {
+                    alert(err.response.data.error);
+                } else {
+                    alert("An error occurred while processing the request.");
+                }
             }
         },
         async handleDeleteWH(id) {
@@ -249,7 +277,7 @@ export default {
             }
         },
         createdANewWH() {
-            this.getAllWarehouse();
+            if (this.createNew) { this.getAllWarehouse(); }
             this.mountedComponent();
             this.createNew = !this.createNew;
         },
@@ -292,14 +320,15 @@ export default {
                 this.currentPage = page;
             }
             //this.scrollToTop();
-        }, 
+        },
         truncateText(text, maxLength) {
             return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
         },
     },
 
     computed: {
-        ...mapState([]),
+        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'managerDCToken', 'manager_WH', 'managerWHToken',
+            'staff_WH', 'teller_DC']),
         totalPages() {
             return Math.ceil(this.wareHouses.length / this.itemsPerPage);
         },

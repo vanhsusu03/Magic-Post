@@ -37,6 +37,12 @@ export default {
   setTellerDC(state, matchTellerDC) {
     state.teller_DC = matchTellerDC;
   },
+  setTellerDCAccessToken(state, matchTellerDCAccessToken) {
+    state.tellerDCToken.accessToken = matchTellerDCAccessToken;
+  },
+  setTellerDCRefreshToken(state, matchTellerDCRefreshToken) {
+    state.tellerDCToken.refreshToken = matchTellerDCRefreshToken;
+  },
   setStaffWH(state, matchStaffWH) {
     state.staff_WH = matchStaffWH;
   },

@@ -2,6 +2,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import randToken from 'rand-token'
 import sequelize from 'sequelize'
+import { Op } from 'sequelize';
 import { format } from 'date-fns'
 import db from '../models/index.mjs'
 
@@ -242,52 +243,41 @@ const AccountController = {
             const officeId = Number(req.params.officeId)
             const accountTypeId = Number(req.params.accountTypeId)
 
-            if (AccountController.isProhibited(accountTypeId, req.account)) {
-                throw new Error('No permission')
-            }
+            // if (AccountController.isProhibited(accountTypeId, req.account)) {
+            //     throw new Error('No permission')
+            // }
 
-            let condition = {
-                warehouse_id: officeId,
-                account_type_id: accountTypeId
-            }
-            if (accountTypeId == 3 || accountTypeId == 4) {
+            let condition
+            if (officeId) {
                 condition = {
-                    delivery_center_id: officeId,
+                    warehouse_id: officeId,
                     account_type_id: accountTypeId
                 }
+                if (accountTypeId == 3 || accountTypeId == 4) {
+                    condition = {
+                        delivery_center_id: officeId,
+                        account_type_id: accountTypeId
+                    }
+                }
+            } else {
+                condition = {
+                    delivery_center_id: null,
+                    account_type_id: accountTypeId,
+                    warehouse_id: {
+                        [Op.not]: null
+                    }
+                }
+                if (accountTypeId == 3) {
+                    condition = {
+                        warehouse_id: null,
+                        account_type_id: accountTypeId,
+                        delivery_center_id: {
+                            [Op.not]: null
+                        }
+                    }
+                }
             }
-
-            const ans = await Account.findAll({
-                attributes: [
-                    [sequelize.col('account_id'), 'accountId'],
-                    [sequelize.col('account_type_id'), 'accountTypeId'],
-                    [sequelize.col('username'), 'username'],
-                    [sequelize.col('delivery_center_id'), 'deliveryCenterId'],
-                    [sequelize.col('warehouse_id'), 'warehouseId'],
-                    [sequelize.col('first_name'), 'firstName'],
-                    [sequelize.col('last_name'), 'lastName'],
-                    [sequelize.col('email'), 'email'],
-                    [sequelize.col('phone'), 'phone'],
-                    [sequelize.col('citizen_identity_card_number'), 'citizenIdentityCardNumber'],
-                    [sequelize.col('registration_time'), 'registrationTime'],
-                ],
-                where: condition,
-            })
-            res.status(200).json(ans)
-        } catch (err) {
-            console.log(err)
-            res.status(500).json({
-                message: 'Something went wrong',
-                error: err.message
-            })
-        }
-    },
-    getManagerAccountById: async (req, res) => {
-        try {
-            const accountTypeId = req.params.accountTypeId;
-            const officeId = req.params.officeId;
-
-            if (accountTypeId == 3) {
+            if (accountTypeId == 3 || accountTypeId == 4) {
                 const ans = await Account.findAll({
                     attributes: [
                         [sequelize.col('account.account_id'), 'accountId'],
@@ -308,7 +298,7 @@ const AccountController = {
                             [sequelize.col('district_id'), 'districtId'],
                         ],
                         where: {
-                            delivery_center_id: officeId
+                            delivery_center_id: condition.delivery_center_id,
                         },
                         required: true,
                         include: {
@@ -329,12 +319,13 @@ const AccountController = {
                         }
                     },
                     where: {
-                        account_type_id: 3
+                        account_type_id: condition.account_type_id
                     },
                     order: [['accountId', 'ASC']]
                 });
                 res.status(200).json(ans);
-            } else if (accountTypeId == 5) {
+            }
+            else if (accountTypeId == 5 || accountTypeId == 6) {
                 const ans = await Account.findAll({
                     attributes: [
                         [sequelize.col('account.account_id'), 'accountId'],
@@ -355,7 +346,7 @@ const AccountController = {
                             [sequelize.col('province_municipality_id'), 'provinceMunicipalityId'],
                         ],
                         where: {
-                            warehouse_id: officeId,
+                            warehouse_id: condition.warehouse_id,
                         },
                         required: true,
                         include: {
@@ -368,121 +359,20 @@ const AccountController = {
                         }
                     },
                     where: {
-                        account_type_id: 5
+                        account_type_id: condition.account_type_id
                     },
                     order: [['accountId', 'ASC']]
                 });
                 res.status(200).json(ans);
             }
         } catch (err) {
-            console.log(err);
-            res.status(400).json({
+            console.log(err)
+            res.status(500).json({
                 message: 'Something went wrong',
                 error: err.message
             })
         }
     },
-
-    getAllManagerAccountFromDeliveryCenter: async (req, res) => {
-        try {
-            const ans = await Account.findAll({
-                attributes: [
-                    [sequelize.col('account.account_id'), 'accountId'],
-                    [sequelize.col('account.account_type_id'), 'accountTypeId'],
-                    [sequelize.col('account.username'), 'username'],
-                    [sequelize.col('account.delivery_center_id'), 'deliveryCenterId'],
-                    [sequelize.col('account.warehouse_id'), 'warehouseId'],
-                    [sequelize.col('account.first_name'), 'firstName'],
-                    [sequelize.col('account.last_name'), 'lastName'],
-                    [sequelize.col('account.email'), 'email'],
-                    [sequelize.col('account.phone'), 'phone'],
-                    [sequelize.col('account.citizen_identity_card_number'), 'citizenIdentityCardNumber'],
-                    [sequelize.col('account.registration_time'), 'registrationTime'],
-                ],
-                include: {
-                    model: Delivery_center,
-                    attributes: [
-                        [sequelize.col('district_id'), 'districtId'],
-                    ],
-                    required: true,
-                    include: {
-                        model: District,
-                        attributes: [
-                            [sequelize.col('province_municipality_id'), 'provinceMunicipalityId'],
-                            [sequelize.col('district'), 'district'],
-                        ],
-                        required: true,
-                        include: {
-                            model: Province_municipality,
-                            attributes: [
-                                [sequelize.col('province_municipality'), 'provinceMunicipality'],
-                                // Add other attributes as needed
-                            ],
-                            required: true,
-                        }
-                    }
-                },
-                where: {
-                    account_type_id: 3
-                },
-                order: [['accountId', 'ASC']]
-            });
-            res.status(200).json(ans);
-        } catch (err) {
-            console.log(err);
-            res.status(400).json({
-                message: 'Something went wrong',
-                error: err.message
-            })
-        }
-    },
-
-    getAllManagerAccountFromWarehouse: async (req, res) => {
-        try {
-            const ans = await Account.findAll({
-                attributes: [
-                    [sequelize.col('account.account_id'), 'accountId'],
-                    [sequelize.col('account.account_type_id'), 'accountTypeId'],
-                    [sequelize.col('account.username'), 'username'],
-                    [sequelize.col('account.delivery_center_id'), 'deliveryCenterId'],
-                    [sequelize.col('account.warehouse_id'), 'warehouseId'],
-                    [sequelize.col('account.first_name'), 'firstName'],
-                    [sequelize.col('account.last_name'), 'lastName'],
-                    [sequelize.col('account.email'), 'email'],
-                    [sequelize.col('account.phone'), 'phone'],
-                    [sequelize.col('account.citizen_identity_card_number'), 'identityCardlink'],
-                    [sequelize.col('account.registration_time'), 'registrationTime']
-                ],
-                include: {
-                    model: Warehouse,
-                    attributes: [
-                        [sequelize.col('province_municipality_id'), 'provinceMunicipalityId'],
-                    ],
-                    required: true,
-                    include: {
-                        model: Province_municipality,
-                        attributes: [
-                            [sequelize.col('province_municipality'), 'provinceMunicipality'],
-                            // Add other attributes as needed
-                        ],
-                        required: true,
-                    }
-                },
-                where: {
-                    account_type_id: 5
-                },
-                order: [['accountId', 'ASC']]
-            });
-            res.status(200).json(ans);
-        } catch (err) {
-            console.log(err);
-            res.status(400).json({
-                message: 'Something went wrong',
-                error: err.message
-            })
-        }
-    },
-
     // logOut: async (req, res) => {
     //     try {
     //         const token = req.headers.authorization.split(' ')[1]

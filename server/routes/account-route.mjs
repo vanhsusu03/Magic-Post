@@ -225,10 +225,6 @@ router.post('/login', AccountController.logIn)
  */
 router.post('/refresh', AccountController.refreshToken)
 
-router.get('/deliveryCenters/manager',AccountController.getAllManagerAccountFromDeliveryCenter)
-
-router.get('/warehouses/manager',AccountController.getAllManagerAccountFromWarehouse)
-
 /**
  * @swagger
  * /offices/{officeId}/accounts/{accountTypeId}:
@@ -267,7 +263,6 @@ router.get('/warehouses/manager',AccountController.getAllManagerAccountFromWareh
  */
 router.get('/offices/:officeId/accounts/:accountTypeId', isAuth, AccountController.getInfoByOffice)
 
-router.get('/office/:officeId/manager/:accountTypeId', AccountController.getManagerAccountById) 
 
 // router.get('/profile', isAuth, async (req, res) => {
 // 	res.json(req.account)

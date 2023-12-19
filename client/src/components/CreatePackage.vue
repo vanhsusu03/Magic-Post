@@ -4,13 +4,13 @@
             <div class="w-8/12 grid grid-cols-6 mx-auto">
                 <span class="col-start-1 col-end-5 max-w-fit">
                     <h1 class="font-semibold py-2 mt-2 text-center lg:text-2xl md:text-xl sm:text-lg text-base">
-                        Danh sách đơn hàng
+                        Danh sách đơn hàng đã ghi nhận
                     </h1>
                 </span>
                 <span class="col-start-6">
                     <button v-on:click="this.createPackageBill()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mt-2 
                     mx-4 md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">
-                        Thêm đơn hàng
+                        Ghi nhận hàng mới
                     </button>
                 </span>
             </div>
@@ -111,7 +111,7 @@
             <div class="py-2 grid gird-cols-6">
                 <span class="col-start-1 col-end-5 py-2">
                     <h1 class="inline-flex font-semibold lg:text-xl md:text-lg sm:text-base text-sm">
-                        Tạo mới tài khoản
+                        Ghi nhận hàng mới
                     </h1>
                 </span>
                 <span class="col-start-6 mx-auto">
@@ -123,18 +123,17 @@
             </div>
 
             <hr class="my-2 mx-auto">
-
             <div class="" id="course">
                 <form ref="accForm" @submit="handleSubmit"
                     class="bg-white items-center shadow-lg rounded px-8 pt-6 pb-8 mb-4" novalidate autocapitalize="off">
-                    <h2><strong>Nơi gửi:</strong></h2><br>
-                    
-                    <label for="province" class="info">Tỉnh/Thành phố:</label><br>
+                    <h1 class="text-lg"><strong>Thông tin phía gửi:</strong></h1><br>
+                    <h1><strong>Thông tin người gửi:</strong></h1><br>
+                    <h1><strong>Nơi gửi:</strong></h1><br>
+                    <label for="province" class="info">Tỉnh/Thành phố: <strong>{{ this.tellerDC }}</strong></label><br>
                     <div id="province" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
                         data-select2-id="select2-data-73-3wmt">
                         <select id="office-province" name="province_id" v-model="provinceSelectedId"
-                            @change="this.solveWhenProvinceChange()" 
-                            class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+                            @change="this.solveWhenProvinceChange()" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
                                 md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1"
                             aria-hidden="true" data-select2-id="select2-data-office-province">
                             <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
@@ -149,12 +148,11 @@
 
                     <label for="district" class="info">Tỉnh/Thành phố:</label><br>
                     <div id="district" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
-                    data-select2-id="select2-data-73-3wmt">
+                        data-select2-id="select2-data-73-3wmt">
                         <select id="district" name="district" v-model="districtSelectedId"
-                            @change="this.getAllDeliveryCenterOfADistrict()" 
-                            class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
-                                md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true"
-                            data-select2-id="select2-data-office-province">
+                            @change="this.getAllDeliveryCenterOfADistrict()" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+                                md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1"
+                            aria-hidden="true" data-select2-id="select2-data-office-province">
                             <option class="text-gray-900" :value="0">Quận/Huyện</option>
                             <option class="text-gray-900" v-for="district in districts" :value="district.districtId"
                                 :key="district.district">{{
@@ -165,15 +163,14 @@
 
                     <label for="deliveryCenter" class="info">Tỉnh/Thành phố:</label><br>
                     <div id="deliveryCenter" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
-                    data-select2-id="select2-data-73-3wmt">
+                        data-select2-id="select2-data-73-3wmt">
                         <select id="deleveryCenter" name="deleveryCenter" v-model="deliverycenterSelectedId"
-                            @change="this.getAllDeliveryCenterOfADistrict()" 
-                            class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
-                                md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true"
-                            data-select2-id="select2-data-office-province">
+                            @change="this.getAllDeliveryCenterOfADistrict()" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+                                md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1"
+                            aria-hidden="true" data-select2-id="select2-data-office-province">
                             <option class="text-gray-900" :value="0">Điểm giao dịch</option>
-                            <option class="text-gray-900" v-for="delivery_center in deliveryCenters" :value="delivery_center.deliveryCenterId"
-                                :key="delivery_center.deliveryCenterId">{{
+                            <option class="text-gray-900" v-for="delivery_center in deliveryCenters"
+                                :value="delivery_center.deliveryCenterId" :key="delivery_center.deliveryCenterId">{{
                                     delivery_center.address }}</option>
                         </select>
                     </div>
@@ -184,37 +181,39 @@
 
                     <div class="flex">
                         <div class="flex items-center h-5 ">
-                            <input type="radio" id="packageTypeIdMerchandise" value="Hàng hóa"  aria-describedby="packageTypeInfo"
-                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 
-                            dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" 
-                            v-model="packageType" @click="test">
+                            <input type="radio" id="packageTypeIdMerchandise" value="Hàng hóa"
+                                aria-describedby="packageTypeInfo" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 
+                            dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                                v-model="packageType" @click="test">
                         </div>
                         <div class="ms-2 text-sm mr-4">
-                            <label for="packageTypeIdMerchandise" class="font-medium text-gray-900 dark:text-gray-300">Hàng hóa</label>
-                            <p id="packageTypeInfo" class="text-xs font-normal text-gray-500 dark:text-gray-300">Trọng lượng tối đa: 8kg</p>
+                            <label for="packageTypeIdMerchandise" class="font-medium text-gray-900 dark:text-gray-300">Hàng
+                                hóa</label>
+                            <p id="packageTypeInfo" class="text-xs font-normal text-gray-500 dark:text-gray-300">Trọng lượng
+                                tối đa: 8kg</p>
                         </div>
 
                         <div class="flex items-center h-5 ml-4">
-                            <input type="radio" id="packageTypeIdDocument" value="Tài liệu"  aria-describedby="packageTypeInfo"
-                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 
+                            <input type="radio" id="packageTypeIdDocument" value="Tài liệu"
+                                aria-describedby="packageTypeInfo" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 
                             dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                                 v-model="packageType" @click="test">
                         </div>
                         <div class="ms-2 text-sm">
-                            <label for="packageTypeIdDocument" class="font-medium text-gray-900 dark:text-gray-300">Tài liệu</label>
-                            <p id="packageTypeInfo" class="text-xs font-normal text-gray-500 dark:text-gray-300">Trọng lượng tối đa: 2kg</p>
+                            <label for="packageTypeIdDocument" class="font-medium text-gray-900 dark:text-gray-300">Tài
+                                liệu</label>
+                            <p id="packageTypeInfo" class="text-xs font-normal text-gray-500 dark:text-gray-300">Trọng lượng
+                                tối đa: 2kg</p>
                         </div>
                     </div><br>
 
                     <label for="weight">Trọng lượng:</label>
-                    <input type="text" id="weight" name="weight" placeholder="Nhập trọng lượng" 
-                        class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                    <input type="text" id="weight" name="weight" placeholder="Nhập trọng lượng" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                         sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
 
                     <label for="cost">Phí vận chuyển:</label>
-                    <input type="text" id="cost" name="cost" placeholder="Nhập phí vận chuyển"
-                        v-model="repassword" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                    <input type="text" id="cost" name="cost" placeholder="Nhập phí vận chuyển" v-model="repassword" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                         sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
 
@@ -226,48 +225,49 @@
                     <p class="error" v-if="firstNameError.length > 0">{{ firstNameError[0] }}<br></p><br>
 
                     <label for="senderAddress">Địa chỉ người gửi:</label>
-                    <input type="text" id="senderAddress" name="senderAddress" placeholder="Nhập địa chỉ" v-model="form.address"
-                        class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                    <input type="text" id="senderAddress" name="senderAddress" placeholder="Nhập địa chỉ"
+                        v-model="form.address" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                         sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
 
                     <label for="senderPhone">Số điện thoại người gửi:</label>
-                    <input type="text" id="senderPhone" name="senderPhone" placeholder="Nhập số điện thoại" v-model="form.phone" 
-                        class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                    <input type="text" id="senderPhone" name="senderPhone" placeholder="Nhập số điện thoại"
+                        v-model="form.phone" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                         sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
                     <p class="error" v-if="phoneError.length > 0">{{ phoneError[0] }}<br></p><br>
 
 
                     <label for="receiverName">Họ tên người nhận:</label>
-                    <input type="text" id="receiverName" name="receiverName" placeholder="Nhập tên họ" v-model="form.firstName"
-                        class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                    <input type="text" id="receiverName" name="receiverName" placeholder="Nhập tên họ"
+                        v-model="form.firstName" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                         sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
                     <p class="error" v-if="firstNameError.length > 0">{{ firstNameError[0] }}<br></p><br>
 
                     <label for="receiverAddress">Địa chỉ người nhận:</label>
-                    <input type="text" id="receiverAddress" name="receiverAddress" placeholder="Nhập địa chỉ" v-model="form.address"
-                        class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                    <input type="text" id="receiverAddress" name="receiverAddress" placeholder="Nhập địa chỉ"
+                        v-model="form.address" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                         sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
 
                     <label for="receiverPhone">Số điện thoại người nhận:</label>
-                    <input type="text" id="receiverPhone" name="receiverPhone" placeholder="Nhập số điện thoại" v-model="form.phone" 
-                        class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                    <input type="text" id="receiverPhone" name="receiverPhone" placeholder="Nhập số điện thoại"
+                        v-model="form.phone" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                         sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
                     <p class="error" v-if="phoneError.length > 0">{{ phoneError[0] }}<br></p><br>
 
-                <br>
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
+                    <br>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
                 md:text-base sm:text-sm text-xs hover:shadow-lg cursor-pointer">Tạo đơn
-                    hàng</button>
-            </form>
+                        hàng</button>
+                </form>
+            </div>
         </div>
-    </div>
 
-</div></template>
+    </div>
+</template>
 
 <script>
 import { mapMutations, mapState } from 'vuex';
@@ -277,16 +277,19 @@ export default {
     data() {
         return {
             form: {
-                accountTypeId: 0,
-                username: '',
-                password: '',
-                deliveryCenterId: '',
-                warehouseId: '',
-                firstName: '',
-                lastName: '',
-                email: '',
-                phone: '',
-                citizenIdentityCardNumber: '',
+                packageTypeId: 0,
+                deliveryCenterSendId: 0,
+                deliveryCenterReceiveId: 0,
+                weightGram: 0,
+                cost: 0,
+                codAmount: 0,
+                senderAddress: '',
+                receiverAddress: '',
+                senderName: '',
+                receiverName: '',
+                senderPhone: '',
+                receiverPhone: '',
+                location: '',
             },
             packageType: '',
             repassword: '',
@@ -300,7 +303,7 @@ export default {
             provinces: [],
             districts: [],
             wareHouses: [],
-            deliveryCenters: [],
+            deliveryCenters: [], //dùng
             provinceError: [],
             districtError: [],
             warehouseError: [],
@@ -314,9 +317,10 @@ export default {
             emailError: [],
             phoneError: [],
             citizenCardImgError: [],
-            createNew: true,
+            createNew: false,
             itemsPerPage: 4,
             currentPage: 1,
+            tellerDC: [],
         }
     },
     methods: {
@@ -343,11 +347,26 @@ export default {
         solveWhenProvinceChange() {
             this.getAllDistrictsOfAProvince();
         },
+        async getTellerDC() {
+            try {
+                let res = await axios.get(`/offices/${this.teller_DC.deliveryCenterId}/accounts/${this.teller_DC.accountTypeId}`, {
+                    headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
+                }, { withCredentials: true });
+                if (res.data) {
+                    this.tellerDC = res.data;
+                }
+            } catch (err) {
+                if (err.response.data.error == 'jwt expired') {
+                    await this.refreshToken();
+                    await this.getTellerDC();
+                }
+            }
+        },
         async fetchAccountsData() {
-            try { 
+            try {
                 let res = await axios.get('/warehouses/staff', { withCredentials: true });
                 this.accounts = res.data;
-                
+
             } catch (err) {
                 alert(err.respone.data.error);
             }
@@ -503,7 +522,7 @@ export default {
             // if (this.districtSelectedId == 0) {
             //     this.districtError.push("Hãy chọn Quận/Huyện tương ứng!");
             // }
-            
+
             if (!this.form.firstName) {
                 this.firstNameError.push("Hãy nhập tên họ. Ví dụ: Lê, Nguyễn, .v.v.");
             } else if (!/^[A-Za-zÀ-ỹ]+$/.test(this.form.firstName.replace(/\s/g, ""))) {
@@ -587,7 +606,7 @@ export default {
     },
 
     computed: {
-        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH', 'teller_DC']),
+        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH', 'teller_DC', 'tellerDCToken']),
         totalPages() {
             return Math.ceil(this.accounts.length / this.itemsPerPage);
         },
@@ -599,7 +618,7 @@ export default {
     },
     created() {
         this.getProvinces();
-        this.fetchAccountsData();
+        this.getTellerDC();
     }
 }
 </script>
