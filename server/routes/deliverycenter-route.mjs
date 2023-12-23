@@ -187,7 +187,7 @@ router.put('/deliveryCenters/:deliveryCenterId', isAuth, isLeadership, DeliveryC
  */
 router.delete('/deliveryCenters/:deliveryCenterId', isAuth, isLeadership, DeliveryCenterController.removeADeliveryCenter)
 
-router.get('/deliveryCenters/:deliveryCenterId/packages/statuses', isAuth, isDeliveryCenterManager, DeliveryCenterController.getPackages)
+router.get('/deliveryCenters/:deliveryCenterId/packages/statuses', isAuth, DeliveryCenterController.getPackages)
 
 
 router.get('/deliveryCenters/:districtId', isAuth, DeliveryCenterController.getDeliveryCentersByDistrict)

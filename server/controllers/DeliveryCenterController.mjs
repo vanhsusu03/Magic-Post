@@ -176,7 +176,7 @@ const DeliveryCenterController = {
         try {
             const deliveryCenterId = Number(req.params.deliveryCenterId)
             const statusId = req.body.statusId
-            const delveryCenterType = req.body.delveryCenterType
+            const deliveryCenterType = req.body.deliveryCenterType
 
             let condition = {}
             let conditionDeliveryCenter
@@ -187,18 +187,18 @@ const DeliveryCenterController = {
                     }
                 }
                 if (statusId) {
-                    if (delveryCenterType == "send") {
+                    if (deliveryCenterType == "send") {
                         conditionDeliveryCenter = {
                             delivery_center_send_id: deliveryCenterId
                         }
-                    } else if (delveryCenterType == "receive") {
+                    } else if (deliveryCenterType == "receive") {
                         conditionDeliveryCenter = {
                             delivery_center_receive_id: deliveryCenterId
                         }
                     }
                 }
             }
-
+            console.log(conditionDeliveryCenter)
             const ans = await Package.findAll({
                 attributes: [
                     [sequelize.col('package.package_id'), 'packageId'],
@@ -236,6 +236,16 @@ const DeliveryCenterController = {
                     [{ model: Status_detail }, 'time', 'ASC']
                 ]
             })
+            res.status(200).json(ans);
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
     getDeliveryCentersByDistrict: async (req, res) => {
         try {
             const districtId = Number(req.params.districtId);

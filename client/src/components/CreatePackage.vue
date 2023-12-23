@@ -17,12 +17,12 @@
 
             <hr class="my-2 mx-auto w-9/12">
 
-            <div class="w-9/12 mx-auto" id="course">
+            <div class="w-full mx-auto" id="course">
                 <table>
                     <tr>
                         <th
                             class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
-                            Mã đơn hàng</th>
+                            Mã đơn</th>
                         <th
                             class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
                             Thông tin người gửi</th>
@@ -48,38 +48,26 @@
                             class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
                             Xóa</th>
                     </tr>
-                    <!-- <tr v-for="package in displayedItemList">
+                    <tr v-for="packages in displayedItemList">
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">{{
-                            package.deliveryCenterId }}</td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
-                            {{
-                                package.delivery_center &&
-                                package.delivery_center.district &&
-                                package.delivery_center.district.province_municipality
-                                ? package.delivery_center.district.province_municipality.provinceMunicipality
-                                : 'N/A'
-                            }}
+                            packages.packageId }}</td>
+                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
+                            <tr>{{ packages.senderName }}</tr>
+                            <tr>{{ packages.senderPhone }}</tr>
+                        </td>
+                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
+                            <tr>{{ packages.receiverName }}</tr>
+                            <tr>{{ packages.receiverPhone }}</tr>
                         </td>
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">{{
-                            package.delivery_center &&
-                            package.delivery_center.district
-                            ? package.delivery_center.district.district
-                            : 'N/A' }}</td>
+                           packages.deliveryCenterSendId }}</td>
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
-                            DC_{{ package.delivery_center &&
-                                package.delivery_center.district &&
-                                package.delivery_center.district.provinceMunicipalityId
-                                ?
-                                `${package.delivery_center.district.provinceMunicipalityId}/${package.delivery_center.districtId}_MANAGER_${package.packageId}`
-                                : 'N/A'
-                            }}
+                            {{ packages.deliveryCenterReceiveId}}
                         </td>
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                            package.firstName + ' ' + package.lastName }}</td>
+                            packages.status_details[0].time }}</td>
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                            truncateText(package.email, 20) }}</td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                            package.phone }}</td>
+                            packages.status_details[0].package_status.packageStatus }}</td>
                         <td class="py-2 px-4 border items-center justify-center"> <img
                                 class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer"
                                 src="../assets/img/note.png" alt=""> </td>
@@ -87,7 +75,7 @@
                             <img class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer hover:opacity-90 py-6"
                                 src="../assets/img/trash.png" alt="">
                         </td>
-                    </tr> -->
+                    </tr>
                 </table>
 
                 <div class="my-4">
@@ -377,13 +365,23 @@ export default {
                 }
             }
         },
-        async fetchPackagesData() {
+        async fetchSendPackagesData() {
             try {
-                let res = await axios.get('/warehouses/staff', { withCredentials: true });
-                this.packages = res.data;
+                let res = await axios.get(`/deliveryCenters/${this.teller_DC.deliveryCenterId}/packages/statuses`, {
+                    statusId: 1,
+                    deliveryCenterType: 'send',
+                    headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
+                }, { withCredentials: true });
+                if (res.data) {
+                    this.packages = res.data;
+                }
 
             } catch (err) {
-                alert(err.respone.data.error);
+                if (err.response.data.error == 'jwt expired') {
+                    await this.refreshToken();
+                    await this.fetchSendPackagesData();
+                }
+                alert(err.response.data.error);
             }
         },
         async refreshToken() {
@@ -600,7 +598,8 @@ export default {
     },
 
     computed: {
-        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH', 'teller_DC', 'tellerDCToken']),
+        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH',
+            'teller_DC', 'tellerDCToken']),
         totalPages() {
             return Math.ceil(this.packages.length / this.itemsPerPage);
         },
@@ -614,6 +613,7 @@ export default {
         this.getProvinces();
         this.getTellerDC();
         this.getDeliveryCenterHere();
+        this.fetchSendPackagesData();
     }
 }
 </script>
