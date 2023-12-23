@@ -18,10 +18,10 @@
 
             <div class="w-11/12 mx-auto">
                 <div class="grid grid-cols-6">
-                    <span class="col-start-1 col-end-5">
+                    <span class="col-start-1 col-end-3">
                         <h2 class="py-2 md:text-base sm:text-sm text-xs">Chọn loại tài khoản:</h2>
                         <select id="office-province" name="province_id" v-model="accountTypeSelected"
-                            @change="handleFilter(); fetchAccountsData()" class="search-select mb-4 w-6/12 h-1/2 select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+                            @change="handleFilter(); fetchAccountsData()" class="search-select mb-4 w-11/12 h-1/2 select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
                     md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true"
                             data-select2-id="select2-data-office-province">
                             <option class="md:text-base sm:text-sm text-xs border text-gray-900" :value="0" selected>Loại
@@ -34,14 +34,27 @@
                         </select>
                     </span>
 
-                    <span v-if="accountTypeSelected != 0" class="flex col-start-5 col-end-7 h-2/3 mt-8 py-0 items-center justify-center">
-                        <svg class="w-8 h-8 mx-2" xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
-                            fill="none">
+                    <span v-if="accountTypeSelected != 0"
+                        class="flex col-start-3 col-end-5 mt-8 mx-auto items-center justify-center">
+                        <svg class="w-8 h-8 mx-2" xmlns="http://www.w3.org/2000/svg" width="800px" height="800px"
+                            viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
+                                stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <input type="text" class="flex w-full h-2/3" placeholder="Search" v-model="searchInput">
+                    </span>
+
+                    <span v-if="accountTypeSelected != 0"
+                        class="flex col-start-5 col-end-7 h-2/3 mt-8 py-0 mx-auto items-center justify-center">
+                        <svg class="w-8 h-8 mx-2" xmlns="http://www.w3.org/2000/svg" width="800px" height="800px"
+                            viewBox="0 0 24 24" fill="none">
                             <path
                                 d="M3 4.6C3 4.03995 3 3.75992 3.10899 3.54601C3.20487 3.35785 3.35785 3.20487 3.54601 3.10899C3.75992 3 4.03995 3 4.6 3H19.4C19.9601 3 20.2401 3 20.454 3.10899C20.6422 3.20487 20.7951 3.35785 20.891 3.54601C21 3.75992 21 4.03995 21 4.6V6.33726C21 6.58185 21 6.70414 20.9724 6.81923C20.9479 6.92127 20.9075 7.01881 20.8526 7.10828C20.7908 7.2092 20.7043 7.29568 20.5314 7.46863L14.4686 13.5314C14.2957 13.7043 14.2092 13.7908 14.1474 13.8917C14.0925 13.9812 14.0521 14.0787 14.0276 14.1808C14 14.2959 14 14.4182 14 14.6627V17L10 21V14.6627C10 14.4182 10 14.2959 9.97237 14.1808C9.94787 14.0787 9.90747 13.9812 9.85264 13.8917C9.7908 13.7908 9.70432 13.7043 9.53137 13.5314L3.46863 7.46863C3.29568 7.29568 3.2092 7.2092 3.14736 7.10828C3.09253 7.01881 3.05213 6.92127 3.02763 6.81923C3 6.70414 3 6.58185 3 6.33726V4.6Z"
                                 stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        <div id="province_filter" class="flex w-full common-shadow-input h-[43px] select2-stupid-at-home items-center"
+                        <div id="province_filter"
+                            class="flex w-full common-shadow-input h-[43px] select2-stupid-at-home items-center"
                             data-select2-id="select2-data-73-3wmt">
                             <select id="office-province_filter" name="province_id" v-model="provinceFilterId"
                                 @change="this.solveWhenProvinceChange()"
@@ -59,7 +72,7 @@
                 </div>
 
                 <!-- HEAD COMP MANAGE  -->
-                <div class="mx-auto" id="course" v-if="accounts && accounts.length">
+                <div class="mx-auto mt-4" id="course" v-if="accounts && accounts.length">
                     <table class="" v-if="this.accountTypeSelected == 1">
                         <tr>
                             <th class="bg-green-500 text-white font-bold py-2 px-4  md:text-base sm:text-sm text-xs border">
@@ -598,6 +611,14 @@ export default {
             isShow: false,
             provinceFilterId: 0,
             fetchFinish: false,
+            searchInput: '',
+            names: [
+                { id: 1, name: 'Nguyễn' },
+                { id: 2, name: 'John' },
+                { id: 3, name: 'Alice' },
+                // Add more names to your array
+            ],
+            searchResults: [],
         }
     },
     methods: {
@@ -629,7 +650,7 @@ export default {
             }
         },
         handleFilter() {
-            console.log(this.provinceFilterId);
+            console.log(this.searchInput);
             this.accounts = null;
             this.provinceFilterId = 0;
             this.resetError();
@@ -987,7 +1008,11 @@ export default {
             this.wareHouses = null;
             this.deliveryCenters = null;
             this.createNew = !this.createNew;
-        }
+        },
+        escapeRegExp(text) {
+            // Function to escape special characters in a string for regex
+            return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+        },
     },
 
     computed: {
@@ -998,7 +1023,10 @@ export default {
         displayedItemList() {
             const startIndex = (this.currentPage - 1) * this.itemsPerPage;
             const endIndex = startIndex + this.itemsPerPage;
-            return this.accounts.slice(startIndex, endIndex);
+            return this.searchInput != ''
+                ? this.accounts.filter((t) => new RegExp(this.escapeRegExp(this.searchInput), 'i').test(t.firstName + t.lastName)).
+                slice(startIndex, endIndex)
+                : this.accounts.slice(startIndex, endIndex);
         },
     },
     created() {
