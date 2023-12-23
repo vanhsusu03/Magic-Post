@@ -88,7 +88,7 @@ const DeliveryCenterController = {
         try {
             const deliveryCenterId = Number(req.params.deliveryCenterId)
             const { warehouseId, address } = req.body
-
+            
             if (address && warehouseId) {
                 await Delivery_center.update({
                     warehouse_id: warehouseId,
@@ -186,16 +186,14 @@ const DeliveryCenterController = {
                         status_id: statusId
                     }
                 }
-                if (statusId) {
-                    if (delveryCenterType == "send") {
-                        conditionDeliveryCenter = {
-                            delivery_center_send_id: deliveryCenterId
-                        }
-                    } else if (delveryCenterType == "receive") {
-                        conditionDeliveryCenter = {
-                            delivery_center_receive_id: deliveryCenterId
-                        }
-                    }
+            }
+            if (delveryCenterType == "send") {
+                conditionDeliveryCenter = {
+                    delivery_center_send_id: deliveryCenterId
+                }
+            } else if (delveryCenterType == "receive") {
+                conditionDeliveryCenter = {
+                    delivery_center_receive_id: deliveryCenterId
                 }
             }
 
@@ -236,52 +234,7 @@ const DeliveryCenterController = {
                     [{ model: Status_detail }, 'time', 'ASC']
                 ]
             })
-    getDeliveryCentersByDistrict: async (req, res) => {
-        try {
-            const districtId = Number(req.params.districtId);
 
-            const ans = await Delivery_center.findAll({
-                attributes: [
-                    [sequelize.col('delivery_center_id'), 'deliveryCenterId'],
-                    [sequelize.col('district_id'), 'districtId'],
-                    [sequelize.col('warehouse_id'), 'warehouseId'],
-                    [sequelize.col('address'), 'address'],
-                ],
-                where: {
-                    district_id: districtId
-                },
-                order: [
-                    [sequelize.col('delivery_center_id'), 'ASC'],
-                ],
-            })
-            res.status(200).json(ans)
-        } catch (err) {
-            console.log(err)
-            res.status(500).json({
-                message: 'Something went wrong',
-                error: err.message
-            })
-        }
-    },
-
-    getDeliveryCentersById: async (req, res) => {
-        try {
-            const deliveryCenterId = Number(req.params.deliveryCenterId);
-            // console.log("ITS BUG:  " + this.deliveryCenterId)
-            const ans = await Delivery_center.findAll({
-                attributes: [
-                    [sequelize.col('delivery_center_id'), 'deliveryCenterId'],
-                    [sequelize.col('district_id'), 'districtId'],
-                    [sequelize.col('warehouse_id'), 'warehouseId'],
-                    [sequelize.col('address'), 'address'],
-                ],
-                where: {
-                    delivery_center_id: deliveryCenterId
-                },
-                order: [
-                    [sequelize.col('delivery_center_id'), 'ASC'],
-                ],
-            })
             res.status(200).json(ans)
         } catch (err) {
             console.log(err)
