@@ -18,8 +18,6 @@
         <div class="w-9/12 mx-auto" id="course">
             <table class="px-auto">
                 <tr>
-                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Chỉnh sửa
-                    </th>
                     <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Mã định
                         danh Tỉnh/Thành phố</th>
                     <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">
@@ -28,12 +26,11 @@
                         TK</th>
                     <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Địa chỉ
                         cụ thể</th>
+                    <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Chỉnh sửa
+                    </th>
                     <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Xóa</th>
                 </tr>
                 <tr class="" v-for="warehouse in displayedItemList">
-                    <td class="py-2 px-4 border items-center justify-center"> <img class="w-2/5 mx-auto"
-                            src="../assets/img/note.png">
-                    </td>
                     <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs"> {{
                         warehouse.provinceMunicipalityId }}</td>
                     <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs">{{
@@ -55,22 +52,27 @@
                     </tr>
                 </td>
                 <td class="py-2 px-4 border items-center md:text-lg sm:text-base text-sm">
+                    <tr v-for="whouse in warehouse.warehouses"><img 
+                            class="lg:w-2/5 md:w-3/5 sm:w-4/5 w-10/12 mx-auto cursor-pointer hover:opacity-30 py-6"
+                            src="../assets/img/note.png" @click="updateWarehouse(whouse); this.warehouseSelectedId = whouse.warehouseId"></tr>
+                </td>
+                <td class="py-2 px-4 border items-center md:text-lg sm:text-base text-sm">
                     <tr v-for="whouse in warehouse.warehouses"><img
-                            class="lg:w-2/5 md:w-3/5 sm:w-4/5 w-10/12 mx-auto cursor-pointer hover:opacity-90 py-6"
-                            src="../assets/img/trash.png" alt="" @click="test()"></tr>
+                            class="lg:w-2/5 md:w-3/5 sm:w-4/5 w-10/12 mx-auto cursor-pointer hover:opacity-30 py-6"
+                            src="../assets/img/trash.png" alt="" @click="deleteWarehouse(whouse)"></tr>
                 </td>
                 </tr>
             </table>
             <div class="my-4">
                 <div class="max-w-fit mx-auto">
                     <button
-                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-base sm:text-sm text-xs"
+                        class="bg-green-500 hover:bg-green-700 hover:shadow-lg cursor-pointer text-white font-bold py-2 px-4 rounded md:text-base sm:text-sm text-xs"
                         @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Previous Page</button>
                     <span class="pl-10 pr-10 md:text-base sm:text-sm text-xs">Trang <strong>{{ currentPage }}</strong> trong
                         tổng số <strong>{{ totalPages
                         }}</strong></span>
                     <button
-                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-base sm:text-sm text-xs"
+                        class="bg-green-500 hover:bg-green-700 hover:shadow-lg cursor-pointer text-white font-bold py-2 px-4 rounded md:text-base sm:text-sm text-xs"
                         @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Next Page</button>
                 </div>
 
@@ -80,8 +82,12 @@
     <div v-else class="md:max-w-5xl sm:max-w-3xl max-w-xl w-11/12 mx-auto">
         <div class="py-2 grid gird-cols-6">
             <span class="col-start-1 py-2">
-                <h1 class="inline-flex font-semibold lg:text-xl md:text-lg sm:text-base text-sm">
+                <h1 v-if="!this.updating" class="inline-flex font-semibold lg:text-xl md:text-lg sm:text-base text-sm">
                     Tạo mới điểm tập kết
+                </h1>
+
+                <h1 v-else class="inline-flex font-semibold lg:text-xl md:text-lg sm:text-base text-sm">
+                    Chỉnh sửa điểm tập kết 
                 </h1>
             </span>
             <span class="col-start-6">
@@ -95,9 +101,25 @@
         <div class="" id="course">
             <form @submit="handleSubmit" class="bg-white items-center shadow-lg rounded px-8 pt-6 pb-8 mb-4" novalidate
                 autocapitalize="off">
+                <h2 v-if="this.updating">ID điểm tập kết: {{ warehouseSelectedId }} <br>
+                </h2>
+
                 <label for="province" class="md:text-base sm:text-sm text-xs">Tỉnh/Thành phố:</label>
                 <br>
-                <div id="province" class="w-2/5 common-shadow-input h-[43px] select2-stupid-at-home"
+                <div v-if="!this.updating" id="province" class="w-2/5 common-shadow-input h-[43px] select2-stupid-at-home"
+                    data-select2-id="select2-data-73-3wmt">
+                    <select id="office-province" name="province_id" v-model="provinceSelected"
+                        @change="this.getAllDistrictsOfAProvince()" class="cursor-pointer hover:shadow-lg search-select w-full h-full select2-hidden-accessible 
+                        bg-gray-100 rounded-b-lg border-gray-300" tabindex="-1" aria-hidden="true"
+                        data-select2-id="select2-data-office-province">
+                        <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
+                        <option class="text-gray-900" v-for="province in provinces" :value="province"
+                            :key="province.provinceMunicipalityId">{{
+                                province.provinceMunicipality }}</option>
+                    </select>
+                </div>
+
+                <div v-else id="province" class="w-2/5 common-shadow-input h-[43px] select2-stupid-at-home"
                     data-select2-id="select2-data-73-3wmt">
                     <select id="office-province" name="province_id" v-model="provinceSelected"
                         @change="this.getAllDistrictsOfAProvince()" class="cursor-pointer hover:shadow-lg search-select w-full h-full select2-hidden-accessible 
@@ -129,9 +151,11 @@
                 <p class="error" v-if="addressError.length > 0">{{ addressError[0] }}</p>
                 <br>
                 <br>
-                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
+                <button v-if="!this.updating" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
                     md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg">Tạo điểm
                     tập kết</button>
+                <button v-else type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
+                    md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg">Cập nhật</button>
             </form>
         </div>
     </div>
@@ -156,6 +180,8 @@ export default {
                 districtSelectedId: 0,
                 district: ''
             },
+            updating: false,
+            warehouseSelectedId: 0,
             hoveredText: null,
             hoveredRowId: null,
             isSmallScreen: false,
@@ -172,7 +198,10 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(['scrollToTop']),
+        ...mapMutations(['scrollToTop', 'setLogged', 'setLeadership', 'setLeadershipAccessToken',
+            'setLeadershipRefreshToken', 'setManagerDC', 'setDCManagerAccessToken', 'setDCManagerRefreshToken',
+            'setManagerWH', 'setWHManagerAccessToken', 'setWHManagerRefreshToken', 'setTellerDC', 'setTellerDCAccessToken',
+            'setTellerDCRefresToken', 'setStaffWH']),
         setHoveredText(text, rowId, event) {
             this.hoveredText = text;
             this.hoveredRowId = rowId;
@@ -203,13 +232,38 @@ export default {
             this.districtSelected.district = '';
             this.getProvinces();
         },
+        async refreshToken() {
+            let res = await axios.post('/refresh', {
+                refreshToken: this.leadershipToken.refreshToken,
+                withCredentials: true
+            }, {
+                headers:
+                {
+                    'x_authorization': `${this.leadershipToken.accessToken}`,
+                }, withCredentials: true
+            });
+
+            this.setLeadershipAccessToken(res.data);
+        },
         async handleCreateWH() {
             try {
-                await axios.post('/warehouses', this.form, { withCredentials: true });
+                const response = await axios.post('/warehouses', this.form, {
+                    headers: {
+                        "Authorization": `Bearer ${this.leadershipToken.accessToken}`,
+                    },
+                    withCredentials: true
+                });
                 this.getAllWarehouse();
                 this.createdANewWH();
             } catch (err) {
-                alert(err.response.data.error);
+                if (err.response && err.response.data.error === 'jwt expired') {
+                    await this.refreshToken();
+                    await this.handleCreateWH();
+                } else if (err.response && err.response.data.error) {
+                    alert(err.response.data.error);
+                } else {
+                    alert("An error occurred while processing the request.");
+                }
             }
         },
         async handleDeleteWH(id) {
@@ -249,7 +303,7 @@ export default {
             }
         },
         createdANewWH() {
-            this.getAllWarehouse();
+            if (this.createNew) { this.getAllWarehouse(); }
             this.mountedComponent();
             this.createNew = !this.createNew;
         },
@@ -284,6 +338,21 @@ export default {
                 await this.handleCreateWH();
             }
         },
+
+        async deleteWarehouse(warehouse) {
+            try {
+                let res = await axios.delete(`/warehouses/${warehouse.warehouseId}`, {
+                    headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}`}
+                }, { withCredentials: true })
+                this.getAllWarehouse();
+            } catch (error) {
+                console.log("delete Error");
+            }
+        },
+        async updateWarehouse(warehouse) {
+            this.updating = true;
+            this.createNew = !this.createNew;
+        },
         // showFinalAddress() {
         //     this.$refs.inputText.innerHTML = this.form.address + ', ' + this.districtSelected.district + ', ' + this.provinceSelected.provinceMunicipality;
         // }
@@ -292,14 +361,15 @@ export default {
                 this.currentPage = page;
             }
             //this.scrollToTop();
-        }, 
+        },
         truncateText(text, maxLength) {
             return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
         },
     },
 
     computed: {
-        ...mapState([]),
+        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'managerDCToken', 'manager_WH', 'managerWHToken',
+            'staff_WH', 'teller_DC']),
         totalPages() {
             return Math.ceil(this.wareHouses.length / this.itemsPerPage);
         },

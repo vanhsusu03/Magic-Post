@@ -1,5 +1,4 @@
 <template>
-
     <div v-if="!this.createNew" class="w-10/12 h-10/12 mx-auto">
         <div class="w-8/12 grid grid-cols-6 mx-auto">
             <span class="col-start-1 col-end-5 max-w-fit">
@@ -9,11 +8,12 @@
             </span>
             <span class="col-start-6">
                 <button v-on:click="this.createdANewDC()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 my-4 
-                    md:text-base sm:text-sm text-xs rounded btn">
+                    md:text-base sm:text-sm text-xs rounded btn hover:shadow-lg cursor-pointer">
                     Tạo điểm giao dịch
                 </button>
             </span>
-        </div><hr class="my-4">
+        </div>
+        <hr class="my-4">
 
         <div class="w-9/12 mx-auto" id="course">
             <table class="px-auto">
@@ -33,7 +33,8 @@
                 <tr v-for="deliveryCenter in deliveryCenters">
                     <td class="py-2 px-4 border items-center justify-center"> <img class="w-2/5 mx-auto"
                             src="../assets/img/note.png"></td>
-                    <td class="py-2 px-4 border items-center justify-center">{{ deliveryCenter.provinceMunicipalityId }}</td>
+                    <td class="py-2 px-4 border items-center justify-center">{{ deliveryCenter.provinceMunicipalityId }}
+                    </td>
                     <td class="py-2 px-4 border items-center justify-center">{{ deliveryCenter.districtId }}</td>
                     <td class="py-2 px-4 border text-center md:text-lg sm:text-base text-sm">
                 <tr class="my-auto mx-auto md:text-base sm:text-sm text-xs"
@@ -57,13 +58,15 @@
             <div class="my-4">
                 <div class="max-w-fit mx-auto">
                     <button
-                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-base sm:text-sm text-xs"
+                        class="bg-green-500 hover:bg-green-700 hover:shadow-lg cursor-pointer text-white font-bold 
+                            py-2 px-4 rounded md:text-base sm:text-sm text-xs"
                         @click="goToPage(currentPage - 1)" :disabled="currentPage === 1">Previous Page</button>
                     <span class="pl-10 pr-10 md:text-base sm:text-sm text-xs">Trang <strong>{{ currentPage }}</strong> trong
                         tổng số <strong>{{ totalPages
                         }}</strong></span>
                     <button
-                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded md:text-base sm:text-sm text-xs"
+                        class="bg-green-500 hover:bg-green-700 hover:shadow-lg cursor-pointer text-white font-bold 
+                            py-2 px-4 rounded md:text-base sm:text-sm text-xs"
                         @click="goToPage(currentPage + 1)" :disabled="currentPage === totalPages">Next Page</button>
                 </div>
 
@@ -79,7 +82,7 @@
                 </h1>
             </span>
             <span class="col-start-6">
-                <button v-on:click="this.createdANewDC()" class="bg-blue-500 hover:bg-blue-700 hover:shadow-xl text-white font-bold 
+                <button v-on:click="this.createdANewDC()" class="bg-blue-500 hover:bg-blue-700 hover:shadow-lg cursor-pointer text-white font-bold 
                     md:text-base sm:text-sm text-xs py-2 px-4 rounded btn">
                     Hủy bỏ
                 </button>
@@ -195,7 +198,9 @@ export default {
     },
     methods: {
         ...mapMutations(['scrollToTop', 'setLogged', 'setLeadership', 'setLeadershipAccessToken',
-            'setLeadershipRefreshToken', 'setManagerDC', 'setManagerWH', 'setTellerDC', 'setStaffWH']),
+            'setLeadershipRefreshToken', 'setManagerDC', 'setDCManagerAccessToken', 'setDCManagerRefreshToken',
+            'setManagerWH', 'setWHManagerAccessToken', 'setWHManagerRefreshToken', 'setTellerDC', 'setTellerDCAccessToken',
+            'setTellerDCRefresToken', 'setStaffWH']),
         async getProvinces() {
             try {
                 const response = await axios.get('/provinces', { withCredentials: true });
@@ -231,16 +236,16 @@ export default {
         },
         async handleCreateDC() {
             try {
-                let res = await axios.post('/deliveryCenters', {
-                    form: this.form,
-                    accountTypeId: this.leadership.accountTypeId,
-                }, {
-                    headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
-                }, { withCredentials: true });
+                let res = await axios.post('/deliveryCenters', this.form,
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${this.leadershipToken.accessToken}`
+                        }
+                    }, { withCredentials: true });
                 this.getAllDeliveryCenter();
                 this.createdANewDC();
             } catch (err) {
-                if(err.response.data.error == 'jwt expired') {
+                if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
                     await this.handleCreateDC();
                 }
@@ -331,7 +336,8 @@ export default {
 
     },
     computed: {
-        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH', 'teller_DC']),
+        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'managerDCToken', 'manager_WH', 'managerWHToken',
+            'staff_WH', 'teller_DC']),
         totalPages() {
             return Math.ceil(this.deliveryCenters.length / this.itemsPerPage);
         },

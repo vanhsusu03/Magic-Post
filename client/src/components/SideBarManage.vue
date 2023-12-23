@@ -22,7 +22,7 @@
                     </a>
                 </li>
 
-                <li class="relative px-6 py-3">
+                <li v-if="!teller_DC.username && !staff_WH.username" class="relative px-6 py-3">
                     <span v-show="selecteds[1]"
                         class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
                         aria-hidden="true"></span>
@@ -91,7 +91,7 @@
                         <span class="ml-4">Quản lí điểm tập kết</span>
                     </a>
                 </li>
-                <li v-if="staff_WH.username || teller_DC.username" class="relative px-6 py-3">
+                <li v-if="teller_DC.username" class="relative px-6 py-3">
                     <span v-show="selecteds[6]"
                         class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
                         aria-hidden="true"></span>
@@ -104,7 +104,7 @@
                             <path d="M2 14L12 7.5L22 14" />
                         </svg>
                         <!-- End of icon replacement -->
-                        <span class="ml-4">Quản lí đơn hàng</span>
+                        <span class="ml-4">Quản lí đơn hàng tại điểm giao dịch</span>
                     </a>
                 </li>
 

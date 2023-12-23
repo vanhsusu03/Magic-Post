@@ -271,7 +271,13 @@ router.get('/warehouses/manager',AccountController.getAllManagerAccountFromWareh
  */
 router.get('/offices/:officeId/accounts/:accountTypeId', isAuth, AccountController.getInfoByOffice)
 
-router.get('/office/:officeId/manager/:accountTypeId', AccountController.getManagerAccountById) 
+// Get all teller
+router.get('/deleveryCenters/staff', AccountController.getAllStaffAccountFromDeliveryCenter)
+
+
+// Get all staff at warehouse
+router.get('/warehouses/staff', AccountController.getAllStaffAccountFromWarehouse)
+
 
 // router.get('/profile', isAuth, async (req, res) => {
 // 	res.json(req.account)
