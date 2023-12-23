@@ -1,39 +1,37 @@
-<!-- Notice.vue -->
 <template>
-    <transition name="fade" mode="out-in">
-        <div v-if="showNotice" key="notice" class="fixed bottom-4 right-4 p-6 pr-8 pb-6 bg-green-500 text-white rounded-lg">
-           <strong>{{ message }}</strong>
-        </div>
-    </transition>
+    <div v-if="showNotice" class="fixed bottom-4 right-4 p-4 bg-green-500 text-white rounded-md shadow-md">
+        <strong>{{ message }}</strong>
+        <button @click="closeAlert" class="absolute top-1 right-2 text-sm font-semibold text-white focus:outline-none">
+            X
+        </button>
+    </div>
 </template>
   
 <script>
 export default {
-    name: 'Alert',
-    props: {
-        message: String,
-    },
     data() {
         return {
             showNotice: true,
-        };
+        }
+    },
+    props: {
+        message: String,
+    },
+    methods: {
+        closeAlert() {
+            this.showNotice = false;
+            this.$emit('close');
+        },
     },
     mounted() {
         setTimeout(() => {
-            this.showNotice = false;
-        }, 5000); // 5000 milliseconds (5 seconds)
-    },
+            this.closeAlert();
+        }, 3000); 
+    }
 };
 </script>
   
-<style scoped="lang">
-.fade-enter-active,
-.fade-leave-active {
-    transition: opacity 0.5s;
-}
-
-.fade-enter,
-.fade-leave-to {
-    opacity: 0;
-}
+<style scoped>
+/* Add any custom styles here */
 </style>
+  

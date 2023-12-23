@@ -175,30 +175,21 @@ const DeliveryCenterController = {
     getPackages: async (req, res) => {
         try {
             const deliveryCenterId = Number(req.params.deliveryCenterId)
-            const statusId = req.body.statusId
-            const deliveryCenterType = req.body.deliveryCenterType
+            const deliveryCenterType = req.query.deliveryCenterType;
 
             let condition = {}
             let conditionDeliveryCenter
-            if (statusId) {
-                condition = {
-                    where: {
-                        status_id: statusId
-                    }
+            
+            if (deliveryCenterType == "send") {
+                conditionDeliveryCenter = {
+                    delivery_center_send_id: deliveryCenterId
                 }
-                if (statusId) {
-                    if (deliveryCenterType == "send") {
-                        conditionDeliveryCenter = {
-                            delivery_center_send_id: deliveryCenterId
-                        }
-                    } else if (deliveryCenterType == "receive") {
-                        conditionDeliveryCenter = {
-                            delivery_center_receive_id: deliveryCenterId
-                        }
-                    }
+            } else if (deliveryCenterType == "receive") {
+                conditionDeliveryCenter = {
+                    delivery_center_receive_id: deliveryCenterId
                 }
             }
-            console.log(conditionDeliveryCenter)
+
             const ans = await Package.findAll({
                 attributes: [
                     [sequelize.col('package.package_id'), 'packageId'],
@@ -222,7 +213,7 @@ const DeliveryCenterController = {
                         [sequelize.col('time'), 'time'],
                         [sequelize.col('location'), 'location']
                     ],
-                    condition,
+                    // where: condition,
                     include: {
                         model: Package_status,
                         attributes: [
@@ -236,7 +227,8 @@ const DeliveryCenterController = {
                     [{ model: Status_detail }, 'time', 'ASC']
                 ]
             })
-            res.status(200).json(ans);
+
+            res.status(200).json(ans)
         } catch (err) {
             console.log(err)
             res.status(500).json({

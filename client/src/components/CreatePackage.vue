@@ -1,16 +1,22 @@
 <template>
     <div id="container">
         <div v-if="!this.createNew" class="w-10/12 h-10/12 mx-auto">
-            <div class="w-8/12 grid grid-cols-6 mx-auto">
-                <span class="col-start-1 col-end-5 max-w-fit">
+            <div class="w-8/12 grid grid-cols-12 mx-auto">
+                <span class="col-start-1 col-end-4 max-w-fit">
                     <h1 class="font-semibold py-2 mt-2 text-center lg:text-2xl md:text-xl sm:text-lg text-base">
                         Danh sách đơn hàng đã ghi nhận
                     </h1>
                 </span>
-                <span class="col-start-6">
+                <span class="col-start-4 col-end-9">
                     <button v-on:click="this.createPackageBill()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mt-2 
                     mx-4 md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">
                         Ghi nhận hàng mới
+                    </button>
+                </span>
+                <span class="col-start-9 col-end-12">
+                    <button v-on:click="this.fetchSendPackagesData()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mt-2 
+                    mx-4 md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">
+                        Tải lại
                     </button>
                 </span>
             </div>
@@ -52,29 +58,31 @@
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">{{
                             packages.packageId }}</td>
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
-                            <tr>{{ packages.senderName }}</tr>
-                            <tr>{{ packages.senderPhone }}</tr>
-                        </td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
-                            <tr>{{ packages.receiverName }}</tr>
-                            <tr>{{ packages.receiverPhone }}</tr>
-                        </td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">{{
-                           packages.deliveryCenterSendId }}</td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
-                            {{ packages.deliveryCenterReceiveId}}
-                        </td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                            packages.status_details[0].time }}</td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                            packages.status_details[0].package_status.packageStatus }}</td>
-                        <td class="py-2 px-4 border items-center justify-center"> <img
-                                class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer"
-                                src="../assets/img/note.png" alt=""> </td>
-                        <td class="py-2 px-4 border items-center justify-center">
-                            <img class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer hover:opacity-90 py-6"
-                                src="../assets/img/trash.png" alt="">
-                        </td>
+                    <tr>{{ packages.senderName }}</tr>
+                    <tr>{{ packages.senderPhone }}</tr>
+                    </td>
+                    <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
+                        <tr>{{ packages.receiverName }}</tr>
+                        <tr>{{ packages.receiverPhone }}</tr>
+                    </td>
+                    <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">{{
+                        packages.deliveryCenterSendId }}</td>
+                    <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
+                        {{ packages.deliveryCenterReceiveId }}
+                    </td>
+                    <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
+                        packages.status_details[0].time }}</td>
+                    <td v-if="packages.status_details[0].package_status.packageStatus == 'Accept'"
+                        class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate"> Đã
+                        nhận từ khách hàng
+                    </td>
+                    <td class="py-2 px-4 border items-center justify-center"> <img
+                            class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer" src="../assets/img/note.png"
+                            alt=""> </td>
+                    <td class="py-2 px-4 border items-center justify-center">
+                        <img class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer hover:opacity-90 py-6"
+                            src="../assets/img/trash.png" alt="">
+                    </td>
                     </tr>
                 </table>
 
@@ -277,7 +285,7 @@
 import { mapMutations, mapState } from 'vuex';
 import axios from 'axios';
 export default {
-    name: 'LeaderManageAccount',
+    name: 'CreatePackage',
     data() {
         return {
             form: {
@@ -331,6 +339,16 @@ export default {
             'setLeadershipRefreshToken', 'setManagerDC', 'setDCManagerAccessToken', 'setDCManagerRefreshToken',
             'setManagerWH', 'setWHManagerAccessToken', 'setWHManagerRefreshToken', 'setTellerDC', 'setTellerDCAccessToken',
             'setTellerDCRefreshToken', 'setStaffWH']),
+        filteredPackages(arr, id) {
+            return arr.filter((packages) => {
+                // Check if status_details is an array and has statusId equal to 2 in its last element
+                return (
+                    Array.isArray(packages.status_details) &&
+                    packages.status_details.length > 0 &&
+                    packages.status_details[packages.status_details.length - 1].statusId === id
+                );
+            });
+        },
         solveWhenProvinceChange() {
             this.getAllDistrictsOfAProvince();
             this.districtSelectedId = 0;
@@ -347,7 +365,7 @@ export default {
                 if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
                     await this.getTellerDC();
-                }
+                } else { alert(err.response.data.error); }
             }
         },
         async getDeliveryCenterHere() {
@@ -362,18 +380,21 @@ export default {
                 if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
                     await this.getDeliveryCenterHere();
-                }
+                } else { alert(err.response.data.error); }
             }
         },
         async fetchSendPackagesData() {
             try {
                 let res = await axios.get(`/deliveryCenters/${this.teller_DC.deliveryCenterId}/packages/statuses`, {
-                    statusId: 1,
-                    deliveryCenterType: 'send',
-                    headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
-                }, { withCredentials: true });
+                    params: {
+                        deliveryCenterType: 'send'
+                    },
+                    headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` },
+                    withCredentials: true
+                });
                 if (res.data) {
                     this.packages = res.data;
+                    this.packages=this.filteredPackages(this.packages,1);
                 }
 
             } catch (err) {
@@ -381,7 +402,7 @@ export default {
                     await this.refreshToken();
                     await this.fetchSendPackagesData();
                 }
-                alert(err.response.data.error);
+                else { alert(err.response.data.error); }
             }
         },
         async refreshToken() {
@@ -403,7 +424,7 @@ export default {
                     headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
                 }, { withCredentials: true });
                 if (res.data) {
-                    // this.fetchAccountsData();
+                    this.fetchSendPackagesData();
                     alert("THANH CONG");
                     this.createPackageBill();
                 }
@@ -411,7 +432,7 @@ export default {
                 if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
                     await this.handleCreatePackage();
-                }
+                } else { alert(err.response.data.error); }
             }
         },
         async handleDeleteWH(id) {
