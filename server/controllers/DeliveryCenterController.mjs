@@ -88,7 +88,7 @@ const DeliveryCenterController = {
         try {
             const deliveryCenterId = Number(req.params.deliveryCenterId)
             const { warehouseId, address } = req.body
-            
+
             if (address && warehouseId) {
                 await Delivery_center.update({
                     warehouse_id: warehouseId,
@@ -175,23 +175,16 @@ const DeliveryCenterController = {
     getPackages: async (req, res) => {
         try {
             const deliveryCenterId = Number(req.params.deliveryCenterId)
-            const statusId = req.body.statusId
-            const delveryCenterType = req.body.delveryCenterType
+            const deliveryCenterType = req.query.deliveryCenterType;
 
             let condition = {}
             let conditionDeliveryCenter
-            if (statusId) {
-                condition = {
-                    where: {
-                        status_id: statusId
-                    }
-                }
-            }
-            if (delveryCenterType == "send") {
+            
+            if (deliveryCenterType == "send") {
                 conditionDeliveryCenter = {
                     delivery_center_send_id: deliveryCenterId
                 }
-            } else if (delveryCenterType == "receive") {
+            } else if (deliveryCenterType == "receive") {
                 conditionDeliveryCenter = {
                     delivery_center_receive_id: deliveryCenterId
                 }
@@ -220,7 +213,7 @@ const DeliveryCenterController = {
                         [sequelize.col('time'), 'time'],
                         [sequelize.col('location'), 'location']
                     ],
-                    condition,
+                    // where: condition,
                     include: {
                         model: Package_status,
                         attributes: [
@@ -235,6 +228,62 @@ const DeliveryCenterController = {
                 ]
             })
 
+            res.status(200).json(ans)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
+    getDeliveryCentersByDistrict: async (req, res) => {
+        try {
+            const districtId = Number(req.params.districtId);
+
+            const ans = await Delivery_center.findAll({
+                attributes: [
+                    [sequelize.col('delivery_center_id'), 'deliveryCenterId'],
+                    [sequelize.col('district_id'), 'districtId'],
+                    [sequelize.col('warehouse_id'), 'warehouseId'],
+                    [sequelize.col('address'), 'address'],
+                ],
+                where: {
+                    district_id: districtId
+                },
+                order: [
+                    [sequelize.col('delivery_center_id'), 'ASC'],
+                ],
+            })
+            res.status(200).json(ans)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
+    getDeliveryCentersById: async (req, res) => {
+        try {
+            const deliveryCenterId = Number(req.params.deliveryCenterId);
+            // console.log("ITS BUG:  " + this.deliveryCenterId)
+            const ans = await Delivery_center.findAll({
+                attributes: [
+                    [sequelize.col('delivery_center_id'), 'deliveryCenterId'],
+                    [sequelize.col('district_id'), 'districtId'],
+                    [sequelize.col('warehouse_id'), 'warehouseId'],
+                    [sequelize.col('address'), 'address'],
+                ],
+                where: {
+                    delivery_center_id: deliveryCenterId
+                },
+                order: [
+                    [sequelize.col('delivery_center_id'), 'ASC'],
+                ],
+            })
             res.status(200).json(ans)
         } catch (err) {
             console.log(err)

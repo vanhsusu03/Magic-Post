@@ -1,4 +1,5 @@
 <template>
+    <!-- <Alert v-if="!this.createNew" message="Account created successfully!" /> -->
     <div id="container">
         <div v-if="!this.createNew" class="w-11/12 h-10/12 mx-auto">
             <div class="mt-4 w-11/12 grid grid-cols-6 mx-auto">
@@ -20,7 +21,7 @@
                 <div class="mx-auto">
                     <h2 class="py-2 md:text-base sm:text-sm text-xs">Chọn loại tài khoản:</h2>
                     <select id="office-province" name="province_id" v-model="accountTypeSelected"
-                        @change="fetchAccountsData()" class="search-select mb-4 w-4/12 h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
+                        @change="fetchAccountsData(); this.currentPage = 1" class="search-select mb-4 w-4/12 h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
                     md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true"
                         data-select2-id="select2-data-office-province">
                         <option class="md:text-base sm:text-sm text-xs border text-gray-900" :value="0" selected>Loại tài
@@ -366,12 +367,14 @@
                 </form>
             </div>
         </div>
+        <Alert v-if="!this.createNew" message="Tạo tài khoản mới thành công!" class="pr-10"/>
     </div>
 </template>
 
 <script>
 import { mapMutations, mapState } from 'vuex';
 import axios from 'axios';
+import Alert from './Alert.vue';
 export default {
     name: 'LeaderManageAccount',
     data() {
@@ -424,7 +427,11 @@ export default {
             itemsPerPage: 4,
             currentPage: 1,
             isShow: false,
+            successCreate: false,
         }
+    },
+    components: {
+        Alert,
     },
     methods: {
         ...mapMutations(['scrollToTop', 'setLogged', 'setLeadership', 'setLeadershipAccessToken',
@@ -497,6 +504,7 @@ export default {
                 if (res.data) {
                     this.fetchAccountsData();
                     this.accountCreateType = 0;
+                    this.successCreate  = true;
                     this.createdANewAcc();
                 }
             } catch (err) {
@@ -545,7 +553,9 @@ export default {
             this.wareHouses = null;
             if (this.provinceSelectedId > 0) {
                 try {
-                    const res = await axios.get(`/warehouses/${this.provinceSelectedId}`, { withCredentials: true });
+                    const res = await axios.get(`/warehouses/${this.provinceSelectedId}`, {
+                        headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
+                    }, { withCredentials: true });
                     this.wareHouses = res.data;
                 } catch (error) {
                     console.error('getDistrictofAProvince:', error.message);
@@ -557,9 +567,15 @@ export default {
             this.deliveryCenters = [];
             if (this.districtSelectedId > 0) {
                 try {
-                    const res = await axios.get(`/deliveryCenters/${this.districtSelectedId}`, { withCredentials: true });
+                    const res = await axios.get(`/deliveryCenters/${this.districtSelectedId}`, {
+                        headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
+                    }, { withCredentials: true });
                     this.deliveryCenters = res.data;
                 } catch (err) {
+                    if (err.response.data.error == 'jwt expired') {
+                    await this.refreshToken();
+                    await this.getAllDeliveryCenterOfADistrict();
+                }
                     console.log('getDCfromDistrict: ', err.response.data.error)
                 }
             }
@@ -585,7 +601,6 @@ export default {
             this.wareHouses = null;
             this.deliveryCenters = null;
             this.createNew = !this.createNew;
-
         },
         preSubmit() {
             if (this.accountCreateType == 1) {

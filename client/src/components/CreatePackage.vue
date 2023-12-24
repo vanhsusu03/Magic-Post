@@ -1,28 +1,34 @@
 <template>
     <div id="container">
         <div v-if="!this.createNew" class="w-10/12 h-10/12 mx-auto">
-            <div class="w-8/12 grid grid-cols-6 mx-auto">
-                <span class="col-start-1 col-end-5 max-w-fit">
+            <div class="w-8/12 grid grid-cols-12 mx-auto">
+                <span class="col-start-1 col-end-4 max-w-fit">
                     <h1 class="font-semibold py-2 mt-2 text-center lg:text-2xl md:text-xl sm:text-lg text-base">
                         Danh sách đơn hàng đã ghi nhận
                     </h1>
                 </span>
-                <span class="col-start-6">
+                <span class="col-start-4 col-end-9">
                     <button v-on:click="this.createPackageBill()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mt-2 
                     mx-4 md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">
                         Ghi nhận hàng mới
+                    </button>
+                </span>
+                <span class="col-start-9 col-end-12">
+                    <button v-on:click="this.fetchSendPackagesData()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mt-2 
+                    mx-4 md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">
+                        Tải lại
                     </button>
                 </span>
             </div>
 
             <hr class="my-2 mx-auto w-9/12">
 
-            <div class="w-9/12 mx-auto" id="course">
+            <div class="w-full mx-auto" id="course">
                 <table>
                     <tr>
                         <th
                             class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
-                            Mã đơn hàng</th>
+                            Mã đơn</th>
                         <th
                             class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
                             Thông tin người gửi</th>
@@ -48,46 +54,36 @@
                             class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
                             Xóa</th>
                     </tr>
-                    <!-- <tr v-for="package in displayedItemList">
+                    <tr v-for="packages in displayedItemList">
                         <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">{{
-                            package.deliveryCenterId }}</td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
-                            {{
-                                package.delivery_center &&
-                                package.delivery_center.district &&
-                                package.delivery_center.district.province_municipality
-                                ? package.delivery_center.district.province_municipality.provinceMunicipality
-                                : 'N/A'
-                            }}
-                        </td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">{{
-                            package.delivery_center &&
-                            package.delivery_center.district
-                            ? package.delivery_center.district.district
-                            : 'N/A' }}</td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
-                            DC_{{ package.delivery_center &&
-                                package.delivery_center.district &&
-                                package.delivery_center.district.provinceMunicipalityId
-                                ?
-                                `${package.delivery_center.district.provinceMunicipalityId}/${package.delivery_center.districtId}_MANAGER_${package.packageId}`
-                                : 'N/A'
-                            }}
-                        </td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                            package.firstName + ' ' + package.lastName }}</td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                            truncateText(package.email, 20) }}</td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                            package.phone }}</td>
-                        <td class="py-2 px-4 border items-center justify-center"> <img
-                                class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer"
-                                src="../assets/img/note.png" alt=""> </td>
-                        <td class="py-2 px-4 border items-center justify-center">
-                            <img class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer hover:opacity-90 py-6"
-                                src="../assets/img/trash.png" alt="">
-                        </td>
-                    </tr> -->
+                            packages.packageId }}</td>
+                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
+                    <tr>{{ packages.senderName }}</tr>
+                    <tr>{{ packages.senderPhone }}</tr>
+                    </td>
+                    <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
+                        <tr>{{ packages.receiverName }}</tr>
+                        <tr>{{ packages.receiverPhone }}</tr>
+                    </td>
+                    <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">{{
+                        packages.deliveryCenterSendId }}</td>
+                    <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
+                        {{ packages.deliveryCenterReceiveId }}
+                    </td>
+                    <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
+                        packages.status_details[0].time }}</td>
+                    <td v-if="packages.status_details[0].package_status.packageStatus == 'Accept'"
+                        class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate"> Đã
+                        nhận từ khách hàng
+                    </td>
+                    <td class="py-2 px-4 border items-center justify-center"> <img
+                            class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer" src="../assets/img/note.png"
+                            alt=""> </td>
+                    <td class="py-2 px-4 border items-center justify-center">
+                        <img class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer hover:opacity-90 py-6"
+                            src="../assets/img/trash.png" alt="">
+                    </td>
+                    </tr>
                 </table>
 
                 <div class="my-4">
@@ -289,7 +285,7 @@
 import { mapMutations, mapState } from 'vuex';
 import axios from 'axios';
 export default {
-    name: 'LeaderManageAccount',
+    name: 'CreatePackage',
     data() {
         return {
             form: {
@@ -343,6 +339,16 @@ export default {
             'setLeadershipRefreshToken', 'setManagerDC', 'setDCManagerAccessToken', 'setDCManagerRefreshToken',
             'setManagerWH', 'setWHManagerAccessToken', 'setWHManagerRefreshToken', 'setTellerDC', 'setTellerDCAccessToken',
             'setTellerDCRefreshToken', 'setStaffWH']),
+        filteredPackages(arr, id) {
+            return arr.filter((packages) => {
+                // Check if status_details is an array and has statusId equal to 2 in its last element
+                return (
+                    Array.isArray(packages.status_details) &&
+                    packages.status_details.length > 0 &&
+                    packages.status_details[packages.status_details.length - 1].statusId === id
+                );
+            });
+        },
         solveWhenProvinceChange() {
             this.getAllDistrictsOfAProvince();
             this.districtSelectedId = 0;
@@ -359,7 +365,7 @@ export default {
                 if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
                     await this.getTellerDC();
-                }
+                } else { alert(err.response.data.error); }
             }
         },
         async getDeliveryCenterHere() {
@@ -374,16 +380,29 @@ export default {
                 if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
                     await this.getDeliveryCenterHere();
-                }
+                } else { alert(err.response.data.error); }
             }
         },
-        async fetchPackagesData() {
+        async fetchSendPackagesData() {
             try {
-                let res = await axios.get('/warehouses/staff', { withCredentials: true });
-                this.packages = res.data;
+                let res = await axios.get(`/deliveryCenters/${this.teller_DC.deliveryCenterId}/packages/statuses`, {
+                    params: {
+                        deliveryCenterType: 'send'
+                    },
+                    headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` },
+                    withCredentials: true
+                });
+                if (res.data) {
+                    this.packages = res.data;
+                    this.packages=this.filteredPackages(this.packages,1);
+                }
 
             } catch (err) {
-                alert(err.respone.data.error);
+                if (err.response.data.error == 'jwt expired') {
+                    await this.refreshToken();
+                    await this.fetchSendPackagesData();
+                }
+                else { alert(err.response.data.error); }
             }
         },
         async refreshToken() {
@@ -405,7 +424,7 @@ export default {
                     headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
                 }, { withCredentials: true });
                 if (res.data) {
-                    // this.fetchAccountsData();
+                    this.fetchSendPackagesData();
                     alert("THANH CONG");
                     this.createPackageBill();
                 }
@@ -413,7 +432,7 @@ export default {
                 if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
                     await this.handleCreatePackage();
-                }
+                } else { alert(err.response.data.error); }
             }
         },
         async handleDeleteWH(id) {
@@ -600,7 +619,8 @@ export default {
     },
 
     computed: {
-        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH', 'teller_DC', 'tellerDCToken']),
+        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH',
+            'teller_DC', 'tellerDCToken']),
         totalPages() {
             return Math.ceil(this.packages.length / this.itemsPerPage);
         },
@@ -614,6 +634,7 @@ export default {
         this.getProvinces();
         this.getTellerDC();
         this.getDeliveryCenterHere();
+        this.fetchSendPackagesData();
     }
 }
 </script>
