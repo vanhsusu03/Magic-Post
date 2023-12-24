@@ -17,7 +17,7 @@
                         : 'N/A' }}_MANAGER_{{ WHmanager[0].accountId }}</h2>
                 </span>
                 <span class="col-start-6">
-                    <button v-on:click="this.createdANewAcc()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mt-2 
+                    <button v-on:click="this.createdANewAcc()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 mt-2 
                     mx-4 md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">
                         Thêm tài khoản
                     </button>
@@ -93,7 +93,7 @@
                 </span>
                 <br>
                 <span class="col-start-6 mx-auto">
-                    <button v-on:click="this.createdANewAcc()" class="bg-blue-500 hover:bg-blue-700 hover:shadow-xl text-white font-bold 
+                    <button v-on:click="this.createdANewAcc()" class="bg-green-500 hover:bg-green-700 hover:shadow-xl text-white font-bold 
                     md:text-base sm:text-sm text-xs py-2 px-4 rounded cursor-pointer hover:shadow-lg btn">
                         Hủy bỏ
                     </button>
@@ -163,7 +163,7 @@
                     <p class="error" v-if="citizenCardImgError.length > 0">{{ citizenCardImgError[0] }}<br></p>
 
                     <br>
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
+                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded
                 md:text-base sm:text-sm text-xs hover:shadow-lg cursor-pointer">Tạo tài
                         khoản</button>
                 </form>

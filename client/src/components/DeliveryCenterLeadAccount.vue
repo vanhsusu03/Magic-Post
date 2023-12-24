@@ -1,7 +1,7 @@
 <template>
     <div id="container">
-        <div v-if="!this.createNew" class="w-10/12 h-10/12 mx-auto">
-            <div class="w-8/12 grid grid-cols-6 mx-auto">
+        <div v-if="!this.createNew" class="w-11/12 h-10/12 mx-auto">
+            <div class="w-10/12 grid grid-cols-6 mx-auto">
                 <span class="col-start-1 col-end-5 max-w-fit">
                     <h1 class="font-semibold py-2 mt-2 text-center lg:text-2xl md:text-xl sm:text-lg text-base">
                         Danh sách tài khoản nhân viên tại điểm giao dịch
@@ -24,16 +24,16 @@
                     </h2>
                 </span>
                 <span class="col-start-6">
-                    <button v-on:click="this.createdANewAcc()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mt-2 
+                    <button v-on:click="this.createdANewAcc()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 mt-2 
                     mx-4 md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">
                         Thêm tài khoản
                     </button>
                 </span>
             </div>
 
-            <hr class="my-2 mx-auto w-9/12">
+            <hr class="my-4 mx-auto w-10/12">
 
-            <div class="w-9/12 mx-auto" id="course">
+            <div class="max-w-fit w-10/12 mx-auto" id="course">
                 <table>
                     <tr>
                         <th
@@ -56,20 +56,51 @@
                             Xóa</th>
                     </tr>
                     <tr v-for="account in displayedItemList">
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">{{
+                        <td class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs border">{{
                             account.accountId }}</td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                            account.firstName + ' ' + account.lastName }}</td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                            truncateText(account.email, 20) }}</td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                            account.phone }}</td>
-                        <td class="py-2 px-4 border items-center justify-center"> <img
-                                class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer"
-                                src="../assets/img/note.png" alt=""> </td>
+                        <td
+                            class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs border truncate">
+                            {{
+                                account.firstName + ' ' + account.lastName }}</td>
+                        <td
+                            class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs border truncate">
+                            {{
+                                truncateText(account.email, 20) }}</td>
+                        <td
+                            class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs border truncate">
+                            {{
+                                account.phone }}</td>
                         <td class="py-2 px-4 border items-center justify-center">
-                            <img class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer hover:opacity-90 py-6"
-                                src="../assets/img/trash.png" alt="">
+                            <td class="flex my-4 mx-auto text-center items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="w-8 h-8 cursor-pointer hover:opacity-30 hover:shadow-lg" width="800px" height="800px"
+                                    viewBox="0 0 24 24" fill="none"
+                                    @click="updateAccount(account)">
+                                    <path
+                                        d="M18.4721 16.7023C17.3398 18.2608 15.6831 19.3584 13.8064 19.7934C11.9297 20.2284 9.95909 19.9716 8.25656 19.0701C6.55404 18.1687 5.23397 16.6832 4.53889 14.8865C3.84381 13.0898 3.82039 11.1027 4.47295 9.29011C5.12551 7.47756 6.41021 5.96135 8.09103 5.02005C9.77184 4.07875 11.7359 3.77558 13.6223 4.16623C15.5087 4.55689 17.1908 5.61514 18.3596 7.14656C19.5283 8.67797 20.1052 10.5797 19.9842 12.5023M19.9842 12.5023L21.4842 11.0023M19.9842 12.5023L18.4842 11.0023"
+                                        stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M12 8V12L15 15" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </td>
+                        </td>
+                        <td class="py-2 px-4 border items-center justify-center">
+                            <td class="flex my-4 mx-auto text-center items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="w-8 h-8 cursor-pointer hover:opacity-30 hover:shadow-lg" width="800px" height="800px"
+                                    viewBox="0 0 24 24" fill="none" @click="deleteAccount(account)">
+                                    <path d="M10 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M14 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M4 7H20" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10"
+                                        stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#000000"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </td>
                         </td>
                     </tr>
                 </table>
@@ -94,14 +125,18 @@
         <div v-else class="md:max-w-5xl sm:max-w-3xl max-w-xl w-11/12 mx-auto">
             <div class="py-2 grid gird-cols-6">
                 <span class="col-start-1 col-end-5 py-2">
-                    <h1 class="inline-flex font-semibold lg:text-xl md:text-lg sm:text-base text-sm">
+                    <h1 v-if="this.updating" class="inline-flex font-semibold lg:text-xl md:text-lg sm:text-base text-sm">
+                        Chỉnh sửa tài khoản nhân viên tại điểm giao dịch số {{ manager_DC.deliveryCenterId }} <br>
+                        ID: {{ this.accountSelectedId }}
+                    </h1>
+                    <h1 v-else class="inline-flex font-semibold lg:text-xl md:text-lg sm:text-base text-sm">
                         Tạo mới tài khoản nhân viên tại điểm giao dịch số {{ manager_DC.deliveryCenterId }}
                     </h1>
                 </span>
                 <br>
                 <span class="col-start-6 mx-auto">
-                    <button v-on:click="this.createdANewAcc()" class="bg-blue-500 hover:bg-blue-700 hover:shadow-xl text-white font-bold 
-                    md:text-base sm:text-sm text-xs py-2 px-4 rounded cursor-pointer hover:shadow-lg btn">
+                    <button v-on:click="this.createdANewAcc()" class="bg-green-500 hover:bg-green-700 hover:shadow-xl text-white font-bold 
+                        md:text-base sm:text-sm text-xs py-2 px-4 rounded cursor-pointer hover:shadow-lg btn">
                         Hủy bỏ
                     </button>
                 </span>
@@ -116,10 +151,13 @@
                     <h2><strong>Thông tin cá nhân:</strong></h2>
                     <br>
                     <label for="username">Tên đăng nhập</label>
-                    <input type="text" id="username" name="username" placeholder="Nhập tên đăng nhập"
+                    <input v-if="!this.updating" type="text" id="username" name="username" placeholder="Nhập tên đăng nhập"
                         v-model="form.username" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                         sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
+                    <input v-else type="text" id="username" name="username" placeholder="Nhập tên đăng nhập"
+                        v-model="form.username" class="block w-2/4 rounded-md border-0 py-1.5 text-black-300 
+                    bg-gray-300 sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs" readonly>
                     <p class="error" v-if="userNameError.length > 0">{{ userNameError[0] }}<br></p>
                     <br>
                     <label for="password">Mật khẩu</label>
@@ -170,8 +208,10 @@
                     <p class="error" v-if="citizenCardImgError.length > 0">{{ citizenCardImgError[0] }}<br></p>
 
                     <br>
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
-                md:text-base sm:text-sm text-xs hover:shadow-lg cursor-pointer">Tạo tài
+                    <button v-if="this.updating" type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded
+                        md:text-base sm:text-sm text-xs hover:shadow-lg cursor-pointer">Cập nhật tài khoản</button>
+                    <button v-else type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded
+                        md:text-base sm:text-sm text-xs hover:shadow-lg cursor-pointer">Tạo tài
                         khoản</button>
                 </form>
             </div>
@@ -213,6 +253,8 @@ export default {
             itemsPerPage: 4,
             currentPage: 1,
             DCmanager: [],
+            updating: false,
+            accountSelectedId: 0,
         }
     },
     methods: {
@@ -230,8 +272,11 @@ export default {
                 if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
                     await this.fetchAccountsData();
+                } else if (err.response && err.response.data.error) {
+                    alert(err.response.data.error);
+                } else {
+                    alert("An error occurred while processing the request.");
                 }
-                alert(err.respone.data.error);
             }
         },
         async getManager() {
@@ -286,14 +331,15 @@ export default {
                 }
             }
         },
-        async handleDeleteWH(id) {
-            try {
-                // let res = await axios.put
-            } catch (err) {
-                alert(err.respone.data.error);
-            }
+        updateAccount(account) {
+            this.accountSelectedId = account.accountId;
+            this.updating = true;
+            this.createNew = !this.createNew;
+            this.form.username = account.username;
         },
+
         createdANewAcc() {
+            this.updating = false;
             this.resetError();
             this.form.username = "";
             this.form.password = "";
@@ -401,7 +447,48 @@ export default {
                 event.preventDefault();
                 this.scrollToTop();
                 this.preSubmit();
-                await this.handleCreateAccount();
+                if (this.updating) {
+                    await this.handleUpdateAccount()
+                } else {
+                    await this.handleCreateAccount();
+                }
+            }
+        },
+
+        async handleUpdateAccount() {
+            try {
+                let res = await axios.put(`/updateAccount/${this.accountSelectedId}`, this.form, {
+                    headers: { "Authorization": `Bearer ${this.managerDCToken.accessToken}` }
+                }, { withCredentials: true });
+                this.fetchAccountsData();
+                this.createdANewAcc();
+            } catch (err) {
+                if (err.response.data.error == 'jwt expired') {
+                    await this.refreshToken();
+                    await this.handleUpdateAccount();
+                }
+                else if (err.response.data.error == 'Username is already exists') {
+                    this.userNameError.push("Tên đăng nhập đã tồn tại, hãy chọn tên khác!")
+                } else if (err.respone.data.error == 'Phone is already exists') {
+                    this.phoneError.push('Số điện thoại bị trùng! Hãy nhập số khác')
+                } else if (err.respone.data.error == 'Email is already exists') {
+                    this.emailError.push('Email bị trùng! Hãy chọn email khác!')
+                } else if (err.respone.data.error == 'Identity number is already exists') {
+                    this.citizenCardImgError.push('Số CCCD bị trùng! Hãy nhập CCCD khác!')
+                }
+            }
+        },
+
+        async deleteAccount(account) {
+            try {
+                let res = await axios.delete(`/deleteAccount/${account.accountId}`, {
+                    headers: { "Authorization": `Bearer ${this.managerDCToken.accessToken}` }
+                }, { withCredentials: true })
+                if (res.data) {
+                    this.fetchAccountsData();
+                }
+            } catch (error) {
+                console.log("delete Error");
             }
         },
         goToPage(page) {

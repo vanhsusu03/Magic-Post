@@ -8,7 +8,7 @@
                     </h1>
                 </span>
                 <span class="col-start-6">
-                    <button v-on:click="this.createPackageBill()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mt-2 
+                    <button v-on:click="this.createPackageBill()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 mt-2 
                     mx-4 md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">
                         Ghi nhận hàng mới
                     </button>
@@ -115,7 +115,7 @@
                     </h1>
                 </span>
                 <span class="col-start-6 mx-auto">
-                    <button v-on:click="this.createPackageBill()" class="bg-blue-500 hover:bg-blue-700 hover:shadow-xl text-white font-bold 
+                    <button v-on:click="this.createPackageBill()" class="bg-green-500 hover:bg-green-700 hover:shadow-xl text-white font-bold 
                     md:text-base sm:text-sm text-xs py-2 px-4 rounded cursor-pointer hover:shadow-lg btn">
                         Hủy bỏ
                     </button>
@@ -259,7 +259,7 @@
                     <p class="error" v-if="phoneError.length > 0">{{ phoneError[0] }}<br></p><br>
 
                     <br>
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
+                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded
                 md:text-base sm:text-sm text-xs hover:shadow-lg cursor-pointer">Tạo đơn
                         hàng</button>
                 </form>
