@@ -2,7 +2,7 @@
     <div id="container">
         <div v-if="!this.createNew" class="w-11/12 h-10/12 mx-auto">
             <div class="w-10/12 grid grid-cols-6 mx-auto">
-                <span class="col-start-1 col-end-5 max-w-fit">
+                <span class="col-start-1 col-end-5 row-start-1 row-end-3 max-w-fit">
                     <h1 class="font-semibold py-2 mt-2 text-center lg:text-2xl md:text-xl sm:text-lg text-base">
                         Danh sách tài khoản nhân viên tại điểm giao dịch
                     </h1>
@@ -23,11 +23,22 @@
                     }}
                     </h2>
                 </span>
-                <span class="col-start-6">
+                <span class="col-start-6 col-end-7 row-start-1 mx-auto">
                     <button v-on:click="this.createdANewAcc()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 mt-2 
                     mx-4 md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">
                         Thêm tài khoản
                     </button>
+
+
+                </span>
+                <span class="flex col-start-5 col-end-7 row-start-2 w-11/12 mt-6 mx-auto items-center justify-center">
+                    <svg class=" w-8 h-8 mx-2" xmlns="http://www.w3.org/2000/svg" width="800px" height="800px"
+                        viewBox="0 0 24 24" fill="none">
+                        <path
+                            d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
+                            stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <input type="text" class="w-full rounded-lg" placeholder="Search" v-model="searchInput">
                 </span>
             </div>
 
@@ -71,36 +82,35 @@
                             {{
                                 account.phone }}</td>
                         <td class="py-2 px-4 border items-center justify-center">
-                            <td class="flex my-4 mx-auto text-center items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="w-8 h-8 cursor-pointer hover:opacity-30 hover:shadow-lg" width="800px" height="800px"
-                                    viewBox="0 0 24 24" fill="none"
-                                    @click="updateAccount(account)">
-                                    <path
-                                        d="M18.4721 16.7023C17.3398 18.2608 15.6831 19.3584 13.8064 19.7934C11.9297 20.2284 9.95909 19.9716 8.25656 19.0701C6.55404 18.1687 5.23397 16.6832 4.53889 14.8865C3.84381 13.0898 3.82039 11.1027 4.47295 9.29011C5.12551 7.47756 6.41021 5.96135 8.09103 5.02005C9.77184 4.07875 11.7359 3.77558 13.6223 4.16623C15.5087 4.55689 17.1908 5.61514 18.3596 7.14656C19.5283 8.67797 20.1052 10.5797 19.9842 12.5023M19.9842 12.5023L21.4842 11.0023M19.9842 12.5023L18.4842 11.0023"
-                                        stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M12 8V12L15 15" stroke="#000000" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                            </td>
+                        <td class="flex my-4 mx-auto text-center items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="w-8 h-8 cursor-pointer hover:opacity-30 hover:shadow-lg" width="800px" height="800px"
+                                viewBox="0 0 24 24" fill="none" @click="updateAccount(account)">
+                                <path
+                                    d="M18.4721 16.7023C17.3398 18.2608 15.6831 19.3584 13.8064 19.7934C11.9297 20.2284 9.95909 19.9716 8.25656 19.0701C6.55404 18.1687 5.23397 16.6832 4.53889 14.8865C3.84381 13.0898 3.82039 11.1027 4.47295 9.29011C5.12551 7.47756 6.41021 5.96135 8.09103 5.02005C9.77184 4.07875 11.7359 3.77558 13.6223 4.16623C15.5087 4.55689 17.1908 5.61514 18.3596 7.14656C19.5283 8.67797 20.1052 10.5797 19.9842 12.5023M19.9842 12.5023L21.4842 11.0023M19.9842 12.5023L18.4842 11.0023"
+                                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M12 8V12L15 15" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </td>
                         </td>
                         <td class="py-2 px-4 border items-center justify-center">
-                            <td class="flex my-4 mx-auto text-center items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="w-8 h-8 cursor-pointer hover:opacity-30 hover:shadow-lg" width="800px" height="800px"
-                                    viewBox="0 0 24 24" fill="none" @click="deleteAccount(account)">
-                                    <path d="M10 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M14 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M4 7H20" stroke="#000000" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                    <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10"
-                                        stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#000000"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </td>
+                        <td class="flex my-4 mx-auto text-center items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="w-8 h-8 cursor-pointer hover:opacity-30 hover:shadow-lg" width="800px" height="800px"
+                                viewBox="0 0 24 24" fill="none" @click="deleteAccount(account)">
+                                <path d="M10 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M14 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M4 7H20" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10"
+                                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#000000"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </td>
                         </td>
                     </tr>
                 </table>
@@ -255,6 +265,7 @@ export default {
             DCmanager: [],
             updating: false,
             accountSelectedId: 0,
+            searchInput: '',
         }
     },
     methods: {
@@ -316,18 +327,20 @@ export default {
                     this.createdANewAcc();
                 }
             } catch (err) {
-                if (err.response.data.error == 'jwt expired') {
+                if (err.response && err.response.data.error === 'jwt expired') {
                     await this.refreshToken();
                     await this.handleCreateAccount();
                 }
-                else if (err.response.data.error == 'Username is already exists') {
+                else if (err.response && err.response.data.error == 'Username is already exists') {
                     this.userNameError.push("Tên đăng nhập đã tồn tại, hãy chọn tên khác!")
-                } else if (err.respone.data.error == 'Phone is already exists') {
+                } else if (err.response && err.respone.data.error == 'Phone is already exists') {
                     this.phoneError.push('Số điện thoại bị trùng! Hãy nhập số khác')
-                } else if (err.respone.data.error == 'Email is already exists') {
+                } else if (err.response && err.respone.data.error == 'Email is already exists') {
                     this.emailError.push('Email bị trùng! Hãy chọn email khác!')
-                } else if (err.respone.data.error == 'Identity number is already exists') {
+                } else if (err.response && err.respone.data.error == 'Identity number is already exists') {
                     this.citizenCardImgError.push('Số CCCD bị trùng! Hãy nhập CCCD khác!')
+                } else {
+                    alert("Tạo tài khoản thành công!");
                 }
             }
         },
@@ -463,18 +476,20 @@ export default {
                 this.fetchAccountsData();
                 this.createdANewAcc();
             } catch (err) {
-                if (err.response.data.error == 'jwt expired') {
+                if (err.response && err.response.data.error === 'jwt expired') {
                     await this.refreshToken();
                     await this.handleUpdateAccount();
                 }
-                else if (err.response.data.error == 'Username is already exists') {
+                else if (err.response && err.response.data.error == 'Username is already exists') {
                     this.userNameError.push("Tên đăng nhập đã tồn tại, hãy chọn tên khác!")
-                } else if (err.respone.data.error == 'Phone is already exists') {
+                } else if (err.response && err.respone.data.error == 'Phone is already exists') {
                     this.phoneError.push('Số điện thoại bị trùng! Hãy nhập số khác')
-                } else if (err.respone.data.error == 'Email is already exists') {
+                } else if (err.response && err.respone.data.error == 'Email is already exists') {
                     this.emailError.push('Email bị trùng! Hãy chọn email khác!')
-                } else if (err.respone.data.error == 'Identity number is already exists') {
+                } else if (err.response && err.respone.data.error == 'Identity number is already exists') {
                     this.citizenCardImgError.push('Số CCCD bị trùng! Hãy nhập CCCD khác!')
+                } else {
+                    alert("Tạo tài khoản thành công!");
                 }
             }
         },
@@ -500,6 +515,10 @@ export default {
         truncateText(text, maxLength) {
             return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
         },
+        escapeRegExp(text) {
+            // Function to escape special characters in a string for regex
+            return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+        },
     },
 
     computed: {
@@ -511,7 +530,10 @@ export default {
         displayedItemList() {
             const startIndex = (this.currentPage - 1) * this.itemsPerPage;
             const endIndex = startIndex + this.itemsPerPage;
-            return this.accounts.slice(startIndex, endIndex);
+            return this.searchInput != ''
+                ? this.accounts.filter((t) => new RegExp(this.escapeRegExp(this.searchInput), 'i').test(t.firstName + t.lastName)).
+                    slice(startIndex, endIndex)
+                : this.accounts.slice(startIndex, endIndex);
         },
     },
     created() {
