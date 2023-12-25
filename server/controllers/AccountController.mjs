@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import randToken from 'rand-token'
-import sequelize, { where } from 'sequelize'
+import sequelize from 'sequelize'
 import { Op } from 'sequelize';
 import { format } from 'date-fns'
 import db from '../models/index.mjs'
@@ -384,6 +384,7 @@ const AccountController = {
                         model: Delivery_center,
                         attributes: [
                             [sequelize.col('district_id'), 'districtId'],
+                            [sequelize.col('address'),'address']
                         ],
                         where: {
                             delivery_center_id: condition.delivery_center_id,
