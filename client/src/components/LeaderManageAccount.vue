@@ -93,31 +93,31 @@
                                 Xóa</th>
                         </tr>
                         <tr v-for="account in displayedItemList" v-if="provinceFilterId != 0">
-                            <td v-if="account.warehouse.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.warehouse && account.warehouse.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs border">
                                 {{ account.warehouseId }}</td>
-                            <td v-if="account.warehouse.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.warehouse && account.warehouse.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs border">
                                 {{ account.warehouse && account.warehouse.province_municipality
                                     ? account.warehouse.province_municipality.provinceMunicipality
                                     : 'N/A' }}
                             </td>
-                            <td v-if="account.warehouse.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.warehouse && account.warehouse.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs border">
                                 WH_{{ account.warehouse && account.warehouse.provinceMunicipalityId
                                     ? account.warehouse.provinceMunicipalityId
                                     : 'N/A' }}_MANAGER_{{ account.accountId }}
                             </td>
-                            <td v-if="account.warehouse.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.warehouse && account.warehouse.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center truncate md:text-base sm:text-sm text-xs border">
                                 {{ account.firstName + ' ' + account.lastName }}</td>
-                            <td v-if="account.warehouse.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.warehouse && account.warehouse.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center truncate md:text-base sm:text-sm text-xs border">
                                 {{ truncateText(account.email, 20) }}</td>
-                            <td v-if="account.warehouse.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.warehouse && account.warehouse.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center truncate md:text-base sm:text-sm text-xs border">
                                 {{ account.phone }}</td>
-                            <td v-if="account.warehouse.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.warehouse && account.warehouse.provinceMunicipalityId == provinceFilterId"
                                 class="flex my-4 mx-auto text-center items-center justify-center">
                                 <td class="flex my-4 mx-auto text-center items-center justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +132,7 @@
                                     </svg>
                                 </td>
                             </td>
-                            <td v-if="account.warehouse.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.warehouse && account.warehouse.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border items-center md:text-base sm:text-sm text-xs">
                                 <td class="flex my-4 mx-auto text-center items-center justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -246,10 +246,10 @@
                                 Xóa</th>
                         </tr>
                         <tr v-if="provinceFilterId != 0" v-for="account in displayedItemList">
-                            <td v-if="account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.delivery_center && account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs">{{
                                     account.deliveryCenterId }}</td>
-                            <td v-if="account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.delivery_center && account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs">
                                 {{
                                     account.delivery_center &&
@@ -259,13 +259,13 @@
                                     : 'N/A'
                                 }}
                             </td>
-                            <td v-if="account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.delivery_center && account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs">{{
                                     account.delivery_center &&
                                     account.delivery_center.district
                                     ? account.delivery_center.district.district
                                     : 'N/A' }}</td>
-                            <td v-if="account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.delivery_center && account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs">
                                 DC_{{ account.delivery_center &&
                                     account.delivery_center.district &&
@@ -275,16 +275,16 @@
                                     : 'N/A'
                                 }}
                             </td>
-                            <td v-if="account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.delivery_center && account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs truncate">
                                 {{ account.firstName + ' ' + account.lastName }}</td>
-                            <td v-if="account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.delivery_center && account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs truncate">
                                 {{ truncateText(account.email, 20) }}</td>
-                            <td v-if="account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.delivery_center && account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs truncate">
                                 {{ account.phone }}</td>
-                            <td v-if="account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.delivery_center && account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border items-center justify-center">
                                 <td class="flex my-4 mx-auto text-center items-center justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -301,7 +301,7 @@
                             </td>
 
 
-                            <td v-if="account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
+                            <td v-if="account.delivery_center && account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border items-center justify-center">
                                 <td class="flex my-4 mx-auto text-center items-center justify-center">
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -723,9 +723,9 @@ export default {
             this.form.email = "";
             this.form.phone = "";
             this.form.citizenIdentityCardNumber = "";
-            this.districts = null;
-            this.wareHouses = null;
-            this.deliveryCenters = null;
+            this.districts = [];
+            this.wareHouses = [];
+            this.deliveryCenters = [];
         },
         solveWhenProvinceChange() {
             if (this.accountCreateType == 1) {
@@ -750,9 +750,9 @@ export default {
             this.form.email = "";
             this.form.phone = "";
             this.form.citizenIdentityCardNumber = "";
-            this.districts = null;
-            this.wareHouses = null;
-            this.deliveryCenters = null;
+            this.districts = [];
+            this.wareHouses = [];
+            this.deliveryCenters = [];
         },
         async fetchAccountsData() {
             this.fetchFinish = true;
@@ -828,7 +828,6 @@ export default {
             }
         },
         async getAllDistrictsOfAProvince() {
-            this.districts = null;
             if (this.provinceSelectedId > 0) {
                 try {
                     const res = await axios.get(`/provinces/${this.provinceSelectedId}/districts`, { withCredentials: true });
@@ -839,7 +838,6 @@ export default {
             }
         },
         async getAllWarehouseofAProvinces() {
-            this.wareHouses = null;
             if (this.provinceSelectedId > 0) {
                 try {
                     const res = await axios.get(`/warehouses/${this.provinceSelectedId}`, { withCredentials: true });
@@ -880,9 +878,9 @@ export default {
             this.form.email = "";
             this.form.phone = "";
             this.form.citizenIdentityCardNumber = "";
-            this.districts = null;
-            this.wareHouses = null;
-            this.deliveryCenters = null;
+            this.districts = [];
+            this.wareHouses = [];
+            this.deliveryCenters = [];
             this.createNew = !this.createNew;
             this.updating = false;
         },
@@ -1088,8 +1086,8 @@ export default {
             this.form.email = account.email;
             this.form.phone = account.phone;
             this.form.citizenIdentityCardNumber = account.citizenIdentityCardNumber;
-            this.wareHouses = null;
-            this.deliveryCenters = null;
+            this.wareHouses = [];
+            this.deliveryCenters = [];
             this.createNew = !this.createNew;
         },
         escapeRegExp(text) {
