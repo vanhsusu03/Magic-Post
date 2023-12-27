@@ -165,4 +165,5 @@ router.post('/collections', isAuth, permit([4, 6]), PackageCollectionController.
  */
 router.put('/collections/:packageCollectionId/statuses', isAuth, permit([4, 6]), PackageCollectionController.confirmGotCollection)
 
+router.get('/fetchPkgCol/:officeId/fetch', isAuth, PackageCollectionController.getSendingCollections)
 export default router

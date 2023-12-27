@@ -2,7 +2,8 @@ import sequelize from 'sequelize'
 import { format } from 'date-fns'
 import db from '../models/index.mjs'
 
-const { Package_collection, Package_pkg_collection, Status_detail, Package } = db.models
+const { Package_collection, Package_pkg_collection, Status_detail, Package,
+    Delivery_center, Warehouse } = db.models
 
 const PackageCollectionController = {
     /**
@@ -16,15 +17,24 @@ const PackageCollectionController = {
     create: async (req, res) => {
         try {
             let packageIds = req.body.packageIds
-            const { packageCollectionTypeId, statusId, location } = req.body
+            const { packageCollectionTypeId, statusId, location,
+                deliveryCenterReceiveId, warehouseReceiveId } = req.body
 
             if (typeof packageIds === "string") {
                 packageIds = packageIds.split(',').map(Number)
             }
-
-            const packageCollection = await Package_collection.create({
-                package_collection_type_id: packageCollectionTypeId
-            })
+            let packageCollection
+            if (deliveryCenterReceiveId) {
+                packageCollection = await Package_collection.create({
+                    package_collection_type_id: packageCollectionTypeId,
+                    delivery_center_receive_id: deliveryCenterReceiveId,
+                })
+            } else {
+                packageCollection = await Package_collection.create({
+                    package_collection_type_id: packageCollectionTypeId,
+                    warehouse_receive_id: warehouseReceiveId,
+                })
+            }
             const now = new Date()
             const vietnamTime = format(now, 'yyyy-MM-dd HH:mm:ss', { timeZone: 'Asia/Ho_Chi_Minh' })
             for (const id of packageIds) {
@@ -103,6 +113,87 @@ const PackageCollectionController = {
             res.status(200).json({
                 vietnamTime,
                 packages
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
+    getSendingCollections: async (req, res) => {
+        try {
+            const officeId = Number(req.params.officeId)
+            const { typeOffice, statusId } = req.query
+
+            let collections = null
+            if (typeOffice == "warehouse") {
+                collections = await Package_collection.findAll({
+                    where: {
+                        warehouse_receive_id: officeId
+                    },
+                    raw: true,
+                })
+            } else {
+                collections = await Package_collection.findAll({
+                    where: {
+                        delivery_center_receive_id: officeId
+                    },
+                    raw: true,
+                })
+            }
+
+            let ans = []
+            const ps = await Package.findAll({
+                attributes: ['package_id'],
+                include: {
+                    model: Status_detail,
+                    attributes: [
+                        [sequelize.col('time'), 'time'],
+                        [sequelize.col('location'), 'location'],
+                        [sequelize.col('status_id'), 'statusId']
+                    ],
+                },
+                raw: true,
+                nest: true,
+                order: [[sequelize.col('time'), 'DESC']]
+            })
+            // console.log("psssss: " + ps) 
+            let closedSet = []
+            for (let i = 0; i < ps.length; i++) {
+                let t = ps[i]
+                if (closedSet.includes(t.package_id)) {
+                    ps.splice(i--, 1);
+                    continue
+                }
+                closedSet.push(t.package_id)
+            }
+            // console.log("psssss: " + ps) 
+            for (const t of collections) {
+                for (const pkg of ps) {
+                    if (pkg.status_details.statusId != statusId) {
+                        continue
+                    }
+
+                    const len = await Package_pkg_collection.findAll({
+                        where: {
+                            package_id: pkg.package_id,
+                            package_collection_id: t.package_collection_id,
+                        },
+                        raw: true,
+                        nest: true
+                    })
+                    if (len.length > 0) {
+                        ans.push(pkg)
+                    }
+                }
+                // console.log("ans " + ans)
+            }
+
+            res.status(200).json({
+                ans
             })
         } catch (err) {
             console.log(err)

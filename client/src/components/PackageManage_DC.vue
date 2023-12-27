@@ -32,6 +32,10 @@
         <div class="mx-auto" id="course" v-if="taskTypeSelected == 2">
             <PackCollectionManage_DC></PackCollectionManage_DC>
         </div>
+
+        <div class="mx-auto" id="course" v-if="taskTypeSelected == 3">
+            <PacakageConfirm_DC></PacakageConfirm_DC>
+        </div>
     </div>
 </template>
 
@@ -40,6 +44,7 @@ import axios from 'axios';
 import { mapState, mapMutations } from 'vuex';
 import CreatePackage from './CreatePackage.vue';
 import PackCollectionManage_DC from './PackCollectionManage_DC.vue';
+import PacakageConfirm_DC from './PacakageConfirm_DC.vue';
 export default {
     name: 'PackageManage_DC',
     data() {
@@ -50,6 +55,7 @@ export default {
     components: {
         CreatePackage,
         PackCollectionManage_DC,
+        PacakageConfirm_DC,
     },
     methods: {
 

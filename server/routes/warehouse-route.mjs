@@ -175,6 +175,6 @@
      */
     router.delete('/warehouses/:warehouseId', isAuth, isLeadership, WarehouseController.removeAWarehouse)
 
-    router.get('/warehouses/:provinceId', WarehouseController.getWarehousesByProvinces)
+    router.get('/warehouses/:provinceId', isAuth, WarehouseController.getWarehousesByProvinces)
 
     export default router

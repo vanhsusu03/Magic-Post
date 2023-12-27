@@ -15,6 +15,10 @@ export default {
         refreshToken: '',
     },
     staff_WH: [],
+    staffWHToken: {
+        accessToken: '',
+        refreshToken: '',
+    },
     teller_DC: [],
     tellerDCToken: {
         accessToken: '',

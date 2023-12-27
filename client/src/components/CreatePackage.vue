@@ -394,7 +394,7 @@ export default {
                 });
                 if (res.data) {
                     this.packages = res.data;
-                    this.packages=this.filteredPackages(this.packages,1);
+                    this.packages = this.filteredPackages(this.packages, 1);
                 }
 
             } catch (err) {
@@ -425,7 +425,6 @@ export default {
                 }, { withCredentials: true });
                 if (res.data) {
                     this.fetchSendPackagesData();
-                    alert("THANH CONG");
                     this.createPackageBill();
                 }
             } catch (err) {
