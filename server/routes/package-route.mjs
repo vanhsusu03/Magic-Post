@@ -300,4 +300,7 @@ router.put('/packages/:packageId/statuses', isAuth, isTeller, PackageController.
  */
 router.put('/packages/statuses', isAuth, isTeller, PackageController.updateDeliveryStatusOfManyPackages)
 
+router.delete('/packages/:packageId', isAuth, isTeller, PackageController.deletePackageById)
+
+
 export default router

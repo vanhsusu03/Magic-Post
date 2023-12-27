@@ -1,7 +1,7 @@
 import sequelize from 'sequelize'
 import db from '../models/index.mjs'
 
-const { Delivery_center, District } = db.models
+const { Delivery_center, District, Account, Package, Status_detail, Package_status } = db.models
 
 const DeliveryCenterController = {
     /**
@@ -172,6 +172,72 @@ const DeliveryCenterController = {
         }
     },
 
+    getPackages: async (req, res) => {
+        try {
+            const deliveryCenterId = Number(req.params.deliveryCenterId)
+            const deliveryCenterType = req.query.deliveryCenterType;
+
+            let condition = {}
+            let conditionDeliveryCenter
+            
+            if (deliveryCenterType == "send") {
+                conditionDeliveryCenter = {
+                    delivery_center_send_id: deliveryCenterId
+                }
+            } else if (deliveryCenterType == "receive") {
+                conditionDeliveryCenter = {
+                    delivery_center_receive_id: deliveryCenterId
+                }
+            }
+
+            const ans = await Package.findAll({
+                attributes: [
+                    [sequelize.col('package.package_id'), 'packageId'],
+                    [sequelize.col('package.package_type_id'), 'packageTypeId'],
+                    [sequelize.col('delivery_center_send_id'), 'deliveryCenterSendId'],
+                    [sequelize.col('delivery_center_receive_id'), 'deliveryCenterReceiveId'],
+                    [sequelize.col('weight_gram'), 'weightGram'],
+                    [sequelize.col('cost'), 'cost'],
+                    [sequelize.col('COD_amount'), 'codAmount'],
+                    [sequelize.col('sender_address'), 'senderAddress'],
+                    [sequelize.col('receiver_address'), 'receiverAddress'],
+                    [sequelize.col('sender_name'), 'senderName'],
+                    [sequelize.col('receiver_name'), 'receiverName'],
+                    [sequelize.col('sender_phone'), 'senderPhone'],
+                    [sequelize.col('receiver_phone'), 'receiverPhone']
+                ],
+                include: {
+                    model: Status_detail,
+                    attributes: [
+                        [sequelize.col('status_id'), 'statusId'],
+                        [sequelize.col('time'), 'time'],
+                        [sequelize.col('location'), 'location']
+                    ],
+                    // where: condition,
+                    include: {
+                        model: Package_status,
+                        attributes: [
+                            [sequelize.col('package_status'), 'packageStatus']
+                        ]
+                    },
+                    order: [[sequelize.col('time'), 'ASC']]
+                },
+                where: conditionDeliveryCenter,
+                order: [
+                    [{ model: Status_detail }, 'time', 'ASC']
+                ]
+            })
+
+            res.status(200).json(ans)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
     getDeliveryCentersByDistrict: async (req, res) => {
         try {
             const districtId = Number(req.params.districtId);
@@ -185,6 +251,34 @@ const DeliveryCenterController = {
                 ],
                 where: {
                     district_id: districtId
+                },
+                order: [
+                    [sequelize.col('delivery_center_id'), 'ASC'],
+                ],
+            })
+            res.status(200).json(ans)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
+    getDeliveryCentersById: async (req, res) => {
+        try {
+            const deliveryCenterId = Number(req.params.deliveryCenterId);
+            // console.log("ITS BUG:  " + this.deliveryCenterId)
+            const ans = await Delivery_center.findAll({
+                attributes: [
+                    [sequelize.col('delivery_center_id'), 'deliveryCenterId'],
+                    [sequelize.col('district_id'), 'districtId'],
+                    [sequelize.col('warehouse_id'), 'warehouseId'],
+                    [sequelize.col('address'), 'address'],
+                ],
+                where: {
+                    delivery_center_id: deliveryCenterId
                 },
                 order: [
                     [sequelize.col('delivery_center_id'), 'ASC'],

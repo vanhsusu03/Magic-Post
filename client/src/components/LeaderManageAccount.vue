@@ -1,24 +1,25 @@
 <template>
     <div id="container">
-        <div v-if="!this.createNew" class="w-11/12 h-10/12 mx-auto">
-            <div class="mt-4 w-11/12 grid grid-cols-6 mx-auto">
+        <div v-if="!this.createNew" class="mx-4">
+            <div class="grid grid-cols-6">
                 <span class="col-start-1 col-end-5 max-w-fit">
-                    <h1 class="inline-flex font-semibold lg:text-3xl md:text-xl sm:text-sm text-xs">
+                    <h1 class="flex font-semibold font-sans h-full items-center justify-center text-center lg:text-xl md:lg sm:text-base text-sm">
                         Danh sách tài khoản nhân viên
                     </h1>
                 </span>
-                <span class="col-start-6">
+                <span class="flex col-start-6 items-center justify-center mx-auto">
                     <button v-on:click="this.createdANewAcc()"
-                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded btn">
+                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 my-4
+                            md:text-base sm:text-sm text-xs rounded btn hover:shadow-lg cursor-pointer">
                         Thêm tài khoản
                     </button>
                 </span>
             </div>
-            <hr class="my-4 mx-auto w-11/12">
+            <hr class="mb-4 mx-auto">
 
-            <div class="w-11/12 mx-auto">
-                <div class="grid grid-cols-6">
-                    <span class="col-start-1 col-end-3">
+            <div class="">
+                <div class="grid grid-cols-8">
+                    <span class="col-start-1 col-end-4">
                         <h2 class="py-2 md:text-base sm:text-sm text-xs">Chọn loại tài khoản:</h2>
                         <select id="office-province" name="province_id" v-model="accountTypeSelected"
                             @change="handleFilter(); fetchAccountsData(); test()" class="search-select mb-4 w-11/12 h-1/2 select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
@@ -35,7 +36,7 @@
                     </span>
 
                     <span v-if="accountTypeSelected != 0"
-                        class="flex col-start-3 col-end-5 mt-8 mx-auto items-center justify-center">
+                        class="flex col-start-5 col-end-7 mt-8 mx-auto items-center justify-center">
                         <svg class="w-8 h-8 mx-2" xmlns="http://www.w3.org/2000/svg" width="800px" height="800px"
                             viewBox="0 0 24 24" fill="none">
                             <path
@@ -46,7 +47,7 @@
                     </span>
 
                     <span v-if="accountTypeSelected != 0"
-                        class="flex col-start-5 col-end-7 h-2/3 mt-8 py-0 mx-auto items-center justify-center">
+                        class="flex col-start-7 col-end-9 h-2/3 mt-8 py-0 mx-auto items-center justify-center">
                         <svg class="w-8 h-8 mx-2" xmlns="http://www.w3.org/2000/svg" width="800px" height="800px"
                             viewBox="0 0 24 24" fill="none">
                             <path
@@ -73,7 +74,7 @@
 
                 <!-- HEAD COMP MANAGE  -->
                 <div class="mx-auto mt-4" id="course">
-                    <table class="" v-if="this.accountTypeSelected == 1">
+                    <table class="w-full max-w-max" v-if="this.accountTypeSelected == 1">
                         <tr>
                             <th class="bg-green-500 text-white font-bold py-2 px-4 text-center items-center md:text-base sm:text-sm text-xs border">
                                 Mã điểm TK</th>
@@ -113,7 +114,7 @@
                                 {{ account.firstName + ' ' + account.lastName }}</td>
                             <td v-if="account.warehouse && account.warehouse.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center truncate md:text-base sm:text-sm text-xs border">
-                                {{ truncateText(account.email, 20) }}</td>
+                                {{ account.email }}</td>
                             <td v-if="account.warehouse && account.warehouse.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center truncate md:text-base sm:text-sm text-xs border">
                                 {{ account.phone }}</td>
@@ -174,7 +175,7 @@
                                 {{ account.firstName + ' ' + account.lastName }}</td>
                             <td v-if="account.warehouse"
                                 class="py-2 px-4 border items-center justify-center truncate md:text-base sm:text-sm text-xs border">
-                                {{ truncateText(account.email, 20) }}</td>
+                                {{ account.email }}</td>
                             <td v-if="account.warehouse"
                                 class="py-2 px-4 border items-center justify-center truncate md:text-base sm:text-sm text-xs border">
                                 {{ account.phone }}</td>
@@ -183,7 +184,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="w-8 h-8 cursor-pointer hover:opacity-30 hover:shadow-lg" width="800px"
                                         height="800px" viewBox="0 0 24 24" fill="none"
-                                        @click="updateAccount(account); this.deliverySelectedId = delivery_center.deliveryCenterId">
+                                        @click="updateAccount(account);">
                                         <path
                                             d="M18.4721 16.7023C17.3398 18.2608 15.6831 19.3584 13.8064 19.7934C11.9297 20.2284 9.95909 19.9716 8.25656 19.0701C6.55404 18.1687 5.23397 16.6832 4.53889 14.8865C3.84381 13.0898 3.82039 11.1027 4.47295 9.29011C5.12551 7.47756 6.41021 5.96135 8.09103 5.02005C9.77184 4.07875 11.7359 3.77558 13.6223 4.16623C15.5087 4.55689 17.1908 5.61514 18.3596 7.14656C19.5283 8.67797 20.1052 10.5797 19.9842 12.5023M19.9842 12.5023L21.4842 11.0023M19.9842 12.5023L18.4842 11.0023"
                                             stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -215,7 +216,7 @@
                         </tr>
                     </table>
 
-                    <table v-if="this.accountTypeSelected == 2">
+                    <table class="w-11/12 max-w-min" v-if="this.accountTypeSelected == 2">
                         <tr>
                             <th
                                 class="bg-green-500 text-white font-bold py-2 px-4 text-center items-center md:text-base sm:text-sm text-xs border">
@@ -280,7 +281,7 @@
                                 {{ account.firstName + ' ' + account.lastName }}</td>
                             <td v-if="account.delivery_center && account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs truncate">
-                                {{ truncateText(account.email, 20) }}</td>
+                                {{ account.email }}</td>
                             <td v-if="account.delivery_center && account.delivery_center.district.provinceMunicipalityId == provinceFilterId"
                                 class="py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs truncate">
                                 {{ account.phone }}</td>
@@ -290,7 +291,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="w-8 h-8 cursor-pointer hover:opacity-30 hover:shadow-lg" width="800px"
                                         height="800px" viewBox="0 0 24 24" fill="none"
-                                        @click="updateAccount(account); this.deliverySelectedId = delivery_center.deliveryCenterId">
+                                        @click="updateAccount(account);">
                                         <path
                                             d="M18.4721 16.7023C17.3398 18.2608 15.6831 19.3584 13.8064 19.7934C11.9297 20.2284 9.95909 19.9716 8.25656 19.0701C6.55404 18.1687 5.23397 16.6832 4.53889 14.8865C3.84381 13.0898 3.82039 11.1027 4.47295 9.29011C5.12551 7.47756 6.41021 5.96135 8.09103 5.02005C9.77184 4.07875 11.7359 3.77558 13.6223 4.16623C15.5087 4.55689 17.1908 5.61514 18.3596 7.14656C19.5283 8.67797 20.1052 10.5797 19.9842 12.5023M19.9842 12.5023L21.4842 11.0023M19.9842 12.5023L18.4842 11.0023"
                                             stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -352,7 +353,7 @@
                                 {{ account.firstName + ' ' + account.lastName }}</td>
                             <td
                                 class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
-                                {{ truncateText(account.email, 20) }}</td>
+                                {{ account.email }}</td>
                             <td
                                 class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
                                 {{ account.phone }}</td>
@@ -361,7 +362,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="w-8 h-8 cursor-pointer hover:opacity-30 hover:shadow-lg" width="800px"
                                         height="800px" viewBox="0 0 24 24" fill="none"
-                                        @click="updateAccount(account); this.deliverySelectedId = delivery_center.deliveryCenterId">
+                                        @click="updateAccount(account);">
                                         <path
                                             d="M18.4721 16.7023C17.3398 18.2608 15.6831 19.3584 13.8064 19.7934C11.9297 20.2284 9.95909 19.9716 8.25656 19.0701C6.55404 18.1687 5.23397 16.6832 4.53889 14.8865C3.84381 13.0898 3.82039 11.1027 4.47295 9.29011C5.12551 7.47756 6.41021 5.96135 8.09103 5.02005C9.77184 4.07875 11.7359 3.77558 13.6223 4.16623C15.5087 4.55689 17.1908 5.61514 18.3596 7.14656C19.5283 8.67797 20.1052 10.5797 19.9842 12.5023M19.9842 12.5023L21.4842 11.0023M19.9842 12.5023L18.4842 11.0023"
                                             stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -410,17 +411,17 @@
             </div>
         </div>
 
-        <div v-else class="md:max-w-5xl sm:max-w-3xl max-w-xl w-11/12 mx-auto">
+        <div v-else class="mx-4">
             <div class="py-2 grid gird-cols-6">
                 <span class="col-start-1 col-end-5 py-2">
-                    <h1 v-if="!this.updating" class="inline-flex font-semibold lg:text-3xl md:text-xl sm:text-sm text-xs">
+                    <h1 v-if="!this.updating" class="inline-flex font-semibold font-sans lg:text-3xl md:text-xl sm:text-sm text-xs">
                         Tạo mới tài khoản
                     </h1>
                     <h1 v-else-if="this.accountCreateType == 2"
-                        class="inline-flex font-semibold lg:text-3xl md:text-xl sm:text-sm text-xs">
+                        class="inline-flex font-semibold font-sans lg:text-3xl md:text-xl sm:text-sm text-xs">
                         Cập nhật tài khoản trưởng điểm giao dịch
                     </h1>
-                    <h1 v-else class="inline-flex font-semibold lg:text-3xl md:text-xl sm:text-sm text-xs">
+                    <h1 v-else class="inline-flex font-semibold font-sans lg:text-3xl md:text-xl sm:text-sm text-xs">
                         Cập nhật tài khoản trưởng điểm tập kết
                     </h1>
                 </span>
@@ -433,7 +434,7 @@
             </div>
             <hr class="my-2">
             <div v-if="!this.updating">
-                <h2>Chọn loại tài khoản:</h2>
+                <h2 class="my-2 text-slate-600 font-sans">Chọn loại tài khoản:</h2>
                 <select id="office-province" name="province_id" v-model="accountCreateType"
                     @change="handleWhenChangeStatusAccountCreate()" class="search-select w-4/12 select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
                 md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true"

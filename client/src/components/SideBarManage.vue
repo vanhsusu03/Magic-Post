@@ -1,5 +1,5 @@
 <template>
-    <aside class="bg-gray-100 z-20 hidden w-64 h-screen overflow-y-auto dark:bg-gray-800 md:block flex-shrink-0">
+    <aside class="bg-slate-50 z-20 hidden w-64 h-screen overflow-y-auto dark:bg-gray-800 md:block flex-shrink-0 border-gray-200 border-r border-t border-b">
         <div class="py-4 text-gray-500 dark:text-gray-400">
             <a class="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200" href="#">
                 Magic Post

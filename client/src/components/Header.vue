@@ -1,12 +1,21 @@
 <template>
     <header>
-        <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5">
-            <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+        <nav class="flex border-gray-300 border-b bg-slate-50 px-4 lg:px-6 my-0 py-0">
+
+            <div class="flex">
+                <button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24" fill="none" class="w-10 h-10">
+                        <path d="M4 12H20M4 8H20M4 16H12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
                 <RouterLink to="/" @click="scrollToTop()" class="flex items-center">
-                    <img src="../assets/img/logo.png" class="-mr-4 sm:mr-4 h-8 sm:h-9 md:h-9 lg:h-16"
+                    <img src="../assets/img/logo.png" class="mr-4 ml-6 sm:mr-4 h-8 sm:h-9 md:h-9 lg:h-16"
                         alt="MagicPost Logo" />
                 </RouterLink>
-
+            </div>
+            <div class="flex justify-between items-center mx-auto w-full max-w-screen-2xl">
+               
+    
                 <div class="flex items-center lg:order-2">
                     <RouterLink to=""
                         class="text-gray-800 text-white hover:bg-gray-50 font-medium 
@@ -18,7 +27,7 @@
                     rounded-lg lg:text-sm text-xs px-4 lg:px-5 md:px-4 sm:px-2 py-2 lg:py-2.5 mr-2 focus:outline-none chat">Hotline:
                         0333544588</RouterLink>
 
-                    <div class="relative inline-block text-left lg:hidden">
+                    <div class="text-left lg:hidden mx-auto max-w-fit">
                         <div>
                             <button type="button" @click="handleDropdown()"
                                 class="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
@@ -62,7 +71,7 @@
                     </div>
 
                 </div>
-                <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1" id="mobile-menu-2">
+                <div class="hidden justify-between items-center w-full lg:flex lg:w-auto lg:order-1 mx-auto" id="mobile-menu-2">
                     <ul class="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                         <li>
                             <RouterLink to="/" @click="scrollToTop()" class="block py-2 pr-4 pl-3 text-gray-700 border-b-4 

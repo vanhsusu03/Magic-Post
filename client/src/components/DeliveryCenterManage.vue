@@ -1,21 +1,21 @@
 <template>
-    <div v-if="!this.createNew" class="w-10/12 h-10/12 mx-auto">
-        <div class="w-9/12 grid grid-cols-6 mx-auto">
+    <div v-if="!this.createNew" class="mx-4">
+        <div class="grid grid-cols-6 mx-4">
             <span class="col-start-1 col-end-5 max-w-fit">
-                <h1 class="flex font-semibold h-full items-center justify-center text-center lg:text-xl md:text-base sm:text-sm text-xs">
+                <h1 class="flex font-semibold font-sans h-full items-center justify-center text-center lg:text-xl md:lg sm:text-base text-sm">
                     Danh sách điểm giao dịch toàn quốc
                 </h1>
             </span>
-            <span class="col-start-6">
-                <button v-on:click="this.createdANewDC()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 
+            <span class="flex col-start-6 items-center justify-center mx-auto">
+                <button v-on:click="this.createdANewDC()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 my-4
                     md:text-base sm:text-sm text-xs rounded btn hover:shadow-lg cursor-pointer">
                     Tạo điểm giao dịch
                 </button>
             </span>
         </div>
-        <hr class="my-4 mx-auto w-9/12">
+        <hr class="mb-4 mx-4">
 
-        <div class="w-9/12 mx-auto" id="course">
+        <div class="mx-4" id="course">
             <table class="px-auto">
                 <tr>
                     <th
@@ -199,7 +199,7 @@
                 <p class="error" v-if="addressError.length > 0">{{ addressError[0] }}</p>
                 <br>
                 <br>
-                <button v-if="!this.updating" type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded
+                <button v-if="!this.updating" type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2  px-4 rounded
                     md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg">Tạo điểm giao dịch</button>
                 <button v-else type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded
                     md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg">Cập nhật điểm giao dịch</button>

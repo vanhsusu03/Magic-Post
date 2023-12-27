@@ -1,22 +1,22 @@
 <template>
-    <div v-if="!this.createNew" class="h-10/12 w-10/12">
-        <div class="w-9/12 grid grid-cols-6 mx-auto">
+    <div v-if="!this.createNew" class="">
+        <div class="grid grid-cols-6 mx-4">
             <span class="col-start-1 col-end-6 max-w-fit">
-                <h1 class="font-semibold py-4 text-center lg:text-xl md:text-lg sm:text-base text-sm">
+                <h1 class="flex font-semibold font-sans h-full items-center justify-center text-center lg:text-xl md:lg sm:text-base text-sm">
                     Danh sách điểm tập kết toàn quốc
                 </h1>
             </span>
-            <span class="col-start-6 col-end-7">
-                <button v-on:click="this.createdANewWH()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 my-4 
+            <span class="flex col-start-6 col-end-7 items-center justify-center mx-auto">
+                <button v-on:click="this.createdANewWH()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 my-4 items-center justify-center 
                     md:text-base sm:text-sm text-xs rounded btn">
                     Tạo điểm tập kết
                 </button>
             </span>
         </div>
 
-        <hr class="w-9/12 mx-auto my-4">
-        <div class="w-9/12 mx-auto" id="course">
-            <table class="px-auto">
+        <hr class="mx-4 mb-4">
+        <div class="mx-4" id="course">
+            <table class="w-full">
                 <tr>
                     <th class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs">Mã định
                         danh Tỉnh/Thành phố</th>
@@ -41,7 +41,7 @@
                     <!-- <td>{{ whouse.address }}</td> -->
                 </tr>
                 </td>
-                <td class="py-4 px-4 border md:text-lg sm:text-base text-sm">
+                <!-- <td class="py-4 px-4 border md:text-lg sm:text-base text-sm">
                     <tr class="flex py-4 my-4 mx-auto text-center items-center justify-center md:text-base sm:text-sm text-xs truncate" v-for="whouse in warehouse.warehouses"
                         @mouseover="setHoveredText(whouse.address, whouse.warehouseId, $event)"
                         @mouseleave="clearHoveredText(whouse.warehouseId)">
@@ -50,9 +50,17 @@
                             {{ hoveredText }}
                         </div>
                     </tr>
+                </td> -->
+                <td class="py-4 px-4 border md:text-lg sm:text-base text-sm">
+                    <tr class="flex py-4 my-4 mx-auto text-center items-center justify-center md:text-base sm:text-sm text-xs truncate" v-for="whouse in warehouse.warehouses">
+                        {{ whouse.address }}
+                        <div v-if="isSmallScreen && whouse.warehouseId === hoveredRowId" class="tooltip">
+                            {{ hoveredText }}
+                        </div>
+                    </tr>
                 </td>
                 <td class="py-2 px-4 border items-center md:text-lg sm:text-base text-sm">
-                    <tr v-for="whouse in warehouse.warehouses">
+                    <tr v-for="whouse in warehouse.warehouses" class="flex items-center justify-center">
                         <td class="flex my-4 mx-auto text-center items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 class="w-8 h-8 cursor-pointer hover:opacity-30 hover:shadow-lg" width="800px" height="800px"

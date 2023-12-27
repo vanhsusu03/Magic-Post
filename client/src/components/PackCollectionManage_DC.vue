@@ -1,27 +1,26 @@
 <template>
     <div id="container">
-        <div v-if="!this.createNew" class="w-10/12 h-10/12 mx-auto">
-            <div class="w-8/12 grid grid-cols-12 mx-auto">
-                <span class="col-start-1 col-end-4 max-w-fit">
+        <div v-if="!this.createNew" class="h-10/12 mx-auto">
+            <div class="grid grid-cols-6 mx-auto">
+                <span class="col-start-1 col-end-5 max-w-fit">
                     <h1 class="font-semibold py-2 mt-2 text-center lg:text-2xl md:text-xl sm:text-lg text-base">
                         Danh sách đơn hàng đang gửi tới điểm tập kết
                     </h1>
                 </span>
-                <span class="col-start-4 col-end-9">
-                    <button v-on:click="this.createPackageCollection()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mt-2 
+                <span class="col-start-5 col-end-7">
+                    <button v-on:click="this.createPackageCollection()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 mt-2 
                     mx-4 md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">
                         Tạo đơn hàng gửi tới điểm tập kết
                     </button>
-                </span>
-                <span class="col-start-9 col-end-12">
-                    <button v-on:click="this.fetchSendingPackagesData()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mt-2 
+                    <button v-on:click="this.fetchSendingPackagesData()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 mt-2 
                     mx-4 md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">
                         Tải lại
                     </button>
                 </span>
+        
             </div>
 
-            <hr class="my-2 mx-auto w-9/12">
+            <hr class="my-4 mx-auto border-gray-200">
 
             <div class="w-full mx-auto" id="course">
                 <table>
@@ -202,7 +201,7 @@
                 </div>
             </div>
         </div>
-        <Alert v-if="this.msg != ''" :message=this.msg class="pr-10" @close="this.resetMsg()" />
+        <!-- <Alert v-if="this.msg != ''" :message=this.msg class="pr-10" @close="this.resetMsg()" /> -->
     </div>
 </template>
 
@@ -397,7 +396,7 @@ export default {
                 if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
                     await this.handleCreatePkgCollection();
-                } else { alert(err.response.data.error); }
+                } else { console.log(err.response.data.error); }
             }
         },
         async getTargetDeliveryCenter() {
@@ -443,8 +442,11 @@ export default {
                 this.createPkgCollectionError.packageIdsError.push('Hãy chọn ít nhất 1 đơn hàng!')
             }
             this.form.packageCollectionTypeId = 1;
-            this.form.location = 'Điểm giao dịch số ' + this.deliveryCenter[0].deliveryCenterId +
-                ', ' + this.deliveryCenter[0].address;
+            if (this.deliveryCenter) {
+                this.form.location = 'Điểm giao dịch số ' + this.deliveryCenter[0].deliveryCenterId +
+                    ', ' + this.deliveryCenter[0].address;
+            }
+            
         },
         async handleSubmit() {
 

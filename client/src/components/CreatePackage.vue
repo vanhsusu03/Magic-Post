@@ -1,27 +1,30 @@
 <template>
-    <div id="container">
-        <div v-if="!this.createNew" class="w-10/12 h-10/12 mx-auto">
-            <div class="w-8/12 grid grid-cols-12 mx-auto">
-                <span class="col-start-1 col-end-4 max-w-fit">
-                    <h1 class="font-semibold py-2 mt-2 text-center lg:text-2xl md:text-xl sm:text-lg text-base">
+    <div v-if="!this.isCreated" id="container">
+        <div v-if="!this.createNew" class="mx-auto">
+            <div class="grid grid-cols-6 mx-auto">
+                <span class="col-start-1 col-end-5 max-w-fit">
+                    <h1 class="font-semibold py-2 mt-2 text-center lg:text-2xl md:text-xl sm:text-lg text-base font-sans">
                         Danh sách đơn hàng đã ghi nhận
                     </h1>
                 </span>
-                <span class="col-start-4 col-end-9">
-                    <button v-on:click="this.createPackageBill()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mt-2 
+                <span class="col-start-5 col-end-7">
+                    <span class="">
+                    <button v-on:click="this.createPackageBill()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-2 
                     mx-4 md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">
                         Ghi nhận hàng mới
                     </button>
+                    </span>
+                    <span class="">
+                        <button v-on:click="this.fetchSendPackagesData()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-2 
+                        mx-4 md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">
+                            Tải lại
+                        </button>
+                    </span>
                 </span>
-                <span class="col-start-9 col-end-12">
-                    <button v-on:click="this.fetchSendPackagesData()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 mt-2 
-                    mx-4 md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">
-                        Tải lại
-                    </button>
-                </span>
+                
             </div>
 
-            <hr class="my-2 mx-auto w-9/12">
+            <hr class="my-2 mx-auto ">
 
             <div class="w-full mx-auto" id="course">
                 <table>
@@ -49,25 +52,23 @@
                             Trạng thái</th>
                         <th
                             class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
-                            Chỉnh sửa</th>
-                        <th
-                            class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
                             Xóa</th>
                     </tr>
+
                     <tr v-for="packages in displayedItemList">
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">{{
+                        <td class="py-2 px-4 border text-center items-center justify-center md:text-base sm:text-sm text-xs">{{
                             packages.packageId }}</td>
-                        <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
-                    <tr>{{ packages.senderName }}</tr>
-                    <tr>{{ packages.senderPhone }}</tr>
+                        <td class="py-2 px-4 border text-center items-center justify-center md:text-base sm:text-sm text-xs truncate">
+                            <tr >{{ packages.senderName }}</tr>
+                            <tr>{{ packages.senderPhone }}</tr>
                     </td>
-                    <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
+                    <td class="py-2 px-4 border text-center items-center justify-center md:text-base sm:text-sm text-xs truncate">
                         <tr>{{ packages.receiverName }}</tr>
                         <tr>{{ packages.receiverPhone }}</tr>
                     </td>
-                    <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">{{
+                    <td class="py-2 px-4 border text-center items-center justify-center md:text-base sm:text-sm text-xs">{{
                         packages.deliveryCenterSendId }}</td>
-                    <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
+                    <td class="py-2 px-4 border text-center items-center justify-center md:text-base sm:text-sm text-xs">
                         {{ packages.deliveryCenterReceiveId }}
                     </td>
                     <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
@@ -76,12 +77,21 @@
                         class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate"> Đã
                         nhận từ khách hàng
                     </td>
-                    <td class="py-2 px-4 border items-center justify-center"> <img
-                            class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer" src="../assets/img/note.png"
-                            alt=""> </td>
                     <td class="py-2 px-4 border items-center justify-center">
-                        <img class="2xl:w-1/5 xl:w-2/5 lg:w-3/5 w-full mx-auto cursor-pointer hover:opacity-90 py-6"
-                            src="../assets/img/trash.png" alt="">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-8 h-8 cursor-pointer hover:opacity-30 hover:shadow-lg mx-auto" width="800px" height="800px"
+                            viewBox="0 0 24 24" fill="none" @click="deletePackage(packages)">
+                            <path d="M10 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M14 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M4 7H20" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10"
+                                stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#000000"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                     </td>
                     </tr>
                 </table>
@@ -124,11 +134,13 @@
                     class="bg-white items-center shadow-lg rounded px-8 pt-6 pb-8 mb-4" novalidate autocapitalize="off">
                     <h1 class="text-lg"><strong>Thông tin phía gửi:</strong></h1><br>
                     <h1><strong>Nơi gửi:</strong></h1><br>
-                    <label for="province" class="info">Tỉnh/Thành phố: <strong>{{
-                        this.tellerDC[0].delivery_center.district.district }}-{{
-        this.tellerDC[0].delivery_center.district.province_municipality.provinceMunicipality
-    }}</strong></label><br>
-                    <label for="delivCent" class="info">Địa chỉ điểm giao dịch: <strong>{{
+                    <label for="province" class="info">Tỉnh/Thành phố: <strong>
+                        {{this.tellerDC[0].delivery_center.district.district }}
+                        -{{this.tellerDC[0].delivery_center.district.province_municipality.provinceMunicipality}}
+                        </strong>
+                    </label><br>
+                    
+                    <label v-if="this.deliveryCenter[0]" for="delivCent" class="info">Địa chỉ điểm giao dịch: <strong>{{
                         this.deliveryCenter[0].address }}</strong></label>
                     <br>
                     <br>
@@ -215,7 +227,7 @@
                         data-select2-id="select2-data-73-3wmt">
                         <select id="office-province" name="province_id" v-model="provinceSelectedId"
                             @change="this.solveWhenProvinceChange()" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
-            md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true"
+                                md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true"
                             data-select2-id="select2-data-office-province">
                             <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
                             <option class="text-gray-900" v-for="province in provinces"
@@ -271,21 +283,30 @@
                         createPackageError.receiverAddressError[0] }}<br></p>
 
                     <br>
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
+                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded
                 md:text-base sm:text-sm text-xs hover:shadow-lg cursor-pointer">Tạo đơn
                         hàng</button>
                 </form>
             </div>
         </div>
+    </div>
 
+    <div v-else class="items-center justify-center mx-auto">
+        <PackageBill></PackageBill>
+        <button @click="this.isCreated = false" class="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 my-4 
+                mx-auto md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">Xác nhận</button>
     </div>
 </template>
 
 <script>
 import { mapMutations, mapState } from 'vuex';
 import axios from 'axios';
+import PackageBill from '../components/PackageBill.vue'
 export default {
     name: 'CreatePackage',
+    components: {
+        PackageBill,
+    },
     data() {
         return {
             form: {
@@ -332,6 +353,7 @@ export default {
             itemsPerPage: 4,
             currentPage: 1,
             tellerDC: [],
+            isCreated: false,
         }
     },
     methods: {
@@ -424,6 +446,7 @@ export default {
                     headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
                 }, { withCredentials: true });
                 if (res.data) {
+                    this.isCreated = true;
                     this.fetchSendPackagesData();
                     alert("THANH CONG");
                     this.createPackageBill();
@@ -502,13 +525,13 @@ export default {
             this.form.cost = 0;
             this.form.codAmount = 0;
             this.form.senderAddress = '',
-                this.form.receiverAddress = '',
-                this.form.senderName = '',
-                this.form.receiverName = '',
-                this.form.senderPhone = '',
-                this.form.receiverPhone = '',
-                this.form.location = '',
-                this.districts = null;
+            this.form.receiverAddress = '',
+            this.form.senderName = '',
+            this.form.receiverName = '',
+            this.form.senderPhone = '',
+            this.form.receiverPhone = '',
+            this.form.location = '',
+            this.districts = null;
             this.wareHouses = null;
             this.deliveryCenters = null;
             this.createNew = !this.createNew;
@@ -602,8 +625,23 @@ export default {
                 event.preventDefault();
                 this.scrollToTop();
                 await this.handleCreatePackage();
+
             }
         },
+        async deletePackage(packages) {
+            try {
+                let res = await axios.delete(`/packages/${packages.packageId}`, {
+                    headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
+                }, { withCredentials: true })
+                if (res.data) {
+                    this.fetchSendPackagesData();
+                    alert("successfully!");
+                }
+            } catch (error) {
+                console.log("delete Error");
+            }
+        },
+
         goToPage(page) {
             if (page >= 1 && page <= this.totalPages) {
                 this.currentPage = page;
@@ -639,4 +677,6 @@ export default {
 }
 </script>
 
-<style></style>
+<style lang="scss">
+
+</style>
