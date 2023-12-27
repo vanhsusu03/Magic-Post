@@ -5,7 +5,6 @@ import sequelize from 'sequelize'
 import { Op } from 'sequelize';
 import { format } from 'date-fns'
 import db from '../models/index.mjs'
-import { Op } from 'sequelize'
 
 const { Account, Account_type, Warehouse, Province_municipality, Delivery_center, District } = db.models
 
