@@ -184,7 +184,6 @@ const PackageController = {
             })
         }
     },
-
 }
 
 export default PackageController

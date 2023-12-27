@@ -1,5 +1,6 @@
 import sequelize from 'sequelize'
 import db from '../models/index.mjs'
+import moment from 'moment'
 
 const { Delivery_center, Warehouse, Package_type,
     Package, Status_detail, Package_pkg_collection,
@@ -9,7 +10,9 @@ const StatisticController = {
     getPackagesByStatusId: async (req, res) => {
         try {
             const statusId = Number(req.params.statusId)
-
+            const deliveryCenterId = Number(req.query.deliveryCenterId)
+            let { day, week, month, quarter, year } = req.body
+ 
             let packages = await Package.findAll({
                 include: {
                     model: Status_detail,
@@ -34,6 +37,35 @@ const StatisticController = {
                     packages.splice(i--, 1)
                     continue
                 }
+            }
+            console.log(packages)
+            if (deliveryCenterId) {
+                for (let i = 0; i < packages.length; i++) {
+                    let t = packages[i]
+                    if (t.delivery_center_receive_id != deliveryCenterId) {
+                        packages.splice(i--, 1)
+                        continue
+                    }
+                }
+            }
+            console.log(packages)
+
+            if (day) {
+                packages = packages.filter(p =>
+                    moment(p.status_details.time).isSame(moment(day), 'day')
+                )
+            } else if (week) {
+                packages = packages.filter(p => {
+                    const startOfWeek = moment(week).clone().startOf('isoWeek')
+                    const endOfWeek = moment(week).clone().endOf('isoWeek')
+                    return moment(p.status_details.time).isBetween(startOfWeek, endOfWeek, null, '[]')
+                })
+            } else if (quarter) {
+                packages = packages.filter(p => moment(p.status_details.time).quarter() === moment(quarter).quarter())
+            } else if (month) {
+                packages = packages.filter(p => moment(p.status_details.time).isSame(moment(month), 'month'))
+            } else if (year) {
+                packages = packages.filter(p => moment(p.status_details.time).isSame(moment(year), 'year'))
             }
 
             res.status(200).json(packages)
