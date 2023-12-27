@@ -114,6 +114,6 @@ const router = Router()
 //  */
 // router.get('/statistic/:deliveryCenterId/:type/:day', StatisticController.getByDeliveryCenterDay)
 
-router.get('/statistic/:statusId/packages', StatisticController.getPackagesByStatusId)
+router.get('/statistic/:statusId/packages', isAuth, isTeller, StatisticController.getPackagesByStatusId)
 
 export default router
