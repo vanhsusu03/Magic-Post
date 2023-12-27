@@ -125,11 +125,8 @@ const PackageCollectionController = {
 
     getSendingCollections: async (req, res) => {
         try {
-            // const officeId = Number(req.params.officeId)
-            // const { typeOffice, statusId } = req.query
-            const typeOffice = "warehouse"
-            const officeId = 6
-            const statusId = 2
+            const officeId = Number(req.params.officeId)
+            const { typeOffice, statusId } = req.query
             let condition
             if (typeOffice == "warehouse") {
                 condition = {
