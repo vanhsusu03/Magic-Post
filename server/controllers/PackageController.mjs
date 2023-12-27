@@ -1,8 +1,9 @@
 import sequelize from 'sequelize'
 import { format } from 'date-fns'
 import db from '../models/index.mjs'
+import warehouse from '../models/warehouse.mjs'
 
-const { Package, Package_status, Status_detail } = db.models
+const { Package, Package_status, Status_detail, Warehouse, Delivery_center } = db.models
 
 const PackageController = {
     /**
@@ -176,6 +177,83 @@ const PackageController = {
                 })
             }
             res.status(200).json(ans)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
+    getByStatusIdAndOfficeId: async (req, res) => {
+        try {
+            const statusId = Number(req.params.statusId)
+            const officeId = Number(req.params.officeId)
+            const officeType = String(req.params.officeType)
+
+            let packages = await Package.findAll({
+                include: {
+                    model: Status_detail,
+                },
+                order: [[sequelize.col('time'), 'DESC']],
+                raw: true,
+                nest: true
+            })
+            let closedSet = []
+            for (let i = 0; i < packages.length; i++) {
+                let t = packages[i]
+                if (closedSet.includes(t.package_id)) {
+                    packages.splice(i--, 1)
+                    continue
+                }
+                closedSet.push(t.package_id)
+            }
+
+            for (let i = 0; i < packages.length; i++) {
+                let t = packages[i]
+                if (t.status_details.status_id != statusId) {
+                    packages.splice(i--, 1)
+                    continue
+                }
+            }
+            
+            if (officeType[0] == 'D') {
+                for (let i = 0; i < packages.length; i++) {
+                    let t
+                    if (officeType == "DeliveryCenter1" || officeType == "DeliveryCenter4") {
+                        t = packages[i].delivery_center_send_id
+                    } else if (officeType == "DeliveryCenter2" || officeType == "DeliveryCenter3") {
+                        t = packages[i].delivery_center_receive_id
+                    }
+                    if (t != officeId) {
+                        packages.splice(i--, 1)
+                    }
+                }
+            } else {
+                for (let i = 0; i < packages.length; i++) {
+                    let cond = {
+                        delivery_center_id: packages[i].delivery_center_receive_id
+                    }
+                    if (officeType == "Warehouse1" || officeType == "Warehouse4") {
+                        cond = {
+                            delivery_center_id: packages[i].delivery_center_send_id
+                        }
+                    }
+                    const id = await Delivery_center.findAll({
+                        include: {
+                            model: Warehouse
+                        },
+                        where: cond,
+                        raw: true
+                    })
+                    if (id.warehouse_id != officeId) {
+                        packages.splice(i--, 1)
+                    }
+                }
+            }
+
+            res.status(200).json(packages)
         } catch (err) {
             console.log(err)
             res.status(500).json({
