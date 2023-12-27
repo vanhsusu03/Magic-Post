@@ -38,7 +38,6 @@ const StatisticController = {
                     continue
                 }
             }
-            console.log(packages)
             if (deliveryCenterId) {
                 for (let i = 0; i < packages.length; i++) {
                     let t = packages[i]
@@ -48,7 +47,6 @@ const StatisticController = {
                     }
                 }
             }
-            console.log(packages)
 
             if (day) {
                 packages = packages.filter(p =>
