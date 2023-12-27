@@ -1,14 +1,15 @@
-// /**
-//  * @swagger
-//  * tags:
-//  *  name: Statistic
-//  *  description: The statistic API
-//  */
+/**
+ * @swagger
+ * tags:
+ *  name: Statistic
+ *  description: The statistic API
+ */
 
-// import { Router } from 'express'
-// import StatisticController from "../controllers/StatisticController.mjs"
+import { Router } from 'express'
+import StatisticController from "../controllers/StatisticController.mjs"
+import { isAuth, isTeller } from "../middlewares/Auth.mjs"
 
-// const router = Router()
+const router = Router()
 
 // /**
 //  * @swagger
@@ -113,4 +114,6 @@
 //  */
 // router.get('/statistic/:deliveryCenterId/:type/:day', StatisticController.getByDeliveryCenterDay)
 
-// export default router
+router.get('/statistic/:statusId/packages', isAuth, isTeller, StatisticController.getPackagesByStatusId)
+
+export default router

@@ -1,7 +1,5 @@
 USE magicpost;
 
-insert into account(account_type_id,username, password, first_name, last_name, email, phone, citizen_identity_card_image, registration_time) 
-values (2,'headcomp', '$2a$10$fuFupZhT4ZPzYdTjQFQ5Xu/iTLj.P.Tcze9D.oLXvl5yZ8tOYIFSy', 'Công ty chuyển phát', 'Magic Post', 'magicpost.vn@gmail.com','0333544588','eee',"2023-01-01T12:00:00");
 
 INSERT INTO package_type (package_type) VALUES
 ('Document'),
@@ -41,6 +39,10 @@ INSERT INTO account_type (account_type) VALUES
 ('Teller'),
 ('Warehouse Manager'),
 ('Staff at Warehouse');
+
+
+insert into account(account_type_id,username, password, first_name, last_name, email, phone, citizen_identity_card_number, registration_time) 
+values (2,'headcomp', '$2a$10$fuFupZhT4ZPzYdTjQFQ5Xu/iTLj.P.Tcze9D.oLXvl5yZ8tOYIFSy', 'Công ty chuyển phát', 'Magic Post', 'magicpost.vn@gmail.com','0333544588','eee',"2023-01-01T12:00:00");
 
 INSERT INTO warehouse(warehouse_id, province_municipality_id,address) 
 VALUES ('1','1','215 Liễu Giai, Phường Liễu Giai, Quận Ba Đình, Thành phố Hà Nội')

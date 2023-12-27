@@ -2,7 +2,8 @@ import sequelize from 'sequelize'
 import { format } from 'date-fns'
 import db from '../models/index.mjs'
 
-const { Package_collection, Package_pkg_collection, Status_detail, Package } = db.models
+const { Package_collection, Package_pkg_collection, Status_detail, Package,
+    Delivery_center, Warehouse } = db.models
 
 const PackageCollectionController = {
     /**
@@ -16,15 +17,24 @@ const PackageCollectionController = {
     create: async (req, res) => {
         try {
             let packageIds = req.body.packageIds
-            const { packageCollectionTypeId, statusId, location } = req.body
+            const { packageCollectionTypeId, statusId, location,
+                deliveryCenterReceiveId, warehouseReceiveId } = req.body
 
             if (typeof packageIds === "string") {
                 packageIds = packageIds.split(',').map(Number)
             }
-
-            const packageCollection = await Package_collection.create({
-                package_collection_type_id: packageCollectionTypeId
-            })
+            let packageCollection
+            if (deliveryCenterReceiveId) {
+                packageCollection = await Package_collection.create({
+                    package_collection_type_id: packageCollectionTypeId,
+                    delivery_center_receive_id: deliveryCenterReceiveId,
+                })
+            } else {
+                packageCollection = await Package_collection.create({
+                    package_collection_type_id: packageCollectionTypeId,
+                    warehouse_receive_id: warehouseReceiveId,
+                })
+            }
             const now = new Date()
             const vietnamTime = format(now, 'yyyy-MM-dd HH:mm:ss', { timeZone: 'Asia/Ho_Chi_Minh' })
             for (const id of packageIds) {
@@ -103,6 +113,129 @@ const PackageCollectionController = {
             res.status(200).json({
                 vietnamTime,
                 packages
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
+    getSendingCollections: async (req, res) => {
+        try {
+            const officeId = Number(req.params.officeId)
+            const { typeOffice, statusId } = req.query
+            let condition
+            if (typeOffice == "warehouse") {
+                condition = {
+                    where: {
+                        warehouse_receive_id: officeId
+                    }
+                }
+            } else {
+                condition = {
+                    where: {
+                        delivery_center_receive_id: officeId
+                    }
+                }
+            }
+
+            const collections = await Package_collection.findAll({
+                condition,
+                raw: true,
+            })
+
+            let ans = []
+            const ps = await Package.findAll({
+                attributes: ['package_id'],
+                include: {
+                    model: Status_detail,
+                    attributes: [
+                        [sequelize.col('time'), 'time'],
+                        [sequelize.col('status_id'), 'statusId']
+                    ],
+                },
+                raw: true,
+                nest: true,
+                order: [[sequelize.col('time'), 'DESC']]
+            })
+
+            let closedSet = []
+            for (let i = 0; i < ps.length; i++) {
+                let t = ps[i]
+                if (closedSet.includes(t.package_id)) {
+                    ps.splice(i--, 1)
+                    continue
+                }
+                closedSet.push(t.package_id)
+            }
+            
+            for (const t of collections) {
+                for (const pkg of ps) {
+                    if (pkg.status_details.statusId != statusId) {
+                        continue
+                    }
+
+                    const len = await Package_pkg_collection.findAll({
+                        where: {
+                            package_id: pkg.package_id,
+                            package_collection_id: t.package_collection_id,
+                        },
+                        raw: true,
+                        nest: true
+                    })
+                    if (len.length > 0) {
+                        ans.push(pkg)
+                    }
+                }
+            }
+
+            let arr = []
+            for (const pkg of ans) {
+                let set = await Package_pkg_collection.findAll({
+                    where: {
+                        package_id: pkg.package_id
+                    },
+                    raw: true,
+                    nest: true,
+                    order: [[sequelize.col('package_collection_id'), 'DESC']],
+                })
+                set = set[0]
+                arr.push(set)
+            }
+            let t = []
+            for (let i = 0; i < arr.length; i++) {
+                let temp = arr[i]
+                if (t.includes(temp.package_id)) {
+                    arr.splice(i--, 1)
+                    continue
+                }
+                t.push(temp.package_id)
+            }
+            console.log(arr)
+
+            ans = []
+            t = []
+            for (const item of arr) {
+                if (t.includes(item.package_collection_id)) {
+                    continue
+                }
+                t.push(item.package_collection_id)
+                ans.push(await Package_collection.findAll({
+                    include: {
+                        model: Package_pkg_collection,
+                        include: {
+                            model: Package,
+                        },
+                    },
+                    where: { package_collection_id: item.package_collection_id },
+                }))
+            }
+
+            res.status(200).json({
+                ans
             })
         } catch (err) {
             console.log(err)
