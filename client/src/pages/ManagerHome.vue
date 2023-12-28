@@ -5,12 +5,13 @@
         <div class="col-span-4" v-if="selecteds[0]">Content for Thống kê</div>
         <LeaderManageAccount class="col-span-4" v-if="selecteds[1] && leadership"></LeaderManageAccount>
         <WarehouseManagerManageAccount class="col-span-4" v-if="selecteds[1] && manager_WH"></WarehouseManagerManageAccount>
-        <DeliveryCenterManagerManageAccount class="col-span-4" v-if="selecteds[1] && manager_DC"></DeliveryCenterManagerManageAccount>
+        <DeliveryCenterManagerManageAccount class="col-span-4" v-if="selecteds[1] && manager_DC">
+        </DeliveryCenterManagerManageAccount>
         <DeliveryCenterManage class="col-span-4" v-if="selecteds[2]"></DeliveryCenterManage>
         <WareHouseManage class="col-span-4" v-if="selecteds[3]"></WareHouseManage>
         <PackageManage_DC class="col-span-4" v-if="selecteds[6]"></PackageManage_DC>
         <PackageManage_WH class="col-span-4" v-if="selecteds[7]"></PackageManage_WH>
-        <div class="col-span-4" v-if="selecteds[4]">Content for Thống kê</div>
+        <DeliveryStatistic class="col-span-4" v-if="selecteds[4] && teller_DC.accountId"></DeliveryStatistic>
         <div class="col-span-4" v-if="selecteds[5]">Content for Thống kê</div>
     </div>
 </template>
@@ -25,6 +26,7 @@ import WarehouseManagerManageAccount from '@/components/WarehouseLeadAccount.vue
 import DeliveryCenterManagerManageAccount from '@/components/DeliveryCenterLeadAccount.vue';
 import PackageManage_DC from '@/components/PackageManage_DC.vue';
 import PackageManage_WH from '@/components/PackageManage_WH.vue';
+import DeliveryStatistic from '@/components/DeliveryStatistic.vue'
 export default {
     name: 'ManagerHome',
     data() {
@@ -41,6 +43,7 @@ export default {
         DeliveryCenterManagerManageAccount,
         PackageManage_DC,
         PackageManage_WH,
+        DeliveryStatistic,
     },
     methods: {
         updateSelecteds(newSelecteds) {
