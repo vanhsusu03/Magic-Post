@@ -111,6 +111,7 @@
 import { Router } from 'express'
 import PackageController from "../controllers/PackageController.mjs"
 import { isAuth, isTeller } from "../middlewares/Auth.mjs"
+import permit from "../middlewares/Permissions.mjs"
 
 const router = Router()
 
@@ -299,5 +300,7 @@ router.put('/packages/:packageId/statuses', isAuth, isTeller, PackageController.
  *                          error: "Error details"
  */
 router.put('/packages/statuses', isAuth, isTeller, PackageController.updateDeliveryStatusOfManyPackages)
+
+router.get('/packages/:statusId/:officeType/:officeId', isAuth, permit([4, 6]), PackageController.getByStatusIdAndOfficeId)
 
 export default router
