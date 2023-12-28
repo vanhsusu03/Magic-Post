@@ -131,6 +131,90 @@ const StatisticController = {
         }
     },
 
+    getPackagesByWarehouse: async (req, res) => {
+        try {
+            const warehouseId = Number(req.params.warehouseId)
+            const statusId = Number(req.params.statusId)
+            let { day, week, month, quarter, year } = req.body
+ 
+            const dcs = await Delivery_center.findAll({
+                where: {
+                    warehouse_id: warehouseId
+                },
+                raw: true,
+                nest: true
+            })
+
+            let packages = []
+            if (statusId == 3 || statusId == 4) {
+                for (const dc of dcs) {
+                    const deliveryCenterId = dc.delivery_center_id
+                    const pkgs = await Package.findAll({
+                        include: {
+                            model: Status_detail,
+                            where: {
+                                status_id: statusId
+                            }
+                        },
+                        where: {
+                            delivery_center_send_id: deliveryCenterId
+                        },
+                        raw: true,
+                        nest: true
+                    })
+                    for (const p of pkgs) {
+                        packages.push(p)
+                    }
+                }
+            } else {
+                for (const dc of dcs) {
+                    const deliveryCenterId = dc.delivery_center_id
+                    const pkgs = await Package.findAll({
+                        include: {
+                            model: Status_detail,
+                            where: {
+                                status_id: statusId
+                            }
+                        },
+                        where: {
+                            delivery_center_receive_id: deliveryCenterId
+                        },
+                        raw: true,
+                        nest: true
+                    })
+                    for (const p of pkgs) {
+                        packages.push(p)
+                    }
+                }
+            }
+
+            if (day) {
+                packages = packages.filter(p =>
+                    moment(p.status_details.time).isSame(moment(day), 'day')
+                )
+            } else if (week) {
+                packages = packages.filter(p => {
+                    const startOfWeek = moment(week).clone().startOf('isoWeek')
+                    const endOfWeek = moment(week).clone().endOf('isoWeek')
+                    return moment(p.status_details.time).isBetween(startOfWeek, endOfWeek, null, '[]')
+                })
+            } else if (quarter) {
+                packages = packages.filter(p => moment(p.status_details.time).quarter() === moment(quarter).quarter())
+            } else if (month) {
+                packages = packages.filter(p => moment(p.status_details.time).isSame(moment(month), 'month'))
+            } else if (year) {
+                packages = packages.filter(p => moment(p.status_details.time).isSame(moment(year), 'year'))
+            }
+
+            res.status(200).json(packages)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
 
 
     // /**
