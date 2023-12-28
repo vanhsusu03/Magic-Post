@@ -7,7 +7,7 @@
 
 import { Router } from 'express'
 import StatisticController from "../controllers/StatisticController.mjs"
-import { isAuth, isTeller } from "../middlewares/Auth.mjs"
+import { isAuth, isTeller, isDeliveryCenterManager } from "../middlewares/Auth.mjs"
 
 const router = Router()
 
@@ -115,5 +115,7 @@ const router = Router()
 // router.get('/statistic/:deliveryCenterId/:type/:day', StatisticController.getByDeliveryCenterDay)
 
 router.get('/statistic/:statusId/packages', isAuth, isTeller, StatisticController.getPackagesByStatusId)
+
+router.get('/statistic/:deliveryCenterId/:statusId/packages', isAuth, isDeliveryCenterManager, StatisticController.getPackagesByDelveryCenter)
 
 export default router

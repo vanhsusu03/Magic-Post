@@ -76,6 +76,61 @@ const StatisticController = {
         }
     },
 
+    getPackagesByDelveryCenter: async (req, res) => {
+        try {
+            const deliveryCenterId = Number(req.params.deliveryCenterId)
+            const statusId = Number(req.params.statusId)
+            let { day, week, month, quarter, year } = req.body
+ 
+            let cond = {
+                delivery_center_receive_id: deliveryCenterId
+            }
+            if (statusId == 1 || statusId == 2) {
+                cond = {
+                    delivery_center_send_id: deliveryCenterId
+                }
+            }
+
+            const packages = await Package.findAll({
+                include: {
+                    model: Status_detail,
+                    where: {
+                        status_id: statusId
+                    }
+                },
+                where: cond,
+                raw: true,
+                nest: true
+            })
+
+            if (day) {
+                packages = packages.filter(p =>
+                    moment(p.status_details.time).isSame(moment(day), 'day')
+                )
+            } else if (week) {
+                packages = packages.filter(p => {
+                    const startOfWeek = moment(week).clone().startOf('isoWeek')
+                    const endOfWeek = moment(week).clone().endOf('isoWeek')
+                    return moment(p.status_details.time).isBetween(startOfWeek, endOfWeek, null, '[]')
+                })
+            } else if (quarter) {
+                packages = packages.filter(p => moment(p.status_details.time).quarter() === moment(quarter).quarter())
+            } else if (month) {
+                packages = packages.filter(p => moment(p.status_details.time).isSame(moment(month), 'month'))
+            } else if (year) {
+                packages = packages.filter(p => moment(p.status_details.time).isSame(moment(year), 'year'))
+            }
+
+            res.status(200).json(packages)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
 
 
     // /**
