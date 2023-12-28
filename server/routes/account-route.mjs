@@ -94,7 +94,7 @@
 
 import { Router } from 'express'
 import AccountController from '../controllers/AccountController.mjs'
-import { isAuth } from '../middlewares/Auth.mjs'
+import { isAuth, isLogin } from '../middlewares/Auth.mjs'
 
 const router = Router()
 
@@ -263,12 +263,12 @@ router.post('/refresh', AccountController.refreshToken)
  */
 router.get('/offices/:officeId/accounts/:accountTypeId', isAuth, AccountController.getInfoByOffice)
 
+router.post('/logout', isLogin, AccountController.logOut)
 
 // router.get('/profile', isAuth, async (req, res) => {
 // 	res.json(req.account)
 // })
 
-// router.post('/logout', accountController.logOut)
 
 
 export default router

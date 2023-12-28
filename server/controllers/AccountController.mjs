@@ -142,6 +142,7 @@ const AccountController = {
                 refreshToken = account.refresh_token
             }
 
+            req.isLogin = true
             res.status(200).json({
                 accessToken,
                 refreshToken,
@@ -374,22 +375,29 @@ const AccountController = {
             })
         }
     },
-    // logOut: async (req, res) => {
-    //     try {
-    //         const token = req.headers.authorization.split(' ')[1]
-    //         await Token.destroy({ where: { token } })
 
-    //         res.status(200).json({
-    //             message: 'Logout successful',
-    //         })
-    //     } catch (err) {
-    //         console.log(err)
-    //         res.status(500).json({
-    //             message: 'Something went wrong',
-    //             error: err.message
-    //         })
-    //     }
-    // },
+    logOut: async (req, res) => {
+        try {
+            const accountId = req.body.accountId
+            await Account.update({ refresh_token: null }, {
+                where: {
+                    account_id: accountId
+                }
+            })
+
+            req.account = null
+
+            res.status(200).json({
+                message: 'Logout successful',
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
 
     // getMyInfo: async(req, res) => {
     //     try {
