@@ -1,7 +1,7 @@
 import sequelize from 'sequelize'
 import db from '../models/index.mjs'
 
-const { Delivery_center, District, Package, Status_detail, Package_status } = db.models
+const { Delivery_center, District, Account, Package, Status_detail, Package_status } = db.models
 
 const DeliveryCenterController = {
     /**
@@ -293,7 +293,6 @@ const DeliveryCenterController = {
             })
         }
     },
-
 }
 
 export default DeliveryCenterController

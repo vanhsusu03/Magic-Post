@@ -14,9 +14,11 @@
     "core-js": "^3.8.3",
     "flowbite": "^2.1.1",
     "google-maps": "^4.3.3",
+    "qrcode.vue": "^3.4.1",
     "tailwind": "^4.0.0",
     "vue": "^3.2.13",
     "vue-axios": "^3.5.2",
+    "vue-qrcode-component": "^2.1.1",
     "vue-router": "^4.1.6",
     "vuex": "^4.0.2"
   },
