@@ -11,6 +11,7 @@
                 <DeliveryCenterManage class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[2]"></DeliveryCenterManage>
                 <WareHouseManage class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[3]"></WareHouseManage>
                 <PackageManage_DC class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[6]"></PackageManage_DC>
+                <PackageManage_WH class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[7]"></PackageManage_WH>
                 <div class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[4]">Content for Thống kê</div>
                 <div class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[5]">Content for Thống kê</div>
             </div>
@@ -22,6 +23,7 @@
                 <DeliveryCenterManage class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[2]"></DeliveryCenterManage>
                 <WareHouseManage class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[3]"></WareHouseManage>
                 <PackageManage_DC class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[6]"></PackageManage_DC>
+                <PackageManage_WH class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[7]"></PackageManage_WH>
                 <div class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[4]">Content for Thống kê</div>
                 <div class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[5]">Content for Thống kê</div>
             </div>
@@ -40,47 +42,13 @@ import WarehouseManagerManageAccount from '@/components/WarehouseLeadAccount.vue
 import DeliveryCenterManagerManageAccount from '@/components/DeliveryCenterLeadAccount.vue';
 import PackageManage_DC from '@/components/PackageManage_DC.vue';
 import PackageBill from '@/components/PackageBill.vue'
+import PackageManage_WH from '@/components/PackageManage_WH.vue';
 export default {
     name: 'ManagerHome',
     data() {
         return {
-            selecteds: [true, false, false, false, false, false, false],
+            selecteds: [true, false, false, false, false, false, false, false],
             sidebarExpand: true,
-            test: {
-                name: 'dataToChildComp',
-            },
-
-            form: {
-                packageTypeId: 1,
-                deliveryCenterSendId: 2,
-                deliveryCenterReceiveId: 1,
-                weightGram: 3,
-                cost: 43,
-                codAmount: 13,
-                senderAddress: 'asd',
-                receiverAddress: 'asd',
-                senderName: 'fds',
-                receiverName: 'hte',
-                senderPhone: 'db',
-                receiverPhone: 'ag',
-                location: 'hgj',
-            },
-
-            formBill: {
-                packageTypeId: 0,
-                deliveryCenterSendId: 0,
-                deliveryCenterReceiveId: 0,
-                weightGram: 0,
-                cost: 0,
-                codAmount: 0,
-                senderAddress: '',
-                receiverAddress: '',
-                senderName: '',
-                receiverName: '',
-                senderPhone: '',
-                receiverPhone: '',
-                location: '',
-            }
         };
     },
     components: {
@@ -92,6 +60,7 @@ export default {
         DeliveryCenterManagerManageAccount,
         PackageManage_DC,
         PackageBill,
+        PackageManage_WH,
     },
     methods: {
         updateSelecteds(newSelecteds) {

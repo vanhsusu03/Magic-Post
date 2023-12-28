@@ -94,7 +94,7 @@
 
 import { Router } from 'express'
 import AccountController from '../controllers/AccountController.mjs'
-import { isAuth } from '../middlewares/Auth.mjs'
+import { isAuth, isLogin } from '../middlewares/Auth.mjs'
 
 const router = Router()
 
@@ -271,19 +271,13 @@ router.get('/warehouses/manager',AccountController.getAllManagerAccountFromWareh
  */
 router.get('/offices/:officeId/accounts/:accountTypeId', isAuth, AccountController.getInfoByOffice)
 
-// Get all teller
-router.get('/deleveryCenters/staff', AccountController.getAllStaffAccountFromDeliveryCenter)
-
-
-// Get all staff at warehouse
-router.get('/warehouses/staff', AccountController.getAllStaffAccountFromWarehouse)
+router.post('/logout', isLogin, AccountController.logOut)
 
 
 // router.get('/profile', isAuth, async (req, res) => {
 // 	res.json(req.account)
 // })
 
-// router.post('/logout', accountController.logOut)
 
 
 export default router

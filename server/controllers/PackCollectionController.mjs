@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import db from '../models/index.mjs'
 
 const { Package_collection, Package_pkg_collection, Status_detail, Package,
-    Delivery_center, Warehouse } = db.models
+    Delivery_center, Warehouse, Package_collection_type } = db.models
 
 const PackageCollectionController = {
     /**
@@ -126,26 +126,30 @@ const PackageCollectionController = {
     getSendingCollections: async (req, res) => {
         try {
             const officeId = Number(req.params.officeId)
-            const { typeOffice, statusId } = req.query
-            let condition
+            const { typeOffice,
+                pkgCollectionType,
+                statusId } = req.query
+            // pkgCollectionType = 2;
+            // statusId = 4;
+            console.log("Ở DDAAYA NÈ" + officeId + ', ' + typeOffice + ", " + pkgCollectionType + ', ' + statusId)
+            let collections
             if (typeOffice == "warehouse") {
-                condition = {
+                collections = await Package_collection.findAll({
                     where: {
-                        warehouse_receive_id: officeId
-                    }
-                }
+                        warehouse_receive_id: officeId,
+                        package_collection_type_id: pkgCollectionType
+                    },
+                    raw: true,
+                })
             } else {
-                condition = {
+                collections = await Package_collection.findAll({
                     where: {
-                        delivery_center_receive_id: officeId
-                    }
-                }
+                        delivery_center_receive_id: officeId,
+                        package_collection_type_id: pkgCollectionType
+                    },
+                    raw: true,
+                })
             }
-
-            const collections = await Package_collection.findAll({
-                condition,
-                raw: true,
-            })
 
             let ans = []
             const ps = await Package.findAll({
@@ -171,7 +175,7 @@ const PackageCollectionController = {
                 }
                 closedSet.push(t.package_id)
             }
-            
+
             for (const t of collections) {
                 for (const pkg of ps) {
                     if (pkg.status_details.statusId != statusId) {
@@ -234,9 +238,7 @@ const PackageCollectionController = {
                 }))
             }
 
-            res.status(200).json({
-                ans
-            })
+            res.status(200).json(ans)
         } catch (err) {
             console.log(err)
             res.status(500).json({

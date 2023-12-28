@@ -326,7 +326,12 @@ export default {
             this.warehouses = null;
             if (this.provinceSelected.provinceMunicipalityId > 0) {
                 try {
-                    const res = await axios.get(`/warehouses/${this.provinceSelected.provinceMunicipalityId}`, { withCredentials: true });
+                    const res = await axios.get(`/warehouses/${this.provinceSelected.provinceMunicipalityId}`, {
+                        headers: {
+                            "Authorization": `Bearer ${this.leadershipToken.accessToken}`
+                        }
+                    },
+                        { withCredentials: true });
                     this.warehouses = res.data
 
                 } catch (error) {

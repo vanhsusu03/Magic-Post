@@ -117,6 +117,22 @@
                         <span class="ml-4">Quản lí đơn hàng tại điểm giao dịch</span>
                     </a>
                 </li>
+                <li v-if="staff_WH.username" class="relative px-6 py-3">
+                    <span v-show="selecteds[7]"
+                        class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
+                        aria-hidden="true"></span>
+                    <a @click="display(7)"
+                        class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 cursor-pointer">
+                        <!-- Replace the existing icon with a parcel icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                            <rect x="2" y="2" width="20" height="9" />
+                            <path d="M2 14L12 7.5L22 14" />
+                        </svg>
+                        <!-- End of icon replacement -->
+                        <span class="ml-4">Quản lí đơn hàng tại điểm tập kết</span>
+                    </a>
+                </li>
 
                 <li class="relative px-6 py-3">
                     <span v-show="selecteds[4]"
@@ -161,7 +177,7 @@
                             </g>
 
                         </svg>
-                        <span class="ml-4">Thông tin</span>
+                        <span class="ml-4">Thông tin cá nhân</span>
                     </a>
                 </li>
             </ul>
@@ -336,8 +352,9 @@ export default {
     },
     data() {
         return {
-            selecteds: [true, false, false, false, false, false, false],
+            selecteds: [true, false, false, false, false, false, false, false],
             isExpand: true,
+
         }
     },
 

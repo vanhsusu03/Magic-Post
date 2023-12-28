@@ -120,3 +120,23 @@ export const isStaffAtWarehouse = async (req, res, next) => {
 		})
 	}
 }
+
+export const isLogin = async (req, res, next) => {
+	try {
+		if (!req.isLogin) {
+			res.status(403).json({
+				response: {
+					message: 'You need to login to logout'
+				}
+			})
+		} else {
+			next()
+		}
+	} catch (err) {
+		console.log(err)
+		res.status(500).json({
+			response: 'Some error occurred while authenticating the user',
+			error: err.message
+		})
+	}
+}

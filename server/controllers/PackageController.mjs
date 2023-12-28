@@ -213,6 +213,7 @@ const PackageController = {
             const officeId = Number(req.params.officeId)
             const officeType = String(req.params.officeType)
 
+            console.log("status: " + statusId + " officeId " + officeId + "officeType" + officeType)
             let packages = await Package.findAll({
                 include: {
                     model: Status_detail,
@@ -221,6 +222,7 @@ const PackageController = {
                 raw: true,
                 nest: true
             })
+            // console.log("pkgs: " + packages)
             let closedSet = []
             for (let i = 0; i < packages.length; i++) {
                 let t = packages[i]
@@ -238,7 +240,8 @@ const PackageController = {
                     continue
                 }
             }
-            
+            // console.log("pkgs: " + packages)
+
             if (officeType[0] == 'D') {
                 for (let i = 0; i < packages.length; i++) {
                     let t
@@ -263,13 +266,15 @@ const PackageController = {
                     }
                     const id = await Delivery_center.findAll({
                         include: {
-                            model: Warehouse
+                            model: Warehouse,
                         },
                         where: cond,
                         raw: true
                     })
-                    if (id.warehouse_id != officeId) {
-                        packages.splice(i--, 1)
+                    for(let j=0;j < id.length;j++) {
+                        if (id[j].warehouse_id != officeId) {
+                            packages.splice(i--, 1)
+                        }
                     }
                 }
             }
