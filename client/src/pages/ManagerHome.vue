@@ -9,6 +9,7 @@
         <DeliveryCenterManage class="col-span-4" v-if="selecteds[2]"></DeliveryCenterManage>
         <WareHouseManage class="col-span-4" v-if="selecteds[3]"></WareHouseManage>
         <PackageManage_DC class="col-span-4" v-if="selecteds[6]"></PackageManage_DC>
+        <PackageManage_WH class="col-span-4" v-if="selecteds[7]"></PackageManage_WH>
         <div class="col-span-4" v-if="selecteds[4]">Content for Thống kê</div>
         <div class="col-span-4" v-if="selecteds[5]">Content for Thống kê</div>
     </div>
@@ -23,11 +24,12 @@ import { mapState } from 'vuex';
 import WarehouseManagerManageAccount from '@/components/WarehouseLeadAccount.vue';
 import DeliveryCenterManagerManageAccount from '@/components/DeliveryCenterLeadAccount.vue';
 import PackageManage_DC from '@/components/PackageManage_DC.vue';
+import PackageManage_WH from '@/components/PackageManage_WH.vue';
 export default {
     name: 'ManagerHome',
     data() {
         return {
-            selecteds: [true, false, false, false, false, false, false],
+            selecteds: [true, false, false, false, false, false, false, false],
         };
     },
     components: {
@@ -38,6 +40,7 @@ export default {
         WarehouseManagerManageAccount,
         DeliveryCenterManagerManageAccount,
         PackageManage_DC,
+        PackageManage_WH,
     },
     methods: {
         updateSelecteds(newSelecteds) {

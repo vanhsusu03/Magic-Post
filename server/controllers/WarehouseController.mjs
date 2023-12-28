@@ -1,7 +1,7 @@
 import sequelize from 'sequelize'
 import db from '../models/index.mjs'
 
-const { Province_municipality, Warehouse } = db.models
+const { Province_municipality, Warehouse, Delivery_center } = db.models
 
 const WarehouseController = {
     /**
@@ -160,6 +160,33 @@ const WarehouseController = {
             })
         }
     },
+
+    getWarehouseofADeliveryCenter: async (req, res) => {
+        try {
+            const deliveryCenterId = Number(req.params.deliveryCenterId);
+
+            const ans = await Delivery_center.findAll({
+                include: {
+                    model: Warehouse,
+                    attributes: [
+                        [sequelize.col('warehouse_id'), 'warehouseId'],
+                        [sequelize.col('address'), 'address'],
+                    ],
+                },
+                where: {
+                    delivery_center_id: deliveryCenterId
+                },
+                raw: true
+            })
+            res.status(200).json(ans)
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    }
 }
 
 export default WarehouseController

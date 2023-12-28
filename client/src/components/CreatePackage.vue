@@ -169,7 +169,7 @@
                         <div class="flex items-center h-5 ">
                             <input type="radio" id="packageTypeIdMerchandise" aria-describedby="packageTypeInfo" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 
                             dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                v-model="form.packageTypeId" :value="2">
+                                v-model="form.packageTypeId" @change="this.calculateCodAmount()" :value="2">
                         </div>
                         <div class="ms-2 text-sm mr-4">
                             <label for="packageTypeIdMerchandise" class="font-medium text-gray-900 dark:text-gray-300">Hàng
@@ -181,7 +181,7 @@
                         <div class="flex items-center h-5 ml-4">
                             <input type="radio" id="packageTypeIdDocument" aria-describedby="packageTypeInfo" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 
                             dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                v-model="form.packageTypeId" :value="1">
+                                v-model="form.packageTypeId" @change="this.calculateCodAmount()" :value="1">
                         </div>
                         <div class="ms-2 text-sm">
                             <label for="packageTypeIdDocument" class="font-medium text-gray-900 dark:text-gray-300">Tài
@@ -195,14 +195,15 @@
 
                     <label for="weight">Trọng lượng (Nhập theo gram):</label>
                     <input type="text" id="weight" name="weight" placeholder="Nhập trọng lượng (theo gram)"
-                        v-model="form.weightGram" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                        v-model="form.weightGram" @input="this.calculateCodAmount()" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                         sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
                     <p class="error" v-if="createPackageError.weightGramError.length > 0">{{
                         createPackageError.weightGramError[0] }}<br></p><br>
 
                     <label for="cost">Phí vận chuyển:</label>
-                    <input type="text" id="cost" name="cost" placeholder="Nhập phí vận chuyển" v-model="form.cost" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
+                    <input type="text" id="cost" name="cost" placeholder="Nhập phí vận chuyển" v-model="form.codAmount"
+                        class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
                         ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
                         sm:text-sm sm:leading-6 md:text-base sm:text-sm text-xs hover:shadow-lg">
                     <p class="error" v-if="createPackageError.costError.length > 0">{{
@@ -244,7 +245,7 @@
                     <br>
                     <h1><strong>Thông tin người nhận:</strong></h1><br>
 
-                    <label for="">Tên người gửi</label>
+                    <label for="">Tên người nhận:</label>
                     <input type="text" id="receiverName" name="receiverName" placeholder="Nhập họ tên người nhận"
                         v-model="form.receiverName" class="block w-2/4 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset
      ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600
@@ -339,6 +340,37 @@ export default {
             'setLeadershipRefreshToken', 'setManagerDC', 'setDCManagerAccessToken', 'setDCManagerRefreshToken',
             'setManagerWH', 'setWHManagerAccessToken', 'setWHManagerRefreshToken', 'setTellerDC', 'setTellerDCAccessToken',
             'setTellerDCRefreshToken', 'setStaffWH']),
+        calculateCodAmount() {
+            // Replace this with your actual calculation logic
+            // For example, multiply the weightGram by a constant value
+            let dist = this.form.weightGram;
+            this.form.codAmount = 0;
+            if (this.form.packageTypeId == 1) {
+                if (dist <= 400) {
+                    this.form.codAmount += 0.28 * dist;
+                } else if (dist <= 800) {
+                    this.form.codAmount += 0.28 * 400 + 0.23 * (dist - 400);
+                } else if (dist <= 1600) {
+                    this.form.codAmount += 0.28 * 400 + 0.23 * 400 + 0.17 * (dist - 800);
+                } else if(dist <= 3500) {
+                    this.form.codAmount += 0.28 * 400 + 0.23 * 400 + 0.17 * 800 + 0.2267 * (dist - 1600);
+                } else {
+                    this.form.codAmount += 0.28 * 400 + 0.23 * 400 + 0.17 * 800 + 0.2267 * 1600;
+                }
+                this.form.codAmount = Math.ceil(this.form.codAmount * 22.67);
+            } else {
+                if (dist <= 1000) {
+                    this.form.codAmount += 0.28 * dist;
+                } else if (dist <= 2500) {
+                    this.form.codAmount += 0.28 * 1000 + 0.23 * (dist - 1500);
+                } else if (dist <= 4500) {
+                    this.form.codAmount += 0.28 * 1000 + 0.23 * 1500 + 0.17 * (dist - 4500);
+                } else {
+                    this.form.codAmount += 0.28 * 1000 + 0.23 * 1500 + 0.17 * 2000 + 0.2267 * (dist - 4500);
+                }
+                this.form.codAmount = Math.ceil(this.form.codAmount * 22.67);
+            }
+        },
         filteredPackages(arr, id) {
             return arr.filter((packages) => {
                 // Check if status_details is an array and has statusId equal to 2 in its last element
@@ -394,7 +426,7 @@ export default {
                 });
                 if (res.data) {
                     this.packages = res.data;
-                    this.packages=this.filteredPackages(this.packages,1);
+                    this.packages = this.filteredPackages(this.packages, 1);
                 }
 
             } catch (err) {
@@ -425,11 +457,10 @@ export default {
                 }, { withCredentials: true });
                 if (res.data) {
                     this.fetchSendPackagesData();
-                    alert("THANH CONG");
                     this.createPackageBill();
                 }
             } catch (err) {
-                if (err.response.data.error == 'jwt expired') {
+                if (err.reponse && err.response.data && err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
                     await this.handleCreatePackage();
                 } else { alert(err.response.data.error); }
@@ -542,7 +573,7 @@ export default {
             if (this.form.weightGram == 0) {
                 this.createPackageError.weightGramError.push('Nhập trọng lượng hàng (theo gram)')
             }
-            this.form.codAmount = 30000
+            // this.form.codAmount = 30000
             this.form.deliveryCenterSendId = this.deliveryCenter[0].deliveryCenterId;
 
             if (!this.form.senderName) {
@@ -613,9 +644,6 @@ export default {
         truncateText(text, maxLength) {
             return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
         },
-        test() {
-            console.log(this.packageType)
-        }
     },
 
     computed: {

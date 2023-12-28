@@ -46,5 +46,10 @@ export default {
   setStaffWH(state, matchStaffWH) {
     state.staff_WH = matchStaffWH;
   },
-
+  setStaffWHAccessToken(state, matchStaffWHAccessToken) {
+    state.staffWHToken.accessToken = matchStaffWHAccessToken;
+  },
+  setStaffWHRefreshToken(state, matchStaffWHRefreshToken) {
+    state.staffWHToken.refreshToken = matchStaffWHRefreshToken;
+  }
 }
