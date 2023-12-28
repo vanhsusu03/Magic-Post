@@ -171,7 +171,7 @@
     <aside v-else class="bg-slate-50 z-20 w-20 h-screen overflow-y-auto dark:bg-gray-800 md:block flex-shrink-0 border-gray-200 border-r border-t border-b">
         <div class="py-8 text-gray-500 dark:text-gray-400">
             <button @click="sidebarToggle()"
-            class="mx-4 cursor-pointer hover:bg-slate-200 transition-colors duration-150">
+            class="mx-6 cursor-pointer hover:bg-slate-200 transition-colors duration-150">
                     <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24" fill="none"
                         class="w-8 h-8">
                         <path d="M4 12H20M4 8H20M4 16H12" stroke="#000000" stroke-width="2" stroke-linecap="round"

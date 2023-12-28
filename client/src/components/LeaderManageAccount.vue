@@ -74,7 +74,7 @@
 
                 <!-- HEAD COMP MANAGE  -->
                 <div class="mx-auto mt-4" id="course">
-                    <table class="w-full max-w-max" v-if="this.accountTypeSelected == 1">
+                    <table class="w-full" v-if="this.accountTypeSelected == 1">
                         <tr>
                             <th class="bg-green-500 text-white font-bold py-2 px-4 text-center items-center md:text-base sm:text-sm text-xs border">
                                 Mã điểm TK</th>
@@ -216,7 +216,7 @@
                         </tr>
                     </table>
 
-                    <table class="w-11/12 max-w-min" v-if="this.accountTypeSelected == 2">
+                    <table class="w-full" v-if="this.accountTypeSelected == 2">
                         <tr>
                             <th
                                 class="bg-green-500 text-white font-bold py-2 px-4 text-center items-center md:text-base sm:text-sm text-xs border">

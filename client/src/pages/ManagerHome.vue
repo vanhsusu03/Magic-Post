@@ -1,7 +1,7 @@
 <template>
     <div v-if="isLogin">
         <div class="grid grid-cols-12" >
-            <SideBarManage @childEvent="getSidebarExpand" class="col-start-1 md:col-start-1 md:col-end-2 bg-slate-50 " :selecteds="selecteds" @update:selecteds="updateSelecteds">
+            <SideBarManage @childEvent="getSidebarExpand" class="col-start-1 bg-slate-50 " :selecteds="selecteds" @update:selecteds="updateSelecteds">
             </SideBarManage>
             <div v-if="this.sidebarExpand" class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50">
                 <div v-if="selecteds[0]">Content for Thống kêasd</div>
