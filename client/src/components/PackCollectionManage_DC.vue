@@ -4,7 +4,7 @@
             <div class="w-8/12 grid grid-cols-12 mx-auto">
                 <span class="col-start-1 col-end-4 max-w-fit">
                     <h1 class="font-semibold py-2 mt-2 text-center lg:text-2xl md:text-xl sm:text-lg text-base">
-                        Danh sách đơn hàng đang gửi tới điểm tập kết
+                        Danh sách đơn hàng đang gửi tới điểm tập kết nguồn
                     </h1>
                 </span>
                 <span class="col-start-4 col-end-9">
@@ -68,7 +68,7 @@
                         packages.status_details[1].time }}</td>
                     <td v-if="packages.status_details[1].package_status.packageStatus == 'Transport departure from Delivery center 1'"
                         class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate"> Đang
-                        gửi tới điểm tập kết
+                        gửi tới điểm tập kết nguồn
                     </td>
                     </tr>
                 </table>

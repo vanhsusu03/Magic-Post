@@ -43,50 +43,43 @@
                                 Mã điểm GD bên nhận</th>
                             <th
                                 class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
-                                Ngày giờ gửi</th>
-                            <th
-                                class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
                                 Trạng thái</th>
                             <th
                                 class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
                                 Chọn xác nhận</th>
                         </tr>
-                        <tr v-for="packages in displayedItemList" :key="packages.packageId">
+                        <tr v-for="packages in displayedItemList" :key="packages[0].package_collection_id">
                             <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
-                                {{ packages.packageId }}
+                                {{ packages[0].package_collection_id }}
                             </td>
                             <td
                                 class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
-                                {{ packages.senderName }}
+                                {{ packages[0].package_pkg_collections[0].package.sender_name }}
                                 <br />
-                                {{ packages.senderPhone }}
+                                {{ packages[0].package_pkg_collections[0].package.sender_phone }}
                             </td>
                             <td
                                 class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
-                                {{ packages.receiverName }}
+                                {{ packages[0].package_pkg_collections[0].package.receiver_name }}
                                 <br />
-                                {{ packages.receiverPhone }}
+                                {{ packages[0].package_pkg_collections[0].package.receiver_phone }}
                             </td>
                             <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
-                                {{ packages.deliveryCenterSendId }}
+                                {{ packages[0].package_pkg_collections[0].package.delivery_center_send_id }}
                             </td>
                             <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
-                                {{ packages.deliveryCenterReceiveId }}
+                                {{ packages[0].package_pkg_collections[0].package.delivery_center_receive_id }}
                             </td>
                             <td
                                 class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
-                                {{ packages.status_details[0].time }}
-                            </td>
-                            <td v-if="packages.status_details[0].package_status.packageStatus == 'Accept'"
-                                class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
-                                Đã nhận từ khách hàng
+                                Đang chờ xác nhận
                             </td>
                             <td class="py-2 px-4 border items-center justify-center">
-                                <input type="checkbox" v-model="packages.isChecked" class="hidden"
-                                    @change="toggleCheckbox(packages)" />
+                                <input type="checkbox" v-model="packages[0].isChecked" class="hidden"
+                                    @change="toggleCheckbox(packages[0])" />
                                 <div class="w-6 h-6 border border-gray-400 rounded cursor-pointer flex items-center justify-center transition-all duration-300"
-                                    :class="{ 'bg-green-500': packages.isChecked }" @click="toggleCheckbox(packages)">
-                                    <svg v-if="packages.isChecked" class="w-4 h-4 text-white" fill="none"
+                                    :class="{ 'bg-green-500': packages[0].isChecked }" @click="toggleCheckbox(packages[0])">
+                                    <svg v-if="packages[0].isChecked" class="w-4 h-4 text-white" fill="none"
                                         stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                         <path d="M6 12l2 2 6-6"></path>
                                     </svg>
@@ -125,8 +118,7 @@ export default {
     data() {
         return {
             form: {
-                packageIds: '',
-                packageCollectionTypeId: 0,
+                statusId: 0,
                 location: '',
             },
             createPkgCollectionError: {
@@ -138,6 +130,7 @@ export default {
             deliverycenterSelectedId: 0,
             packages: [],
             sendingPkgs: [],
+            recvPkgs: [],
             provinces: [],
             districts: [],
             deliveryCenter: [],
@@ -148,6 +141,7 @@ export default {
             tellerDC: [],
             isChecked: false,
             msg: '',
+            pkgCollectionSelectedId: 0,
         }
     },
     components: {
@@ -176,31 +170,20 @@ export default {
             arr.forEach((packages) => {
                 packages.isChecked = false;
             });
+            this.pkgCollectionSelectedId = 0;
         },
         toggleCheckbox(pkg) {
             pkg.isChecked = !pkg.isChecked;
             if (pkg.isChecked == true) {
-                let packagesArray = this.form.packageIds.split(',');
-                if (packagesArray.length >= 10) {
-                    this.msg = "Chỉ chọn tối đa 10 đơn hàng!";
+                if (this.pkgCollectionSelectedId) {
+                    this.msg = "Chỉ chọn tối đa 1 đơn!";
                     pkg.isChecked = false;
+                } else if (this.pkgCollectionSelectedId == 0) {
+                    this.pkgCollectionSelectedId = pkg.package_collection_id;
                 }
-                else {
-                    if (!this.form.packageIds) {
-                        this.form.packageIds += pkg.packageId;
-                    } else {
-                        this.form.packageIds += ',' + pkg.packageId;
-                    }
-                }
-            } else {
-                let packagesArray = this.form.packageIds.split(',');
-
-                const indexToDelete = packagesArray.indexOf(pkg.packageId.toString());
-
-                if (indexToDelete !== -1) {
-                    packagesArray.splice(indexToDelete, 1);
-                }
-                this.form.packageIds = packagesArray.join(',');
+            }
+            else {
+                this.pkgCollectionSelectedId = 0;
             }
         },
         rmvDuplicate() {
@@ -258,26 +241,32 @@ export default {
                 else { alert(err.response.data.error); }
             }
         },
-        async fetchSendingPackagesData() {
+        async fetchReceivingPackagesData() {
             try {
-                let res = await axios.get(`/deliveryCenters/${this.teller_DC.deliveryCenterId}/packages/statuses`, {
+                let res = await axios.get(`/collections/sendingCollections/${this.teller_DC.deliveryCenterId}`, {
                     params: {
-                        deliveryCenterType: 'send'
+                        typeOffice: "deliveryCenter",
+                        pkgCollectionType: 3,
+                        statusId: 6
                     },
                     headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` },
                     withCredentials: true
                 });
                 if (res.data) {
-                    this.sendingPkgs = res.data;
-                    this.sendingPkgs = this.filteredPackages(this.sendingPkgs, 2);
+                    this.recvPkgs = res.data;
+                    // this.recvPkgs = this.filteredPackages(this.recvPkgs, 2);
+
                 }
 
             } catch (err) {
                 if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
-                    await this.fetchSendingPackagesData();
+                    await this.fetchReceivingPackagesData();
                 }
-                else { alert(err.response.data.error); }
+                else if (err.respone &&
+                    err.respone.data && err.response.data.error) {
+                    alert(err.response.data.error);
+                }
             }
         },
         async refreshToken() {
@@ -292,6 +281,25 @@ export default {
             });
 
             this.setTellerDCAccessToken(res.data);
+        },
+        async handleConfirmPkgCollection() {
+            try {
+                let res = await axios.put(`/collections/${this.pkgCollectionSelectedId}/statuses`, this.form, {
+                    headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
+                }, { withCredentials: true });
+                if (res.data) {
+                    this.msg = 'Xác nhận thành công!'
+                    this.fetchReceivingPackagesData();
+                    this.createPackageCollection();
+                }
+            } catch (err) {
+                if (err.response.data.error == 'jwt expired') {
+                    await this.refreshToken();
+                    await this.handleConfirmPkgCollection();
+                } else {
+                    console.log(err.response.data.error);
+                }
+            }
         },
         async handleCreatePkgCollection() {
             try {
@@ -328,8 +336,7 @@ export default {
         createPackageCollection() {
             this.resetError();
             this.resetPkgCheckBox(this.packages);
-            this.form.packageIds = '';
-            this.form.packageCollectionTypeId = 0;
+            this.form.statusId = 0;
             this.form.location = '';
             this.deliveryCenters = null;
             this.createNew = !this.createNew;
@@ -352,7 +359,7 @@ export default {
             if (!this.form.packageIds) {
                 this.createPkgCollectionError.packageIdsError.push('Hãy chọn ít nhất 1 đơn hàng!')
             }
-            this.form.packageCollectionTypeId = 1;
+            this.form.statusId = 7;
             this.form.location = 'Điểm giao dịch số ' + this.deliveryCenter[0].deliveryCenterId +
                 ', ' + this.deliveryCenter[0].address;
         },
@@ -360,11 +367,11 @@ export default {
 
             this.validateAndPreSubmitCreatePkgCollection();
 
-            if (this.checkEmptyError()) {
-                this.scrollToTop();
-                await this.handleCreatePkgCollection();
+            if (this.pkgCollectionSelectedId == 0) {
+                this.msg = 'Chọn ít nhất 1 đơn!'
             } else {
-                this.msg = "Phải chọn ít nhất 1 đơn hàng!"
+                this.scrollToTop();
+                this.handleConfirmPkgCollection();
             }
         },
         goToPage(page) {
@@ -387,18 +394,15 @@ export default {
         displayedItemList() {
             const startIndex = (this.currentPage - 1) * this.itemsPerPage;
             const endIndex = startIndex + this.itemsPerPage;
-            if (this.createNew == true) {
-                return this.packages.slice(startIndex, endIndex);
-            } else {
-                return this.sendingPkgs.slice(startIndex, endIndex);
-            }
+            return this.recvPkgs.slice(startIndex, endIndex);
         },
     },
     created() {
         this.getTellerDC();
         this.getDeliveryCenterHere();
-        this.fetchSendPackagesData();
-        this.fetchSendingPackagesData();
+        // this.fetchSendPackagesData();
+        // this.fetchSendingPackagesData();
+        this.fetchReceivingPackagesData();
     }
 }
 </script>
