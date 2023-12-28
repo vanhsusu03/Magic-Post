@@ -29,8 +29,8 @@
             <CreatePackage></CreatePackage>
         </div>
 
-        <div class="mx-auto" id="course" v-if="taskTypeSelected == 2">
-            <PackCollectionManage_DC></PackCollectionManage_DC>
+        <div class="mx-auto" id="course" v-if="taskTypeSelected == 4">
+            <PackCollectionManage_WHtoWH></PackCollectionManage_WHtoWH>
         </div>
 
         <div class="mx-auto" id="course" v-if="taskTypeSelected == 1">
@@ -43,7 +43,7 @@
 import axios from 'axios';
 import { mapState, mapMutations } from 'vuex';
 import CreatePackage from './CreatePackage.vue';
-import PackCollectionManage_DC from './PackCollectionManage_DC.vue';
+import PackCollectionManage_WHtoWH from './PackCollectionManage_WHtoWH.vue';
 import PackageConfirm_WH from './PackageConfirm_WH.vue';
 export default {
     name: 'PackageManage_WH',
@@ -54,7 +54,7 @@ export default {
     },
     components: {
         CreatePackage,
-        PackCollectionManage_DC,
+        PackCollectionManage_WHtoWH,
         PackageConfirm_WH,
     },
     methods: {

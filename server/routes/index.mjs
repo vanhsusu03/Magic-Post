@@ -7,7 +7,7 @@ import deliveryCenterRoute from "./deliverycenter-route.mjs"
 import packageRoute from "./package-route.mjs"
 import packageCollectionRoute from "./packagecollection-route.mjs"
 import searchingRoute from "./searching-route.mjs"
-// import statisticRoute from "./statistic-route.mjs"
+import statisticRoute from "./statistic-route.mjs"
 
 const routes = Router()
 
@@ -18,6 +18,6 @@ routes.use(deliveryCenterRoute)
 routes.use(packageRoute)
 routes.use(packageCollectionRoute)
 routes.use(searchingRoute)
-// routes.use(statisticRoute)
+routes.use(statisticRoute)
 
 export default routes

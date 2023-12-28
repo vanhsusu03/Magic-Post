@@ -127,8 +127,7 @@ const PackageCollectionController = {
         try {
             const officeId = Number(req.params.officeId)
             const { typeOffice, statusId } = req.query
-
-            let collections = null
+            let collections
             if (typeOffice == "warehouse") {
                 collections = await Package_collection.findAll({
                     where: {
@@ -152,7 +151,6 @@ const PackageCollectionController = {
                     model: Status_detail,
                     attributes: [
                         [sequelize.col('time'), 'time'],
-                        [sequelize.col('location'), 'location'],
                         [sequelize.col('status_id'), 'statusId']
                     ],
                 },
@@ -160,17 +158,17 @@ const PackageCollectionController = {
                 nest: true,
                 order: [[sequelize.col('time'), 'DESC']]
             })
-            // console.log("psssss: " + ps) 
+
             let closedSet = []
             for (let i = 0; i < ps.length; i++) {
                 let t = ps[i]
                 if (closedSet.includes(t.package_id)) {
-                    ps.splice(i--, 1);
+                    ps.splice(i--, 1)
                     continue
                 }
                 closedSet.push(t.package_id)
             }
-            // console.log("psssss: " + ps) 
+
             for (const t of collections) {
                 for (const pkg of ps) {
                     if (pkg.status_details.statusId != statusId) {
@@ -189,12 +187,51 @@ const PackageCollectionController = {
                         ans.push(pkg)
                     }
                 }
-                // console.log("ans " + ans)
             }
 
-            res.status(200).json({
-                ans
-            })
+            let arr = []
+            for (const pkg of ans) {
+                let set = await Package_pkg_collection.findAll({
+                    where: {
+                        package_id: pkg.package_id
+                    },
+                    raw: true,
+                    nest: true,
+                    order: [[sequelize.col('package_collection_id'), 'DESC']],
+                })
+                set = set[0]
+                arr.push(set)
+            }
+            let t = []
+            for (let i = 0; i < arr.length; i++) {
+                let temp = arr[i]
+                if (t.includes(temp.package_id)) {
+                    arr.splice(i--, 1)
+                    continue
+                }
+                t.push(temp.package_id)
+            }
+            console.log(arr)
+
+            ans = []
+            t = []
+            for (const item of arr) {
+                if (t.includes(item.package_collection_id)) {
+                    continue
+                }
+                t.push(item.package_collection_id)
+                ans.push(await Package_collection.findAll({
+                    include: {
+                        model: Package_pkg_collection,
+                        include: {
+                            model: Package,
+                        },
+                    },
+                    where: { package_collection_id: item.package_collection_id },
+                }))
+            }
+
+            res.status(200).json(ans)
         } catch (err) {
             console.log(err)
             res.status(500).json({
