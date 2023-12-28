@@ -389,7 +389,7 @@ export default {
         ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH',
             'teller_DC', 'tellerDCToken']),
         totalPages() {
-            return Math.ceil(this.packages.length / this.itemsPerPage);
+            return Math.ceil(this.recvPkgs.length / this.itemsPerPage);
         },
         displayedItemList() {
             const startIndex = (this.currentPage - 1) * this.itemsPerPage;

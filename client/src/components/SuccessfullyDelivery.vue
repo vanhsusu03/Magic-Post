@@ -4,20 +4,8 @@
             <div class="py-2 grid gird-cols-9">
                 <span class="col-start-1 col-end-5 py-2">
                     <h1 class="inline-flex font-semibold lg:text-xl md:text-lg sm:text-base text-sm">
-                        Tạo đơn hàng gửi tới điểm giao dịch đích
+                        Danh sách vận chuyển thành công
                     </h1>
-                </span>
-                <span class="col-start-5 col-end-7">
-                    <button v-on:click="this.handleSubmit()" class="bg-blue-500 hover:bg-blue-700 hover:shadow-xl text-white font-bold 
-                    md:text-base sm:text-sm text-xs py-2 px-4 rounded cursor-pointer hover:shadow-lg btn">
-                        Gửi
-                    </button>
-                </span>
-                <span class="col-start-7 mx-auto">
-                    <button v-on:click="this.resetPkgCheckBox(this.readyToSendPkgs)" class="bg-blue-500 hover:bg-blue-700 hover:shadow-xl text-white font-bold 
-                    md:text-base sm:text-sm text-xs py-2 px-4 rounded cursor-pointer hover:shadow-lg btn">
-                        Hủy bỏ
-                    </button>
                 </span>
             </div>
 
@@ -40,60 +28,40 @@
                                 Mã điểm GD bên gửi</th>
                             <th
                                 class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
-                                Mã điểm GD bên nhận</th>
+                                Địa chỉ người nhận</th>
                             <th
                                 class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
-                                Ngày giờ xác nhận tại điểm tập kết</th>
-                            <th
-                                class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
-                                Trạng thái</th>
-                            <th
-                                class="bg-green-500 text-white font-bold py-2 px-4 border md:text-base sm:text-sm text-xs border">
-                                Chọn gửi</th>
+                                Xác nhận thành công lúc</th>
                         </tr>
-                        <tr v-for="packages in displayedItemList" :key="packages.package_id">
+                        <tr v-for="packages in displayedItemList" :key="packages.packageId">
                             <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
-                                {{ packages.package_id }}
+                                {{ packages.packageId }}
                             </td>
                             <td
                                 class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
-                                {{ packages.sender_name }}
+                                {{ packages.senderName }}
                                 <br />
-                                {{ packages.sender_phone }}
+                                {{ packages.senderPhone }}
                             </td>
                             <td
                                 class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
-                                {{ packages.receiver_name }}
+                                {{ packages.receiverName }}
                                 <br />
-                                {{ packages.receiver_phone }}
+                                {{ packages.receiverPhone }}
                             </td>
                             <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
-                                {{ packages.delivery_center_send_id }}
-                            </td>
-                            <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs">
-                                {{ packages.delivery_center_receive_id }}
+                                {{ packages.deliveryCenterSendId }}
                             </td>
                             <td
                                 class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
-                                {{ new Date(packages.status_details.time).toLocaleString("en-US", {
+                                {{ packages.receiverAddress }}
+                            </td>
+                            <td
+                                class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
+                                {{ new Date(packages.status_details[8].time).toLocaleString("en-US", {
                                     timeZone:
                                         Intl.DateTimeFormat().resolvedOptions().timeZone
                                 }) }}
-                            </td>
-                            <td v-if="packages.status_details.status_id == 5"
-                                class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
-                                Đã đến điểm tập kết đích
-                            </td>
-                            <td class="py-2 px-4 border items-center justify-center">
-                                <input type="checkbox" v-model="packages.isChecked" class="hidden"
-                                    @change="toggleCheckbox(packages)" />
-                                <div class="w-6 h-6 border border-gray-400 rounded cursor-pointer flex items-center justify-center transition-all duration-300"
-                                    :class="{ 'bg-green-500': packages.isChecked }" @click="toggleCheckbox(packages)">
-                                    <svg v-if="packages.isChecked" class="w-4 h-4 text-white" fill="none"
-                                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path d="M6 12l2 2 6-6"></path>
-                                    </svg>
-                                </div>
                             </td>
                         </tr>
                     </table>
@@ -124,16 +92,12 @@ import { mapMutations, mapState } from 'vuex';
 import axios from 'axios';
 import Alert from './Alert.vue'
 export default {
-    name: 'PackCollectionManage_WHtoDC',
+    name: 'SuccessfullyDelivery',
     data() {
         return {
             form: {
-                packageIds: '',
-                packageCollectionTypeId: 0,
                 statusId: 0,
                 location: '',
-                deliveryCenterReceiveId: 0,
-                warehouseReceiveId: 0,
             },
             createPkgCollectionError: {
                 packageIdsError: [],
@@ -153,10 +117,11 @@ export default {
             createNew: false,
             itemsPerPage: 4,
             currentPage: 1,
-            staffWH: [],
+            tellerDC: [],
             isChecked: false,
             msg: '',
             whTargetId: 0,
+            pkgSelectedId: 0,
             warehouse: [],
         }
     },
@@ -201,191 +166,114 @@ export default {
         },
         toggleCheckbox(pkg) {
             pkg.isChecked = !pkg.isChecked;
+
             if (pkg.isChecked == true) {
-                let packagesArray = this.form.packageIds.split(',');
-                if (packagesArray.length >= 1 && packagesArray[0] !== '') {
-                    this.msg = "Chỉ chọn tối đa 1 đơn hàng!";
+
+                if (this.pkgSelectedId) {
+                    this.msg = "Chỉ chọn tối đa 1 đơn hàng/1 lần xác nhận!";
                     pkg.isChecked = false;
                 }
-                else {
-                    if (!this.form.packageIds) {
-                        this.form.packageIds += pkg.package_id;
-                    } else {
-                        this.form.packageIds += ',' + pkg.package_id;
-                    }
+                else if (this.pkgSelectedId == 0) {
+                    this.pkgSelectedId = pkg.packageId;
                 }
             } else {
-                let packagesArray = this.form.packageIds.split(',');
-
-                const indexToDelete = packagesArray.indexOf(pkg.package_id.toString());
-
-                if (indexToDelete !== -1) {
-                    packagesArray.splice(indexToDelete, 1);
-                }
-                this.form.packageIds = packagesArray.join(',');
+                this.pkgSelectedId = 0;
             }
         },
         rmvDuplicate() {
             // for(var i in this.)
         },
-        async getStaffWH() {
+        async getTellerDC() {
             try {
-                let res = await axios.get(`/offices/${this.staff_WH.warehouseId}/accounts/${this.staff_WH.accountTypeId}`, {
-                    headers: { "Authorization": `Bearer ${this.staffWHToken.accessToken}` }
+                let res = await axios.get(`/offices/${this.teller_DC.deliveryCenterId}/accounts/${this.teller_DC.accountTypeId}`, {
+                    headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
                 }, { withCredentials: true });
                 if (res.data) {
-                    this.staffWH = res.data;
-                    this.provinceId = Number(res.data[0].warehouse.provinceMunicipalityId);
-                    this.getWarehouseHere();
-                }
-            } catch (err) {
-                if (err.response && err.response.data && err.response.data.error === 'jwt expired') {
-                    await this.refreshToken();
-                    await this.getStaffWH();
-                } else {
-                    // alert(err.response.data.error); 
-                }
-            }
-        },
-        async getWareHouseTarget(deliveryCenterId) {
-            try {
-                let res = await axios.get(`/warehouse/deliverycenter/${deliveryCenterId}`, {
-                    headers: { "Authorization": `Bearer ${this.staffWHToken.accessToken}` }
-                }, { withCredentials: true });
-                if (res.data) {
-                    if (this.whTargetId == 0) {
-                        this.whTargetId = Number(res.data[0].warehouse_id);
-                    }
-                    alert(this.whTargetId)
+                    this.tellerDC = res.data;
                 }
             } catch (err) {
                 if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
-                    await this.getWareHouseTarget();
+                    await this.getTellerDC();
                 } else { alert(err.response.data.error); }
             }
         },
-        async getWarehouseHere() {
+        async getDeliveryCenterHere() {
             try {
-                let res = await axios.get(`/warehouses/${this.provinceId}`, {
-                    headers: { "Authorization": `Bearer ${this.staffWHToken.accessToken}` }
+                let res = await axios.get(`/deliveryCentersHere/${this.teller_DC.deliveryCenterId}`, {
+                    headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
                 }, { withCredentials: true });
                 if (res.data) {
-                    this.warehouse = res.data[0];
+                    this.deliveryCenter = res.data;
                 }
             } catch (err) {
-                if (err.response && err.response.data && err.response.data.error === 'jwt expired') {
+                if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
-                    await this.getWarehouseHere();
-                } else {
-                    // Handle other errors or log them
-                    console.error(err);
-                    alert(err.response ? err.response.data.error : 'ddd');
-                }
+                    await this.getDeliveryCenterHere();
+                } else { alert(err.response.data.error); }
             }
         },
-        async fetchReadySendingPkgsData() {
+        async fetchSendPackagesData() {
             try {
-                let res = await axios.get(`/packages/5/Warehouse2/${this.staff_WH.warehouseId}`, {
-                    headers: { "Authorization": `Bearer ${this.staffWHToken.accessToken}` },
+                let res = await axios.get(`/deliveryCenters/${this.teller_DC.deliveryCenterId}/packages/statuses`, {
+                    params: {
+                        deliveryCenterType: 'receive'
+                    },
+                    headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` },
                     withCredentials: true
                 });
                 if (res.data) {
                     this.readyToSendPkgs = res.data;
-                    // this.packages = this.filteredPackages(this.packages, 1);
+                    this.readyToSendPkgs = this.filteredPackages(this.readyToSendPkgs, 9);
                 }
 
             } catch (err) {
                 if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
-                    await this.fetchReadySendingPkgsData();
+                    await this.fetchSendPackagesData();
                 }
                 else { alert(err.response.data.error); }
             }
         },
-        //lấy pkg collections đang gửi tới warehouse kế tiếp
 
-        async fetchSendingPackagesData() {
-            try {
-                let res = await axios.get(`/collections/sendingCollections/${this.staff_WH.warehouseId}`, {
-                    params: {
-                        typeOffice: "warehouse",
-                        pkgCollectionType: 2,
-                        statusId: 4
-                    },
-                    headers: { "Authorization": `Bearer ${this.staffWHToken.accessToken}` },
-                    withCredentials: true
-                });
-                if (res.data) {
-                    this.sendingPkgs = res.data;
-                    // this.readyToSendPkgs = this.filteredPackages(this.readyToSendPkgs, 2);
-                }
-
-            } catch (err) {
-                if (err.response.data.error == 'jwt expired') {
-                    await this.refreshToken();
-                    await this.fetchSendingPackagesData();
-                }
-                else { alert(err.response.data.error); }
-            }
-        },
         async refreshToken() {
             let res = await axios.post('/refresh', {
-                refreshToken: this.staffWHToken.refreshToken,
+                refreshToken: this.tellerDCToken.refreshToken,
                 withCredentials: true
             }, {
                 headers:
                 {
-                    'x_authorization': `${this.staffWHToken.accessToken}`,
+                    'x_authorization': `${this.tellerDCToken.accessToken}`,
                 }, withCredentials: true
             });
 
-            this.setStaffWHAccessToken(res.data);
+            this.setTellerDCAccessToken(res.data);
         },
-        async handleCreatePkgCollection() {
+        async handleConfirmSendToReceiver() {
             try {
-                let res = await axios.post('/collections', this.form, {
-                    headers: { "Authorization": `Bearer ${this.staffWHToken.accessToken}` }
+                let res = await axios.put(`/packages/${this.pkgSelectedId}/statuses`, this.form, {
+                    headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
                 }, { withCredentials: true });
                 if (res.data) {
-                    this.fetchSendingPackagesData();
-                    this.fetchReadySendingPkgsData();
-                    this.msg = 'Gửi hàng tới điểm giao dịch đích thành công!';
+                    this.fetchSendPackagesData()
+                    this.msg = 'Xác nhận thành công!';
                     this.createPackageCollection();
                 }
             } catch (err) {
                 if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
-                    await this.handleCreatePkgCollection();
+                    await this.handleConfirmSendToReceiver();
                 } else { alert(err.response.data.error); }
             }
-        },
-        async getTargetDeliveryCenter() {
-            this.deliveryCenters = null;
-            if (this.districtSelectedId > 0) {
-                try {
-                    const res = await axios.get(`/deliveryCenters/${this.districtSelectedId}`, {
-                        headers: { "Authorization": `Bearer ${this.staffWHToken.accessToken}` }
-                    }, { withCredentials: true });
-                    this.deliveryCenters = res.data;
-                    this.form.deliveryCenterReceiveId = this.deliveryCenters[0].deliveryCenterId;
-                } catch (err) {
-                    console.log('getDCfromDistrict: ', err.respone.data.error)
-                }
-            }
-
         },
         createPackageCollection() {
             this.resetError();
             this.resetPkgCheckBox(this.readyToSendPkgs);
-            this.form.packageIds = '';
-            this.whTargetId = 0;
-            this.form.packageCollectionTypeId = 0;
+            this.form.statusId = 0;
             this.form.location = '';
-            this.form.deliveryCenterReceiveId = 0;
-            this.form.warehouseReceiveId = 0;
             this.deliveryCenters = null;
             this.provinceId = 0;
+            this.pkgSelectedId = 0;
             this.createNew = !this.createNew;
         },
         resetError() {
@@ -403,7 +291,7 @@ export default {
         },
         validateAndPreSubmitCreatePkgCollection() {
             this.resetError();
-            if (!this.form.packageIds) {
+            if (this.pkgSelectedId == 0) {
                 this.createPkgCollectionError.packageIdsError.push('Hãy chọn ít nhất 1 đơn hàng!')
             }
         },
@@ -412,12 +300,10 @@ export default {
             this.validateAndPreSubmitCreatePkgCollection();
 
             if (this.checkEmptyError()) {
-                this.form.packageCollectionTypeId = 3;
-                this.form.statusId = 6;
-                this.form.location = 'Điểm tập kết số ' + this.warehouse.warehouseId + ', ' + this.warehouse.address;
-                this.getTargetId(this.readyToSendPkgs);
+                this.form.statusId = 8;
+                this.form.location = 'Điểm giao dịch số ' + this.deliveryCenter[0].deliveryCenterId + ', ' + this.deliveryCenter[0].address;
                 this.scrollToTop();
-                await this.handleCreatePkgCollection();
+                await this.handleConfirmSendToReceiver();
             } else {
                 this.msg = "Phải chọn ít nhất 1 đơn hàng!"
             }
@@ -454,9 +340,11 @@ export default {
         },
     },
     created() {
-        this.getStaffWH();
-        this.fetchReadySendingPkgsData();
+        this.getTellerDC();
+        this.getDeliveryCenterHere();
+        // this.fetchReadySendingPkgsData();
         // this.fetchSendingPackagesData();
+        this.fetchSendPackagesData();
     }
 }
 </script>

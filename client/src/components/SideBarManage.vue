@@ -167,7 +167,7 @@
                             </g>
 
                         </svg>
-                        <span class="ml-4">Thông tin</span>
+                        <span class="ml-4">Thông tin cá nhân</span>
                     </a>
                 </li>
             </ul>
