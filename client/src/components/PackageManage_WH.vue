@@ -26,15 +26,19 @@
         </div>
         <br>
         <div class="mx-auto" id="course" v-if="taskTypeSelected == 3">
-            <CreatePackage></CreatePackage>
+            <PackageConfirm_WHfromWH :params="getParams(2, 4)" />
         </div>
 
         <div class="mx-auto" id="course" v-if="taskTypeSelected == 4">
             <PackCollectionManage_WHtoWH></PackCollectionManage_WHtoWH>
         </div>
 
+        <div class="mx-auto" id="course" v-if="taskTypeSelected == 2">
+            <PackCollectionManage_WHtoDC></PackCollectionManage_WHtoDC>
+        </div>
+
         <div class="mx-auto" id="course" v-if="taskTypeSelected == 1">
-            <PackageConfirm_WH></PackageConfirm_WH>
+            <PackageConfirm_WHfromDC :params="getParams(1, 2)" />
         </div>
     </div>
 </template>
@@ -44,7 +48,9 @@ import axios from 'axios';
 import { mapState, mapMutations } from 'vuex';
 import CreatePackage from './CreatePackage.vue';
 import PackCollectionManage_WHtoWH from './PackCollectionManage_WHtoWH.vue';
-import PackageConfirm_WH from './PackageConfirm_WH.vue';
+import PackCollectionManage_WHtoDC from './PacKCollectionManage_WHtoDC.vue';
+import PackageConfirm_WHfromDC from './PackageConfirm_WHfromDC.vue';
+import PackageConfirm_WHfromWH from './PackageConfirm_WHfromWH.vue';
 export default {
     name: 'PackageManage_WH',
     data() {
@@ -55,10 +61,18 @@ export default {
     components: {
         CreatePackage,
         PackCollectionManage_WHtoWH,
-        PackageConfirm_WH,
+        PackCollectionManage_WHtoDC,
+        PackageConfirm_WHfromDC,
+        PackageConfirm_WHfromWH
     },
     methods: {
-
+        getParams(pkgCollectionType, statusId) {
+            return {
+                typeOffice: 'warehouse',
+                pkgCollectionType,
+                statusId,
+            };
+        },
     },
     computed: {
         ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'managerDCToken', 'manager_WH', 'managerWHToken',

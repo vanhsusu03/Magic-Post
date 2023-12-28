@@ -4,7 +4,7 @@
             <div class="py-2 grid gird-cols-9">
                 <span class="col-start-1 col-end-5 py-2">
                     <h1 class="inline-flex font-semibold lg:text-xl md:text-lg sm:text-base text-sm">
-                        Xác nhận đơn hàng từ điểm tập kết
+                        Xác nhận đơn hàng từ điểm tập kết nguồn
                     </h1>
                 </span>
                 <span class="col-start-5 col-end-7">
@@ -21,8 +21,8 @@
                 </span>
             </div>
             <div class="py-2 grid gird-cols-9">
-                <!-- <h1><strong>Điểm tập kết số:</strong> {{ this.warehouse.warehouseId }}</h1>
-                <h1><strong>Địa chỉ:</strong> {{ this.warehouse.address }}</h1> -->
+                <h1><strong>Điểm tập kết số:</strong> {{ this.warehouse ? this.warehouse.warehouseId : 'NaN' }}</h1>
+                <h1><strong>Địa chỉ:</strong> {{ this.warehouse ? this.warehouse.address : 'NaN' }}</h1>
             </div>
             <hr class="my-2 mx-auto">
             <div class="" id="course">
@@ -104,7 +104,7 @@ import { mapMutations, mapState } from 'vuex';
 import axios from 'axios';
 import Alert from './Alert.vue'
 export default {
-    name: 'PackageConfirm_WH',
+    name: 'PackageConfirm_WHfromWH',
     data() {
         return {
             form: {
@@ -137,6 +137,9 @@ export default {
         Alert,
 
     },
+    props: {
+        params: Object,
+    },
     methods: {
         ...mapMutations(['scrollToTop', 'setLogged', 'setLeadership', 'setLeadershipAccessToken',
             'setLeadershipRefreshToken', 'setManagerDC', 'setDCManagerAccessToken', 'setDCManagerRefreshToken',
@@ -159,7 +162,7 @@ export default {
             arr.forEach((packages) => {
                 packages[0].isChecked = false;
             });
-            this.pkgCollectionSelectedId  = 0;
+            this.pkgCollectionSelectedId = 0;
         },
         toggleCheckbox(pkg) {
             pkg.isChecked = !pkg.isChecked;
@@ -183,13 +186,13 @@ export default {
                 let res = await axios.put(`/collections/${this.pkgCollectionSelectedId}/statuses`, this.form, {
                     headers: { "Authorization": `Bearer ${this.staffWHToken.accessToken}` }
                 }, { withCredentials: true });
-                if(res.data) {
+                if (res.data) {
                     this.msg = 'Xác nhận thành công!'
                     this.fetchReceivingPackagesData();
                     this.createPackageCollection();
                 }
             } catch (err) {
-                if(err.response.data.error == 'jwt expired') {
+                if (err.response.data.error == 'jwt expired') {
                     await this.refreshToken();
                     await this.handleConfirmPkgCollection();
                 } else {
@@ -235,44 +238,42 @@ export default {
                 }
             }
         },
-        async fetchSendPackagesData() {
-            try {
-                let res = await axios.get(`/fetchPkgCol/${this.staff_WH.warehouseId}/fetch`, {
-                    params: {
-                        typeOffice: "warehouse",
-                        statusId: 2
-                    },
-                    headers: { "Authorization": `Bearer ${this.staffWHToken.accessToken}` },
-                    withCredentials: true
-                });
-                if (res.data) {
-                    this.packages = res.data;
-                    // alert("HEHHEHEHE")
-                    // console.log(this.packages);
-                    // this.packages = this.filteredPackages(this.packages, 1);
-                }
+        // async fetchSendPackagesData() {
+        //     try {
+        //         let res = await axios.get(`/fetchPkgCol/${this.staff_WH.warehouseId}/fetch`, {
+        //             params: {
+        //                 typeOffice: "warehouse",
 
-            } catch (err) {
-                if (err.response.data.error == 'jwt expired') {
-                    await this.refreshToken();
-                    await this.fetchSendPackagesData();
-                }
-                else {
-                    console.log(err.response.data.error)
-                    alert(err.response.data.error);
-                }
-            }
-        },
+        //                 statusId: 2
+        //             },
+        //             headers: { "Authorization": `Bearer ${this.staffWHToken.accessToken}` },
+        //             withCredentials: true
+        //         });
+        //         if (res.data) {
+        //             this.packages = res.data;
+        //             // alert("HEHHEHEHE")
+        //             // console.log(this.packages);
+        //             // this.packages = this.filteredPackages(this.packages, 1);
+        //         }
+
+        //     } catch (err) {
+        //         if (err.response.data.error == 'jwt expired') {
+        //             await this.refreshToken();
+        //             await this.fetchSendPackagesData();
+        //         }
+        //         else {
+        //             console.log(err.response.data.error)
+        //             alert(err.response.data.error);
+        //         }
+        //     }
+        // },
         async fetchReceivingPackagesData() {
             try {
                 let res = await axios.get(`/collections/sendingCollections/${this.staff_WH.warehouseId}`, {
-                    params: {
-                        typeOffice: "warehouse",
-                        statusId: 2
-                    },
+                    params: this.params,
                     headers: { "Authorization": `Bearer ${this.staffWHToken.accessToken}` },
                     withCredentials: true
-                });
+                },);
                 if (res.data) {
                     this.recvPkgs = res.data;
                     // this.recvPkgs = this.filteredPackages(this.recvPkgs, 2);
@@ -340,7 +341,7 @@ export default {
             this.resetPkgCheckBox(this.packages);
             this.form.statusId = 0;
             this.form.location = '';
-            this.pkgCollectionSelectedId =0;
+            this.pkgCollectionSelectedId = 0;
             this.deliveryCenters = null;
             this.createNew = !this.createNew;
         },
@@ -358,7 +359,7 @@ export default {
             return true;
         },
         validateAndPreSubmitCreatePkgCollection() {
-            this.form.statusId = 3;
+            this.form.statusId = 5;
             this.form.location = 'Điểm tập kết số ' + this.warehouse.warehouseId +
                 ', ' + this.warehouse.address;
         },

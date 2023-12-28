@@ -190,8 +190,8 @@ router.delete('/deliveryCenters/:deliveryCenterId', isAuth, isLeadership, Delive
 router.get('/deliveryCenters/:deliveryCenterId/packages/statuses', isAuth, DeliveryCenterController.getPackages)
 
 
-// router.get('/deliveryCenters/:districtId', isAuth, DeliveryCenterController.getDeliveryCentersByDistrict)
+router.get('/deliveryCenters/:districtId', isAuth, DeliveryCenterController.getDeliveryCentersByDistrict)
 
-// router.get('/deliveryCentersHere/:deliveryCenterId', isAuth, DeliveryCenterController.getDeliveryCentersById)
+router.get('/deliveryCentersHere/:deliveryCenterId', isAuth, DeliveryCenterController.getDeliveryCentersById)
 
 export default router

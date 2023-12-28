@@ -3,7 +3,7 @@ import { format } from 'date-fns'
 import db from '../models/index.mjs'
 
 const { Package_collection, Package_pkg_collection, Status_detail, Package,
-    Delivery_center, Warehouse } = db.models
+    Delivery_center, Warehouse, Package_collection_type } = db.models
 
 const PackageCollectionController = {
     /**
@@ -126,19 +126,26 @@ const PackageCollectionController = {
     getSendingCollections: async (req, res) => {
         try {
             const officeId = Number(req.params.officeId)
-            const { typeOffice, statusId } = req.query
+            const { typeOffice,
+                pkgCollectionType,
+                statusId } = req.query
+            // pkgCollectionType = 2;
+            // statusId = 4;
+            console.log("Ở DDAAYA NÈ" + officeId + ', ' + typeOffice + ", " + pkgCollectionType + ', ' + statusId)
             let collections
             if (typeOffice == "warehouse") {
                 collections = await Package_collection.findAll({
                     where: {
-                        warehouse_receive_id: officeId
+                        warehouse_receive_id: officeId,
+                        package_collection_type_id: pkgCollectionType
                     },
                     raw: true,
                 })
             } else {
                 collections = await Package_collection.findAll({
                     where: {
-                        delivery_center_receive_id: officeId
+                        delivery_center_receive_id: officeId,
+                        package_collection_type_id: pkgCollectionType
                     },
                     raw: true,
                 })
