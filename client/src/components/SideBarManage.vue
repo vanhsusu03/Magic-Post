@@ -1,5 +1,5 @@
 <template>
-    <aside v-if="this.isExpand" class="bg-slate-50 z-20 w-64 h-screen overflow-y-auto dark:bg-gray-800 md:block flex-shrink-0 border-gray-200 border-r border-t border-b">
+    <aside v-if="this.isExpand" class="bg-slate-50 z-20 w-64 h-full  dark:bg-gray-800 md:block flex-shrink-0 border-gray-200 border-r border-t border-b">
         <div class="py-8 text-gray-500 dark:text-gray-400">
             <button @click="sidebarToggle()"
             class="mx-6 cursor-pointer hover:bg-slate-200 transition-colors duration-150">

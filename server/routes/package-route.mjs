@@ -111,6 +111,7 @@
 import { Router } from 'express'
 import PackageController from "../controllers/PackageController.mjs"
 import { isAuth, isTeller } from "../middlewares/Auth.mjs"
+import permit from "../middlewares/Permissions.mjs"
 
 const router = Router()
 
@@ -302,5 +303,7 @@ router.put('/packages/statuses', isAuth, isTeller, PackageController.updateDeliv
 
 router.delete('/packages/:packageId', isAuth, isTeller, PackageController.deletePackageById)
 
+
+router.get('/packages/:statusId/:officeType/:officeId', isAuth, permit([4, 6]), PackageController.getByStatusIdAndOfficeId)
 
 export default router

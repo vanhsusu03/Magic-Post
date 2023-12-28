@@ -4,7 +4,7 @@
             <SideBarManage @childEvent="getSidebarExpand" class="col-start-1 bg-slate-50 " :selecteds="selecteds" @update:selecteds="updateSelecteds">
             </SideBarManage>
             <div v-if="this.sidebarExpand" class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50">
-                <div v-if="selecteds[0]">Content for Thống kêasd</div>
+                <PackageBill v-if="selecteds[0]" :teller=this.test :form=this.formBill>Content for Thống kêasd</PackageBill>
                 <LeaderManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && leadership"></LeaderManageAccount>
                 <WarehouseManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && manager_WH"></WarehouseManagerManageAccount>
                 <DeliveryCenterManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && manager_DC"></DeliveryCenterManagerManageAccount>
@@ -15,7 +15,7 @@
                 <div class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[5]">Content for Thống kê</div>
             </div>
             <div v-else class="col-start-2 col-end-13 border-t border-l rounded-lg bg-slate-50">
-                <div v-if="selecteds[0]">Content for Thống kêasd</div>
+                <PackageBill v-if="selecteds[0]">Content for Thống kêasd</PackageBill>
                 <LeaderManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && leadership"></LeaderManageAccount>
                 <WarehouseManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && manager_WH"></WarehouseManagerManageAccount>
                 <DeliveryCenterManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && manager_DC"></DeliveryCenterManagerManageAccount>
@@ -39,12 +39,48 @@ import { mapState } from 'vuex';
 import WarehouseManagerManageAccount from '@/components/WarehouseLeadAccount.vue';
 import DeliveryCenterManagerManageAccount from '@/components/DeliveryCenterLeadAccount.vue';
 import PackageManage_DC from '@/components/PackageManage_DC.vue';
+import PackageBill from '@/components/PackageBill.vue'
 export default {
     name: 'ManagerHome',
     data() {
         return {
             selecteds: [true, false, false, false, false, false, false],
             sidebarExpand: true,
+            test: {
+                name: 'dataToChildComp',
+            },
+
+            form: {
+                packageTypeId: 1,
+                deliveryCenterSendId: 2,
+                deliveryCenterReceiveId: 1,
+                weightGram: 3,
+                cost: 43,
+                codAmount: 13,
+                senderAddress: 'asd',
+                receiverAddress: 'asd',
+                senderName: 'fds',
+                receiverName: 'hte',
+                senderPhone: 'db',
+                receiverPhone: 'ag',
+                location: 'hgj',
+            },
+
+            formBill: {
+                packageTypeId: 0,
+                deliveryCenterSendId: 0,
+                deliveryCenterReceiveId: 0,
+                weightGram: 0,
+                cost: 0,
+                codAmount: 0,
+                senderAddress: '',
+                receiverAddress: '',
+                senderName: '',
+                receiverName: '',
+                senderPhone: '',
+                receiverPhone: '',
+                location: '',
+            }
         };
     },
     components: {
@@ -55,6 +91,7 @@ export default {
         WarehouseManagerManageAccount,
         DeliveryCenterManagerManageAccount,
         PackageManage_DC,
+        PackageBill,
     },
     methods: {
         updateSelecteds(newSelecteds) {
@@ -64,12 +101,14 @@ export default {
         },
         getSidebarExpand(mss) {
             this.sidebarExpand = mss
-            console.log(this.sidebarExpand)
-        }
+            this.formBill = this.form;
+        },
+    
     },
     computed: {
         ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH', 'teller_DC']),
-    }
+    },
+
 };
 </script>
   

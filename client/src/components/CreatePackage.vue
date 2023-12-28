@@ -292,9 +292,11 @@
     </div>
 
     <div v-else class="items-center justify-center mx-auto">
-        <PackageBill></PackageBill>
+        <PackageBill :form=this.formBill :teller=this.tellerDC></PackageBill>
         <button @click="this.isCreated = false" class="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 my-4 
                 mx-auto md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">Xác nhận</button>
+        <!-- <button class="block bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 my-4 
+                mx-auto md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg" @click="test()"> test</button> -->
     </div>
 </template>
 
@@ -310,6 +312,21 @@ export default {
     data() {
         return {
             form: {
+                packageTypeId: 0,
+                deliveryCenterSendId: 0,
+                deliveryCenterReceiveId: 0,
+                weightGram: 0,
+                cost: 0,
+                codAmount: 0,
+                senderAddress: '',
+                receiverAddress: '',
+                senderName: '',
+                receiverName: '',
+                senderPhone: '',
+                receiverPhone: '',
+                location: '',
+            },
+            formBill: {
                 packageTypeId: 0,
                 deliveryCenterSendId: 0,
                 deliveryCenterReceiveId: 0,
@@ -446,6 +463,7 @@ export default {
                     headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
                 }, { withCredentials: true });
                 if (res.data) {
+                    this.formBill = this.form;
                     this.isCreated = true;
                     this.fetchSendPackagesData();
                     alert("THANH CONG");
@@ -652,7 +670,8 @@ export default {
             return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
         },
         test() {
-            console.log(this.packageType)
+            console.log(this.formBill);
+            console.log(this.form);
         }
     },
 
@@ -674,6 +693,7 @@ export default {
         this.getDeliveryCenterHere();
         this.fetchSendPackagesData();
     }
+    
 }
 </script>
 

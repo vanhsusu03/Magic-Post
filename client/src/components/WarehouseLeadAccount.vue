@@ -3,6 +3,7 @@
         <div v-if="!this.createNew" class="w-11/12 h-10/12 mx-auto">
             <div class="w-10/12 grid grid-cols-6 mx-auto">
                 <span class="col-start-1 col-end-5 row-start-1 row-end-3 max-w-fit">
+                    <button class="bg-blue-300 p-4" @click="test()">test</button>
                     <h1 class="font-semibold py-2 mt-2 text-center lg:text-2xl md:text-xl sm:text-lg text-base">
                         Danh sách tài khoản nhân viên tại điểm tập kết
                     </h1>
@@ -121,7 +122,7 @@
             <div class="py-2 grid gird-cols-6">
                 <span class="col-start-1 col-end-5 py-2">
                     <h1 v-if="this.updating" class="inline-flex font-semibold lg:text-xl md:text-lg sm:text-base text-sm">
-                        Chỉnh sửa tài khoản nhân viên tại điểm tập kết số {{ manager_DC.deliveryCenterId }} <br>
+                        Chỉnh sửa tài khoản nhân viên tại điểm tập kết số {{ manager_WH.warehouseId }} <br>
                         ID: {{ this.accountSelectedId }}
                     </h1>
                     <h1 v-else class="inline-flex font-semibold lg:text-xl md:text-lg sm:text-base text-sm">
@@ -253,6 +254,14 @@ export default {
             updating: false,
             accountSelectedId: 0,
             searchInput: '',
+            aboutMe: {
+                accountId: '',
+                firstName: '',
+                lastName: '',
+                phone: '',
+                email: '',
+                citizenIdentityCardNumber: '',
+            }
         }
     },
     methods: {
@@ -510,6 +519,12 @@ export default {
             // Function to escape special characters in a string for regex
             return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
         },
+
+        test() {
+            if(this.manager_WH) {
+                console.log(this.manager_WH.accountId)
+            }
+        }
     },
 
     computed: {
@@ -526,6 +541,11 @@ export default {
                     slice(startIndex, endIndex)
                 : this.accounts.slice(startIndex, endIndex);    
         },
+        getters: {
+            me: state => {
+            return state.todos.filter(todo => todo)
+        }
+     }
     },
     created() {
         this.fetchAccountsData();

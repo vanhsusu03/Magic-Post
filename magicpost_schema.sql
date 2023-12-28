@@ -72,6 +72,8 @@ CREATE TABLE package_collection_type (
 CREATE TABLE package_collection (
 	package_collection_id MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
     package_collection_type_id TINYINT UNSIGNED NOT NULL,
+    delivery_center_receive_id SMALLINT UNSIGNED DEFAULT NULL,
+    warehouse_receive_id TINYINT UNSIGNED DEFAULT NULL,
     PRIMARY KEY (package_collection_id),
     CONSTRAINT fk_package_collection_type FOREIGN KEY (package_collection_type_id) REFERENCES package_collection_type (type_id) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
