@@ -113,6 +113,27 @@ const PackageController = {
         }
     },
 
+    deletePackageById: async (req, res) => {
+        try {
+            const packageId = Number(req.params.packageId)
+            
+            await Package.destroy({
+                where: {
+                    package_id: packageId,
+                }
+            })
+            res.status(200).json({
+                message: 'Delete successfully!'
+            })
+        } catch (err) {
+            console.log(err)
+            res.status(500).json({
+                message: 'Something went wrong',
+                error: err.message
+            })
+        }
+    },
+
     /**
     * Update delivery status of many packages in the database based on request body. This is used to update the delivery status of many packages
     * 

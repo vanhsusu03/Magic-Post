@@ -3,12 +3,15 @@
         <img src="../assets/img/poster1.png" alt="" class="poster1">
         <img src="../assets/img/poster2.png" alt="" class="poster2">
     </div>
+    <div>
+        <!-- <CustomerSearching/> -->
+    </div>
 </template>
 <script>
 // import axios from 'axios';
 import { mapMutations, mapState } from 'vuex';
 import "../assets/general_css/style.css";
-
+import CustomerSearching from '../components/CustomerSearching.vue'
 export default {
     // eslint-disable-next-line vue/multi-word-component-names
     name: 'Home',
@@ -18,7 +21,7 @@ export default {
         }
     },
     components: {
-
+        CustomerSearching,
     },
     methods: {
         // ...mapMutations(['setStudent', 'setLogged', 'setAdmin']),

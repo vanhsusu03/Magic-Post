@@ -174,6 +174,10 @@ router.post('/signup', isAuth, AccountController.signUp)
  */
 router.post('/login', AccountController.logIn)
 
+router.put('/updateAccount/:accountId', isAuth, AccountController.updateAccount)
+
+router.delete('/deleteAccount/:accountId', isAuth, AccountController.deleteAccount)
+
 /**
  * @swagger
  * /refresh:
@@ -263,7 +267,8 @@ router.post('/refresh', AccountController.refreshToken)
  */
 router.get('/offices/:officeId/accounts/:accountTypeId', isAuth, AccountController.getInfoByOffice)
 
-router.post('/logout', isLogin, AccountController.logOut)
+router.post('/logout', AccountController.logOut)
+
 
 // router.get('/profile', isAuth, async (req, res) => {
 // 	res.json(req.account)

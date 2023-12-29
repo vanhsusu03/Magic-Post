@@ -301,6 +301,9 @@ router.put('/packages/:packageId/statuses', isAuth, isTeller, PackageController.
  */
 router.put('/packages/statuses', isAuth, isTeller, PackageController.updateDeliveryStatusOfManyPackages)
 
+router.delete('/packages/:packageId', isAuth, isTeller, PackageController.deletePackageById)
+
+
 router.get('/packages/:statusId/:officeType/:officeId', isAuth, permit([4, 6]), PackageController.getByStatusIdAndOfficeId)
 
 export default router

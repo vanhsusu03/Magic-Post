@@ -3,7 +3,7 @@
 <div class="bg-white shadow-md rounded-md overflow-hidden max-w-2xl mx-auto mt-16">
     <div class="bg-gray-100 py-8 px-6">
         <h2 class="flex text-xl font-semibold text-gray-800 w-max">Điểm tập kết</h2>
-        <button class="inline bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">+</button>
+        <button class="inline bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">+</button>
     </div>
     
     <ul class="divide-y divide-gray-200">
