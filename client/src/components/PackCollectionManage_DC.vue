@@ -201,7 +201,7 @@
                 </div>
             </div>
         </div>
-        <!-- <Alert v-if="this.msg != ''" :message=this.msg class="pr-10" @close="this.resetMsg()" /> -->
+        <Alert v-if="this.msg != ''" :message=this.msg class="pr-10" @close="this.resetMsg()" />
     </div>
 </template>
 

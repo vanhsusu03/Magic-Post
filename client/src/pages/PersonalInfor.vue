@@ -86,15 +86,15 @@ export default {
         },
         getUserCode() {
             if (this.leadership) {
-                return "TYP_" + this.leadership.accountTypeId + "_LD_" + this.leadership.acocuntId;
+                return "TYP_" + this.leadership.accountTypeId + "_LD_" + this.leadership.accountId;
             } else if (this.manager_DC) {
-                return "TYP_" + this.manager_DC.accountTypeId + "_MDC_" + this.manager_DC.deliveryCenterId;
+                return "TYP_" + this.manager_DC.accountTypeId + "_MDC_" + this.manager_DC.accountId;
             } else if (this.manager_WH) {
-                return "TYP_" + this.manager_WH.accountTypeId + "_MWH_" + this.manager_WH.warehouseId;
+                return "TYP_" + this.manager_WH.accountTypeId + "_MWH_" + this.manager_WH.accountId;
             } else if (this.teller_DC.accountId) {
                 return "TYP_" + this.teller_DC.accountTypeId + "_TEL_" + this.teller_DC.accountId;
             } else if (this.staff_WH.accountId) {
-                return "TYP_" + this.staff_WH.accountTypeId + "_STAWH_" + this.staff_WH.acocuntId;
+                return "TYP_" + this.staff_WH.accountTypeId + "_STAWH_" + this.staff_WH.accountId;
             }
         },
         getUserOffice() {
@@ -213,6 +213,7 @@ export default {
     created() {
         this.getDeliveryCenterHere();
         this.getWarehouseHere();
+        this.scrollToTop()
     }
 }
 </script>
