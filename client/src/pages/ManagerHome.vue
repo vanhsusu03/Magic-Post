@@ -23,8 +23,10 @@
                 <DeliveryStatistic class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
                     v-if="selecteds[4] && teller_DC.username">Content for
                     Thống kê</DeliveryStatistic>
-                <PersonalInfor class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[5]">Content for
-                    Thống kê</PersonalInfor>
+                <LeadershipStatistic class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[4] && leadership" />
+                <PersonalInfor class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[5]">
+                </PersonalInfor>
             </div>
             <div v-else class="col-start-2 col-end-13 border-t border-l rounded-lg bg-slate-50">
                 <Article v-if="selecteds[0]"></Article>
@@ -45,8 +47,10 @@
                 <DeliveryStatistic class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
                     v-if="selecteds[4] && manager_DC">Content for
                     Thống kê</DeliveryStatistic>
-                <PersonalInfor class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[5]">Content for
-                    Thống kê</PersonalInfor>
+                <LeadershipStatistic class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[4] && leadership" />
+                <PersonalInfor class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[5]">
+                </PersonalInfor>
             </div>
 
         </div>
@@ -66,6 +70,7 @@ import PackageManage_WH from '@/components/PackageManage_WH.vue';
 import DeliveryStatistic from '@/components/DeliveryStatistic.vue';
 import Article from '@/pages/Article.vue'
 import PersonalInfor from '@/pages/PersonalInfor.vue';
+import LeadershipStatistic from '@/components/LeadershipStatistic.vue'
 export default {
     name: 'ManagerHome',
     data() {
@@ -87,6 +92,7 @@ export default {
         DeliveryStatistic,
         Article,
         PersonalInfor,
+        LeadershipStatistic
     },
     methods: {
         updateSelecteds(newSelecteds) {
@@ -113,5 +119,6 @@ export default {
     padding: 0;
     margin: 0;
     //background-color: ;
-}</style>
+}
+</style>
   

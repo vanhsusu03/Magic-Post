@@ -118,6 +118,6 @@ router.get('/statistic/:statusId/packages', isAuth, isTeller, StatisticControlle
 
 router.get('/statistic/deliveryCenters/:deliveryCenterId/:statusId/packages', isAuth, StatisticController.getPackagesByDelveryCenter)
 
-router.get('/statistic/warehouses/:warehouseId/:statusId/packages', isAuth, isWarehouseManager, StatisticController.getPackagesByWarehouse)
+router.get('/statistic/warehouses/:warehouseId/:statusId/packages', isAuth, StatisticController.getPackagesByWarehouse)
 
 export default router
