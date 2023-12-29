@@ -49,20 +49,7 @@
 
                 </form>
                 <!-- Show product status -->
-                <div class="product-status" v-if="show">
-                    <div class="border-2 border-solid border-black p-6 m-6 w-max inline-block rounded-md font-sans"
-                        :class="s1">
-                        status1
-                    </div>
-                    <div class="border-2 border-solid border-black p-6 m-6 w-max inline-block rounded-md font-sans"
-                        :class="s2">
-                        status2
-                    </div>
-                    <div class="border-2 border-solid border-black p-6 m-6 w-max inline-block rounded-md font-sans"
-                        :class="s3">
-                        status3
-                    </div>
-
+                <div class="product-status" v-if="this.isFound">
                     <div class="information py-4 rounded-3xl bg-gray-100 grid gap-10 row-gap-6 grid-cols-1">
                         <div id="sender-info" class="col-span-1 px-4 mx-4">
                             <div id="sender-name" class="text-left font-sans">
@@ -96,6 +83,34 @@
                             </div>
                         </div>
 
+                    </div>
+                    <br>
+                    <h1 class="text-xl"><strong>Tiến trình kiện hàng:</strong></h1>
+                    <br>
+                    <div class="information py-4 rounded-3xl bg-gray-100 grid gap-10 row-gap-6 grid-cols-1">
+                        <div id="sender-info" class="col-span-1 px-4 mx-4" v-for="sts in this.packageInfo.status_details">
+                            <div id="sender-name" class="text-left font-sans">
+                                <label for="" class="font-bold">Trạng thái {{ sts.statusId }}:</label>
+                            </div>
+
+                            <div id="sender-address" class="text-left font-sans">
+                                <label for="" class="font-bold">Tình trạng: </label>
+                                {{ this.getStatusDetail(sts.statusId) }}
+                            </div>
+
+                            <div id="sender-phone" class="text-left font-sans">
+                                <label for="" class="font-bold">Địa điểm:</label>
+                                {{ sts.location }}
+                            </div>
+
+                            <div id="sender-phone" class="text-left font-sans">
+                                <label for="" class="font-bold">Thời gian:</label>
+                                {{ new Date(sts.time).toLocaleString("en-US", {
+                                    timeZone:
+                                        Intl.DateTimeFormat().resolvedOptions().timeZone
+                                }) }}
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -214,8 +229,7 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit1.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit1.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 1. Vũ khí và
                                     công cụ hỗ trợ </h5>
@@ -229,8 +243,7 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit2.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit2.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 2. Vật liệu
                                     hoặc chất dễ gây cháy nổ </h5>
@@ -241,8 +254,7 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit3.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit3.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 3. Văn hóa
                                     phẩm cấm lưu hành </h5>
@@ -254,8 +266,7 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit3.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit3.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 4. Ma túy
                                 </h5>
@@ -266,8 +277,7 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit5.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit5.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 5. Thuốc lá
                                 </h5>
@@ -278,8 +288,7 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit6.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit6.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 6. Thuốc thú
                                     y hoặc thuốc bảo vệ thực vật bị cấm hoặc chưa được cấp phép </h5>
@@ -291,8 +300,7 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit7.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit7.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 7. Phân bón
                                     chưa được cấp phép </h5>
@@ -303,8 +311,7 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit8.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit8.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 8. Trang
                                     thiết bị y tế và thuốc chữa bệnh cho người chưa được cấp phép </h5>
@@ -317,8 +324,7 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit9.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit9.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 9. Phụ gia
                                     thực phẩm chưa được cấp phép </h5>
@@ -331,8 +337,7 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit10.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit10.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 10. Sinh vật
                                 </h5>
@@ -343,15 +348,15 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit11.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit11.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 11. Tiền,
                                     các loại kim khí quý và di vật, cổ vật, bảo vật </h5>
                                 <span class="text-[14px] lg:text-[16px]">
                                     <ul class="pl-6">
                                         <li class="list-disc">Tiền (tiền Việt Nam, ngoại tệ);</li>
-                                        <li class="list-disc">Các loại kim khí quý (vàng, bạc, bạch kim…), các loại đá quý hoặc các sản phẩm
+                                        <li class="list-disc">Các loại kim khí quý (vàng, bạc, bạch kim…), các loại đá quý
+                                            hoặc các sản phẩm
                                             khác được chế biến từ kim khí quý, đá quý;</li>
                                         <li class="list-disc">Di vật, cổ vật, bảo vật quốc gia.</li>
                                     </ul>
@@ -361,8 +366,7 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit12.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit12.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 12. Đồ chơi
                                     nguy hiểm </h5>
@@ -373,8 +377,7 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit13.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit13.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 13. Các hóa
                                     chất và khoáng vật cấm kinh doanh </h5>
@@ -384,8 +387,7 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit14.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit14.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 14. Bưu gửi
                                     chứa nhiều bưu gửi, gửi nhiều địa chỉ nhận; thư trong bưu gửi; thư có chứa vật phẩm hoặc
@@ -396,8 +398,7 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit15.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit15.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 15. Vật
                                     phẩm, hàng hóa khác cấm xuất khẩu, nhập khẩu hoặc cấm kinh doanh </h5>
@@ -408,7 +409,8 @@
                                         <li class="list-disc">Sản phẩm, vật liệu có chứa amilăng thuộc nhóm amphibole;</li>
                                         <li class="list-disc">Phế liệu nhập khẩu gây ô nhiễm môi trường;</li>
                                         <li class="list-disc">Ấn phẩm, học phẩm người mù;</li>
-                                        <li class="list-disc">Các vật phẩm, hàng hóa khác mà pháp luật của Việt Nam quy định cấm lưu thông,
+                                        <li class="list-disc">Các vật phẩm, hàng hóa khác mà pháp luật của Việt Nam quy định
+                                            cấm lưu thông,
                                             xuất khẩu, nhập khẩu, kinh doanh; cấm vận chuyển bằng đường bưu chính theo quy
                                             định của pháp luật Việt Nam, điều ước quốc tế mà Cộng hòa xã hội chủ nghĩa Việt
                                             Nam là thành viên tại từng thời điểm.</li>
@@ -419,8 +421,7 @@
                         <div
                             class="flex items-start  gap-x-[12px] lg:gap-x-[24px] pt-[30px] border-b border-[#f2f2f2] lg:border-0">
                             <img class="w-[56px] h-[56px] lg:w-[94px] lg:h-[94px] object-cover"
-                                src="../assets/img/prohibit16.png"
-                                alt="Magicpost - Các mặt hàng cấm gửi">
+                                src="../assets/img/prohibit16.png" alt="Magicpost - Các mặt hàng cấm gửi">
                             <div class="lg:border-b lg:border-[#f2f2f2] pb-[30px] flex-1">
                                 <h5 class="mb-[9px] text-[14px] lg:text-[20px] text-[#FF0000] font-bold"> 16. Hàng hóa
                                     kinh doanh không có đủ hóa đơn, chứng từ theo quy định pháp luật </h5>
@@ -444,12 +445,13 @@
                 </div>
             </div>
         </div>
-
+        <Alert v-if="this.msg != ''" :message=this.msg class="pr-10" @close="this.resetMsg()" />
     </div>
 </template>
 
 <script>
 import axios from 'axios';
+import Alert from './Alert.vue'
 export default {
     name: 'CustomerSearching',
     data() {
@@ -468,9 +470,13 @@ export default {
             deliveryCenters: [],
             packageInfo: [],
             districtSelectedId: 0,
+            msg:'',
+            isFound: false,
         }
     },
-
+    components: {
+        Alert,
+    },
     methods: {
         fetchData() {
             return new Promise(resolve => {
@@ -478,6 +484,32 @@ export default {
                     resolve('Dữ liệu từ server');
                 }, 2000); // Giả lập thời gian đợi 2 giây
             });
+        },
+        resetMsg() {
+            this.msg = '';
+        },
+        getStatusDetail(i) {
+            if (i == 1) {
+                return "Đơn hàng được ghi nhận tại điểm giao dịch ";
+            } else if (i == 2) {
+                return "Đơn hàng được vận chuyển khỏi điểm giao dịch nguồn";
+            } else if (i == 3) {
+                return "Đơn hàng đến điểm tập kết nguồn";
+            } else if (i == 4) {
+                return "Đơn hàng được vận chuyển tới điểm tập kết đích";
+            } else if (i == 5) {
+                return 'Đơn hàng đã đến điểm tập kết đích';
+            } else if (i == 6) {
+                return "Đơn hàng đã được vận chuyển tới điểm giao dịch đích";
+            } else if (i == 7) {
+                return "Đơn hàng đã đến điểm giao dịch nguồn";
+            } else if (i == 8) {
+                return "Đơn hàng đang được vận chuyển cho người nhận";
+            } else if (i == 9) {
+                return "Đơn hàng đã được chuyển thành công tới người nhận";
+            } else if (i == 10) {
+                return "Đơn hàng vận chuyển thất bại và được trả lại điểm giao dịch";
+            }
         },
 
         async getProvinces() {
@@ -519,7 +551,13 @@ export default {
             if (this.packageCode > 0) {
                 try {
                     const res = await axios.get(`/search/${this.packageCode}`, { withCredentials: true });
-                    this.packageInfo = res.data
+                    if (res.data) {
+                        this.packageInfo = res.data;
+                        this.isFound =  true;
+                    } else {
+                        this.isFound = false;
+                        this.msg = 'Mã đơn hàng không tồn tại, hãy thử lại!'
+                    }
                 } catch (error) {
                     console.log("get packageInfo error")
                 }

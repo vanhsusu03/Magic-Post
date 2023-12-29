@@ -2,7 +2,8 @@
     <div v-if="!this.createNew" class="mx-4">
         <div class="grid grid-cols-6 mx-4">
             <span class="col-start-1 col-end-5 max-w-fit">
-                <h1 class="flex font-semibold font-sans h-full items-center justify-center text-center lg:text-xl md:lg sm:text-base text-sm">
+                <h1
+                    class="flex font-semibold font-sans h-full items-center justify-center text-center lg:text-xl md:lg sm:text-base text-sm">
                     Danh sách điểm giao dịch toàn quốc
                 </h1>
             </span>
@@ -42,23 +43,24 @@
                         class="bg-green-500 text-white font-bold py-2 px-4 border text-center items-center md:text-base sm:text-sm text-xs">
                         Xóa</th>
                 </tr>
-                <tr v-for="deliveryCenter in deliveryCenters">
+                <tr v-for="deliveryCenter in displayedItemList">
                     <td class="py-2 px-4 border text-center items-center justify-center md:text-lg sm:text-base text-sm">{{
                         deliveryCenter.provinceMunicipalityId }}
                     </td>
                     <td class="py-2 px-4 border text-center items-center justify-center md:text-lg sm:text-base text-sm">{{
                         deliveryCenter.districtId }}</td>
                     <td class="py-2 px-4 border text-center items-center justify-center md:text-lg sm:text-base text-sm">
-                    <tr class="flex my-auto mx-auto text-center items-center justify-center md:text-base sm:text-sm text-xs"
-                        v-for="delivery_center in deliveryCenter.delivery_centers">
-                        <td class="py-4">{{ delivery_center.deliveryCenterId }}</td>
-                        <!-- <td>{{ whouse.address }}</td> -->
+                <tr class="flex my-auto mx-auto text-center items-center justify-center md:text-base sm:text-sm text-xs"
+                    v-for="delivery_center in deliveryCenter.delivery_centers">
+                    <td class="py-4">{{ delivery_center.deliveryCenterId }}</td>
+                    <!-- <td>{{ whouse.address }}</td> -->
 
-                    </tr>
-                    </td>
+                </tr>
+                </td>
                 <td class="py-4 px-4 border md:text-base sm:text-sm text-xs">
-                    <tr class="flex my-4 mx-auto text-center items-center justify-center md:text-base sm:text-sm text-xs" v-for="delivery_center in deliveryCenter.delivery_centers">{{ delivery_center.address
-                    }}</tr>
+                    <tr class="flex my-4 mx-auto text-center items-center justify-center md:text-base sm:text-sm text-xs"
+                        v-for="delivery_center in deliveryCenter.delivery_centers">{{ delivery_center.address
+                        }}</tr>
                 </td>
                 <td class="py-2 px-4 border">
                     <tr v-for="delivery_center in deliveryCenter.delivery_centers"
@@ -81,20 +83,20 @@
                     <tr v-for="delivery_center in deliveryCenter.delivery_centers">
                         <td class="flex my-4 mx-auto text-center items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg"
-                            class="w-8 h-8 cursor-pointer hover:opacity-30 hover:shadow-lg" width="800px" height="800px"
-                            viewBox="0 0 24 24" fill="none" @click="deleteDeliveryCenter(delivery_center)">
-                            <path d="M10 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M14 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M4 7H20" stroke="#000000" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="#000000"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#000000"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        </td>        
+                                class="w-8 h-8 cursor-pointer hover:opacity-30 hover:shadow-lg" width="800px" height="800px"
+                                viewBox="0 0 24 24" fill="none" @click="deleteDeliveryCenter(delivery_center)">
+                                <path d="M10 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M14 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M4 7H20" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                                <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10"
+                                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#000000"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </td>
                     </tr>
                 </td>
                 </tr>
@@ -148,12 +150,12 @@
                 <!-- Select province and display -->
                 <div id="province" class="w-2/5 common-shadow-input h-[43px] select2-stupid-at-home"
                     data-select2-id="select2-data-73-3wmt">
-                    <select id="office-province" name="province_id" v-model="provinceSelected.provinceMunicipalityId"
+                    <select id="office-province" name="province_id" v-model="provinceSelected"
                         @change="this.getAllDistrictsOfAProvince(); this.getAllWarehousesOfAProvince()" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
                             cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true"
                         data-select2-id="select2-data-office-province">
                         <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
-                        <option class="text-gray-900" v-for="province in provinces" :value="province.provinceMunicipalityId"
+                        <option class="text-gray-900" v-for="province in provinces" :value="province"
                             :key="province.provinceMunicipalityId">{{ province.provinceMunicipality }}</option>
                     </select>
                 </div>
@@ -166,11 +168,11 @@
 
                 <!-- Select district and display -->
                 <div id="district" class="common-shadow-input w-2/5 h-[43px] select2-stupid-at-home">
-                    <select id="slDistrict" name="district_id" v-model="districtSelected.districtId" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300s
+                    <select id="slDistrict" name="district_id" v-model="districtSelected" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300s
                             cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true">
                         <option class="text-gray-900" value="0">Quận/Huyện</option>
                         <option class="text-gray-900" v-if="districts && districts.length" v-for="district in districts"
-                            :value="district.districtId" :key="district.districtId">{{
+                            :value="district" :key="district.districtId">{{
                                 district.district }}</option>
                     </select>
                 </div>
@@ -182,11 +184,11 @@
 
                 <!-- Select warehouse and display -->
                 <div id="warehouse" class="common-shadow-input w-2/5 h-[43px] select2-stupid-at-home">
-                    <select id="slWarehouse" name="warehouse_id" v-model="warehouseSelected.warehouseId" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300s
+                    <select id="slWarehouse" name="warehouse_id" v-model="warehouseSelected" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 border-gray-300s
                             cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true">
                         <option class="text-gray-900" value="0">Điểm tập kết tương ứng</option>
                         <option class="text-gray-900" v-if="warehouses && warehouses.length" v-for="warehouse in warehouses"
-                            :value="warehouse.warehouseId" :key="warehouse.warehouseId">{{
+                            :value="warehouse" :key="warehouse.warehouseId">{{
                                 warehouse.address }}</option>
                     </select>
                 </div>
@@ -206,11 +208,13 @@
             </form>
         </div>
     </div>
+    <Alert v-if="this.msg != '' && !this.createNew" :message=this.msg class="pr-10" @close="this.resetMsg()" />
 </template>
 
 <script>
 import { mapMutations, mapState } from 'vuex';
 import axios from 'axios';
+import Alert from './Alert.vue'
 export default {
     name: 'DeliveryCenterManage',
     data() {
@@ -248,13 +252,21 @@ export default {
             itemsPerPage: 4,
             updating: false,
             deliverySelectedId: 0,
+            msg: '',
         }
+    },
+    components: {
+        Alert,
+
     },
     methods: {
         ...mapMutations(['scrollToTop', 'setLogged', 'setLeadership', 'setLeadershipAccessToken',
             'setLeadershipRefreshToken', 'setManagerDC', 'setDCManagerAccessToken', 'setDCManagerRefreshToken',
             'setManagerWH', 'setWHManagerAccessToken', 'setWHManagerRefreshToken', 'setTellerDC', 'setTellerDCAccessToken',
             'setTellerDCRefresToken', 'setStaffWH']),
+        resetMsg() {
+            this.msg = '';
+        },
         async getProvinces() {
             try {
                 const response = await axios.get('/provinces', { withCredentials: true });
@@ -267,13 +279,13 @@ export default {
             this.form.districtId = 0;
             this.form.warehouseId = 0;
             this.form.address = "";
-            this.getAllDistrictsOfAProvince();
-            this.getAllWarehousesOfAProvince();
             this.provinceSelected.provinceMunicipalityId = 0;
             this.provinceSelected.provinceMunicipality = '';
             this.districtSelected.districtSelectedId = 0;
             this.districtSelected.district = '';
             this.getProvinces();
+            this.getAllDistrictsOfAProvince();
+            this.getAllWarehousesOfAProvince();
         },
         async refreshToken() {
             let res = await axios.post('/refresh', {
@@ -296,8 +308,11 @@ export default {
                             "Authorization": `Bearer ${this.leadershipToken.accessToken}`
                         }
                     }, { withCredentials: true });
-                this.getAllDeliveryCenter();
-                this.createdANewDC();
+                if (res.data) {
+                    this.msg = "Tạo điểm giao dịch thành công!"
+                    this.getAllDeliveryCenter();
+                    this.createdANewDC();
+                }
             } catch (err) {
                 if (err.response && err.response.data.error === 'jwt expired') {
                     await this.refreshToken();
@@ -334,7 +349,11 @@ export default {
                         { withCredentials: true });
                     this.warehouses = res.data
 
-                } catch (error) {
+                } catch (err) {
+                    if(err.response.data.error == 'jwt expired') {
+                        await this.refreshToken();
+                        await this.getAllWarehousesOfAProvince();
+                    }
                     console.error('getDistrictofAProvince:', error.message);
                 }
             }
@@ -388,6 +407,7 @@ export default {
                 event.preventDefault();
             }
             else {
+                // alert(this.districtSelected.district + ', ' + this.provinceSelected.provinceMunicipality)
                 if (this.districtSelected.district != '' && this.provinceSelected.provinceMunicipality != '') {
                     this.form.address += ', ' + this.districtSelected.district + ', ' + this.provinceSelected.provinceMunicipality;
                 }
@@ -426,14 +446,30 @@ export default {
         async deleteDeliveryCenter(dc) {
             try {
                 let res = await axios.delete(`/deliveryCenters/${dc.deliveryCenterId}`, {
-                    headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}`}
+                    headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
                 }, { withCredentials: true })
                 this.getAllDeliveryCenter();
-            } catch (error) {
+            } catch (err) {
+                if (err.response.data.error == 'jwt expired') {
+                    await this.refreshToken();
+                    await this.deleteDeliveryCenter(dc);
+                }
                 console.log("delete Error");
             }
         },
+        async refreshToken() {
+            let res = await axios.post('/refresh', {
+                refreshToken: this.leadershipToken.refreshToken,
+                withCredentials: true
+            }, {
+                headers:
+                {
+                    'x_authorization': `${this.leadershipToken.accessToken}`,
+                }, withCredentials: true
+            });
 
+            this.setLeadershipAccessToken(res.data);
+        },
         goToPage(page) {
             if (page >= 1 && page <= this.totalPages) {
                 this.currentPage = page;
@@ -500,4 +536,5 @@ table {
     margin-top: 10px;
     margin-bottom: 10px;
     counter-reset: tableCount;
-} */</style>
+} */
+</style>

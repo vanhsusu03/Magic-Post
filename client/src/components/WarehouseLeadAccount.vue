@@ -3,7 +3,6 @@
         <div v-if="!this.createNew" class="w-11/12 h-10/12 mx-auto">
             <div class="w-10/12 grid grid-cols-6 mx-auto">
                 <span class="col-start-1 col-end-5 row-start-1 row-end-3 max-w-fit">
-                    <button class="bg-blue-300 p-4" @click="test()">test</button>
                     <h1 class="font-semibold py-2 mt-2 text-center lg:text-2xl md:text-xl sm:text-lg text-base">
                         Danh sách tài khoản nhân viên tại điểm tập kết
                     </h1>

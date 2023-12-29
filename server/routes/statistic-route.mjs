@@ -116,7 +116,7 @@ const router = Router()
 
 router.get('/statistic/:statusId/packages', StatisticController.getPackagesByStatusId)
 
-router.get('/statistic/deliveryCenters/:deliveryCenterId/:statusId/packages', isAuth, isDeliveryCenterManager, StatisticController.getPackagesByDelveryCenter)
+router.get('/statistic/deliveryCenters/:deliveryCenterId/:statusId/packages', isAuth, StatisticController.getPackagesByDelveryCenter)
 
 router.get('/statistic/warehouses/:warehouseId/:statusId/packages', isAuth, isWarehouseManager, StatisticController.getPackagesByWarehouse)
 

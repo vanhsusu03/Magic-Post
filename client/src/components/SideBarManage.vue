@@ -1,15 +1,15 @@
 <template>
-    <aside v-if="this.isExpand" class="bg-slate-50 z-20 w-64 h-full  dark:bg-gray-800 md:block flex-shrink-0 border-gray-200 border-r border-t border-b">
+    <aside v-if="this.isExpand"
+        class="bg-slate-50 z-20 w-64 h-full  dark:bg-gray-800 md:block flex-shrink-0 border-gray-200 border-r border-t border-b">
         <div class="py-8 text-gray-500 dark:text-gray-400">
-            <button @click="sidebarToggle()"
-            class="mx-6 cursor-pointer hover:bg-slate-200 transition-colors duration-150">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24" fill="none"
-                        class="w-10 h-10">
-                        <path d="M4 12H20M4 8H20M4 16H12" stroke="#000000" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-            </button><br>   
-                
+            <button @click="sidebarToggle()" class="mx-6 cursor-pointer hover:bg-slate-200 transition-colors duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24" fill="none"
+                    class="w-10 h-10">
+                    <path d="M4 12H20M4 8H20M4 16H12" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button><br>
+
             <a class="text-xl mx-6 font-bold font-sans text-gray-800 dark:text-gray-200" href="#">
                 Dash board
             </a>
@@ -134,7 +134,7 @@
                     </a>
                 </li>
 
-                <li class="relative px-6 py-3">
+                <li v-if="!this.teller_DC.username && !this.staff_WH.username" class="relative px-6 py-3">
                     <span v-show="selecteds[4]"
                         class="absolute inset-y-0 left-0 w-1 bg-cyan-400 rounded-tr-lg rounded-br-lg"
                         aria-hidden="true"></span>
@@ -184,17 +184,17 @@
         </div>
     </aside>
 
-    <aside v-else class="bg-slate-50 z-20 w-20 h-screen overflow-y-auto dark:bg-gray-800 md:block flex-shrink-0 border-gray-200 border-r border-t border-b">
+    <aside v-else
+        class="bg-slate-50 z-20 w-20 h-screen overflow-y-auto dark:bg-gray-800 md:block flex-shrink-0 border-gray-200 border-r border-t border-b">
         <div class="py-8 text-gray-500 dark:text-gray-400">
-            <button @click="sidebarToggle()"
-            class="mx-6 cursor-pointer hover:bg-slate-200 transition-colors duration-150">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24" fill="none"
-                        class="w-8 h-8">
-                        <path d="M4 12H20M4 8H20M4 16H12" stroke="#000000" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-            </button><br>   
-                
+            <button @click="sidebarToggle()" class="mx-6 cursor-pointer hover:bg-slate-200 transition-colors duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24" fill="none"
+                    class="w-8 h-8">
+                    <path d="M4 12H20M4 8H20M4 16H12" stroke="#000000" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button><br>
+
             <hr class="mt-4 mx-6">
             <ul class="mt-4">
                 <li class="relative px-6 py-3">
