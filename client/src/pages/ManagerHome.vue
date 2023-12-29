@@ -20,8 +20,10 @@
                     v-if="selecteds[6]"></PackageManage_DC>
                 <PackageManage_WH class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
                     v-if="selecteds[7]"></PackageManage_WH>
+                <WarehouseStatisticVue class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[4] && manager_WH"></WarehouseStatisticVue>
                 <DeliveryStatistic class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
-                    v-if="selecteds[4] && teller_DC.username">Content for
+                    v-if="selecteds[4] && manager_DC">Content for
                     Thống kê</DeliveryStatistic>
                 <LeadershipStatistic class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
                     v-if="selecteds[4] && leadership" />
@@ -44,6 +46,8 @@
                     v-if="selecteds[6]"></PackageManage_DC>
                 <PackageManage_WH class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
                     v-if="selecteds[7]"></PackageManage_WH>
+                <WarehouseStatisticVue class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[4] && manager_WH"></WarehouseStatisticVue>
                 <DeliveryStatistic class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
                     v-if="selecteds[4] && manager_DC">Content for
                     Thống kê</DeliveryStatistic>
@@ -68,6 +72,7 @@ import DeliveryCenterManagerManageAccount from '@/components/DeliveryCenterLeadA
 import PackageManage_DC from '@/components/PackageManage_DC.vue';
 import PackageManage_WH from '@/components/PackageManage_WH.vue';
 import DeliveryStatistic from '@/components/DeliveryStatistic.vue';
+import WarehouseStatisticVue from '@/components/WarehouseStatistic.vue';
 import Article from '@/pages/Article.vue'
 import PersonalInfor from '@/pages/PersonalInfor.vue';
 import LeadershipStatistic from '@/components/LeadershipStatistic.vue'
@@ -92,6 +97,7 @@ export default {
         DeliveryStatistic,
         Article,
         PersonalInfor,
+        WarehouseStatisticVue,
         LeadershipStatistic
     },
     methods: {
