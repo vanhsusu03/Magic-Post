@@ -9,10 +9,10 @@
                 </span>
                 <span class="col-start-5 col-end-7">
                     <span class="">
-                    <button v-on:click="this.createPackageBill()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-2 
+                        <button v-on:click="this.createPackageBill()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-2 
                     mx-4 md:text-base sm:text-sm text-xs rounded btn cursor-pointer shadow-lg">
-                        Ghi nhận hàng mới
-                    </button>
+                            Ghi nhận hàng mới
+                        </button>
                     </span>
                     <span class="">
                         <button v-on:click="this.fetchSendPackagesData()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-2 
@@ -21,7 +21,7 @@
                         </button>
                     </span>
                 </span>
-                
+
             </div>
 
             <hr class="my-2 mx-auto ">
@@ -56,13 +56,17 @@
                     </tr>
 
                     <tr v-for="packages in displayedItemList">
-                        <td class="py-2 px-4 border text-center items-center justify-center md:text-base sm:text-sm text-xs">{{
-                            packages.packageId }}</td>
-                        <td class="py-2 px-4 border text-center items-center justify-center md:text-base sm:text-sm text-xs truncate">
-                            <tr >{{ packages.senderName }}</tr>
-                            <tr>{{ packages.senderPhone }}</tr>
+                        <td
+                            class="py-2 px-4 border text-center items-center justify-center md:text-base sm:text-sm text-xs">
+                            {{
+                                packages.packageId }}</td>
+                        <td
+                            class="py-2 px-4 border text-center items-center justify-center md:text-base sm:text-sm text-xs truncate">
+                    <tr>{{ packages.senderName }}</tr>
+                    <tr>{{ packages.senderPhone }}</tr>
                     </td>
-                    <td class="py-2 px-4 border text-center items-center justify-center md:text-base sm:text-sm text-xs truncate">
+                    <td
+                        class="py-2 px-4 border text-center items-center justify-center md:text-base sm:text-sm text-xs truncate">
                         <tr>{{ packages.receiverName }}</tr>
                         <tr>{{ packages.receiverPhone }}</tr>
                     </td>
@@ -79,16 +83,16 @@
                     </td>
                     <td class="py-2 px-4 border items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg"
-                            class="w-8 h-8 cursor-pointer hover:opacity-30 hover:shadow-lg mx-auto" width="800px" height="800px"
-                            viewBox="0 0 24 24" fill="none" @click="deletePackage(packages)">
+                            class="w-8 h-8 cursor-pointer hover:opacity-30 hover:shadow-lg mx-auto" width="800px"
+                            height="800px" viewBox="0 0 24 24" fill="none" @click="deletePackage(packages)">
                             <path d="M10 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" />
                             <path d="M14 12V17" stroke="#000000" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" />
                             <path d="M4 7H20" stroke="#000000" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round" />
-                            <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10"
-                                stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10" stroke="#000000"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             <path d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z" stroke="#000000"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
@@ -135,11 +139,11 @@
                     <h1 class="text-lg"><strong>Thông tin phía gửi:</strong></h1><br>
                     <h1><strong>Nơi gửi:</strong></h1><br>
                     <label for="province" class="info">Tỉnh/Thành phố: <strong>
-                        {{this.tellerDC[0].delivery_center.district.district }}
-                        -{{this.tellerDC[0].delivery_center.district.province_municipality.provinceMunicipality}}
+                            {{ this.tellerDC[0].delivery_center.district.district }}
+                            -{{ this.tellerDC[0].delivery_center.district.province_municipality.provinceMunicipality }}
                         </strong>
                     </label><br>
-                    
+
                     <label v-if="this.deliveryCenter[0]" for="delivCent" class="info">Địa chỉ điểm giao dịch: <strong>{{
                         this.deliveryCenter[0].address }}</strong></label>
                     <br>
@@ -226,13 +230,13 @@
                     <label for="province" class="info">Tỉnh/Thành phố:</label>
                     <div id="province" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
                         data-select2-id="select2-data-73-3wmt">
-                        <select id="office-province" name="province_id" v-model="provinceSelectedId"
+                        <select id="office-province" name="province_id" v-model="provinceSelected"
                             @change="this.solveWhenProvinceChange()" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
-                                md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1" aria-hidden="true"
-                            data-select2-id="select2-data-office-province">
+                                md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1"
+                            aria-hidden="true" data-select2-id="select2-data-office-province">
                             <option class="text-gray-900" :value="0">Tỉnh/ Thành phố</option>
-                            <option class="text-gray-900" v-for="province in provinces"
-                                :value="province.provinceMunicipalityId" :key="province.provinceMunicipalityId">{{
+                            <option class="text-gray-900" v-for="province in provinces" :value="province"
+                                :key="province.provinceMunicipalityId">{{
                                     province.provinceMunicipality }}</option>
                         </select>
                     </div>
@@ -242,12 +246,12 @@
                     <label for="district" class="info">Quận/Huyện:</label><br>
                     <div id="district" class="w-2/4 common-shadow-input h-[43px] select2-stupid-at-home"
                         data-select2-id="select2-data-73-3wmt">
-                        <select id="district" name="district" v-model="districtSelectedId"
+                        <select id="district" name="district" v-model="districtSelected"
                             @change="this.getTargetDeliveryCenter()" class="search-select w-full h-full select2-hidden-accessible bg-gray-100 rounded-b-lg border-gray-300
                                     md:text-base sm:text-sm text-xs cursor-pointer hover:shadow-lg" tabindex="-1"
                             aria-hidden="true" data-select2-id="select2-data-office-province">
                             <option class="text-gray-900" :value="0">Quận/Huyện</option>
-                            <option class="text-gray-900" v-for="district in districts" :value="district.districtId"
+                            <option class="text-gray-900" v-for="district in districts" :value="district"
                                 :key="district.districtId">{{
                                     district.district }}</option>
                         </select>
@@ -359,6 +363,14 @@ export default {
                 districtError: [],
                 deliveryCenterError: [],
             },
+            provinceSelected: {
+                provinceMunicipalityId: 0,
+                provinceMunicipality: '',
+            },
+            districtSelected: {
+                districtId: 0,
+                district: '',
+            },
             provinceSelectedId: 0,
             districtSelectedId: 0,
             deliverycenterSelectedId: 0,
@@ -391,7 +403,7 @@ export default {
                     this.form.codAmount += 0.28 * 400 + 0.23 * (dist - 400);
                 } else if (dist <= 1600) {
                     this.form.codAmount += 0.28 * 400 + 0.23 * 400 + 0.17 * (dist - 800);
-                } else if(dist <= 3500) {
+                } else if (dist <= 3500) {
                     this.form.codAmount += 0.28 * 400 + 0.23 * 400 + 0.17 * 800 + 0.2267 * (dist - 1600);
                 } else {
                     this.form.codAmount += 0.28 * 400 + 0.23 * 400 + 0.17 * 800 + 0.2267 * 1600;
@@ -524,9 +536,9 @@ export default {
         },
         async getAllDistrictsOfAProvince() {
             this.districts = null;
-            if (this.provinceSelectedId > 0) {
+            if (this.provinceSelected.provinceMunicipalityId > 0) {
                 try {
-                    const res = await axios.get(`/provinces/${this.provinceSelectedId}/districts`, { withCredentials: true });
+                    const res = await axios.get(`/provinces/${this.provinceSelected.provinceMunicipalityId}/districts`, { withCredentials: true });
                     this.districts = res.data;
                 } catch (error) {
                     console.error('getDistrictofAProvince:', error.message);
@@ -549,9 +561,9 @@ export default {
 
         async getTargetDeliveryCenter() {
             this.deliveryCenters = null;
-            if (this.districtSelectedId > 0) {
+            if (this.districtSelected.districtId > 0) {
                 try {
-                    const res = await axios.get(`/deliveryCenters/${this.districtSelectedId}`, {
+                    const res = await axios.get(`/deliveryCenters/${this.districtSelected.districtId}`, {
                         headers: { "Authorization": `Bearer ${this.tellerDCToken.accessToken}` }
                     }, { withCredentials: true });
                     this.deliveryCenters = res.data;
@@ -564,6 +576,10 @@ export default {
         },
         createPackageBill() {
             this.resetError();
+            this.provinceSelected.provinceMunicipalityId = 0;
+            this.provinceSelected.provinceMunicipality = '';
+            this.districtSelected.districtId = 0;
+            this.districtSelected.district = '';
             this.provinceSelectedId = 0;
             this.districtSelectedId = 0;
             this.deliverycenterSelectedId = 0;
@@ -574,13 +590,13 @@ export default {
             this.form.cost = 0;
             this.form.codAmount = 0;
             this.form.senderAddress = '',
-            this.form.receiverAddress = '',
-            this.form.senderName = '',
-            this.form.receiverName = '',
-            this.form.senderPhone = '',
-            this.form.receiverPhone = '',
-            this.form.location = '',
-            this.districts = null;
+                this.form.receiverAddress = '',
+                this.form.senderName = '',
+                this.form.receiverName = '',
+                this.form.senderPhone = '',
+                this.form.receiverPhone = '',
+                this.form.location = '',
+                this.districts = null;
             this.wareHouses = null;
             this.deliveryCenters = null;
             this.createNew = !this.createNew;
@@ -601,10 +617,10 @@ export default {
         validateAndPreSubmitCreatePackage() {
             this.resetError();
 
-            if (this.provinceSelectedId == 0) {
+            if (this.provinceSelected.provinceMunicipalityId == 0) {
                 this.createPackageError.provinceError.push("Hãy chọn Tỉnh/Thành phố nơi người nhận!");
             }
-            if (this.districtSelectedId == 0) {
+            if (this.districtSelected.districtId== 0) {
                 this.createPackageError.districtError.push("Hãy chọn Quận/Huyện nơi người nhận!");
             }
 
@@ -638,6 +654,8 @@ export default {
 
             if (!this.form.receiverAddress) {
                 this.createPackageError.receiverAddressError.push("Hãy nhập địa chỉ người nhận!")
+            } else {
+                this.form.receiverAddress += ', ' + this.districtSelected.district + ', ' + this.provinceSelected.provinceMunicipality;
             }
 
             //phone 
@@ -720,10 +738,8 @@ export default {
         this.getDeliveryCenterHere();
         this.fetchSendPackagesData();
     }
-    
+
 }
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

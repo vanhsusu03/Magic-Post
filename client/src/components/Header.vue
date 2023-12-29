@@ -112,6 +112,21 @@
                                     tabindex="-1" id="menu-item-3">
                                     Liên hệ
                                 </RouterLink>
+                                <RouterLink v-if="!this.isLogin" to="/login" @click="handleDropdown(), scrollToTop()"
+                                    class="text-gray-700 block px-4 py-2 text-sm pr-4 pl-3 lg:p-0" role="menuitem"
+                                    tabindex="-1" id="menu-item-3">
+                                    Đăng nhập
+                                </RouterLink>
+                                <RouterLink v-if="this.isLogin" to="/login" @click="handleDropdown(), scrollToTop()"
+                                    class="text-gray-700 block px-4 py-2 text-sm pr-4 pl-3 lg:p-0" role="menuitem"
+                                    tabindex="-1" id="menu-item-3">
+                                    Quản lý
+                                </RouterLink>
+                                <RouterLink v-if="this.isLogin" to="/" @click="handleDropdown(), scrollToTop(), handleLogout()"
+                                    class="text-gray-700 block px-4 py-2 text-sm pr-4 pl-3 lg:p-0" role="menuitem"
+                                    tabindex="-1" id="menu-item-3">
+                                    Đăng xuất
+                                </RouterLink>
                             </div>
                         </div>
                     </div>
