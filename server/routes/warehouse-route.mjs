@@ -175,7 +175,7 @@ router.put('/warehouses/:warehouseId', isAuth, isLeadership, WarehouseController
  */
 router.delete('/warehouses/:warehouseId', isAuth, isLeadership, WarehouseController.removeAWarehouse)
 
-router.get('/warehouses/:provinceId', isAuth, WarehouseController.getWarehousesByProvinces)
+router.get('/warehouses/:provinceId', WarehouseController.getWarehousesByProvinces)
 
 router.get('/warehouse/deliverycenter/:deliveryCenterId', isAuth, WarehouseController.getWarehouseofADeliveryCenter)
 

@@ -4,7 +4,7 @@
             <SideBarManage @childEvent="getSidebarExpand" class="col-start-1 bg-slate-50 " :selecteds="selecteds" @update:selecteds="updateSelecteds">
             </SideBarManage>
             <div v-if="this.sidebarExpand" class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50">
-                <PackageBill v-if="selecteds[0]" :teller=this.test :form=this.formBill>Content for Thống kêasd</PackageBill>
+                <div v-if="selecteds[0]"></div>
                 <LeaderManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && leadership"></LeaderManageAccount>
                 <WarehouseManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && manager_WH"></WarehouseManagerManageAccount>
                 <DeliveryCenterManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && manager_DC"></DeliveryCenterManagerManageAccount>
@@ -16,7 +16,7 @@
                 <div class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[5]">Content for Thống kê</div>
             </div>
             <div v-else class="col-start-2 col-end-13 border-t border-l rounded-lg bg-slate-50">
-                <PackageBill v-if="selecteds[0]">Content for Thống kêasd</PackageBill>
+                <div v-if="selecteds[0]"></div>
                 <LeaderManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && leadership"></LeaderManageAccount>
                 <WarehouseManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && manager_WH"></WarehouseManagerManageAccount>
                 <DeliveryCenterManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && manager_DC"></DeliveryCenterManagerManageAccount>
@@ -43,6 +43,7 @@ import DeliveryCenterManagerManageAccount from '@/components/DeliveryCenterLeadA
 import PackageManage_DC from '@/components/PackageManage_DC.vue';
 import PackageBill from '@/components/PackageBill.vue'
 import PackageManage_WH from '@/components/PackageManage_WH.vue';
+import Statistic from '@/components/Statistic.vue';
 export default {
     name: 'ManagerHome',
     data() {
@@ -61,6 +62,7 @@ export default {
         PackageManage_DC,
         PackageBill,
         PackageManage_WH,
+        Statistic,
     },
     methods: {
         updateSelecteds(newSelecteds) {
