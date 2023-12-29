@@ -76,7 +76,10 @@
                         {{ packages.deliveryCenterReceiveId }}
                     </td>
                     <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                        packages.status_details[0].time }}</td>
+                        new Date(packages.status_details[0].time).toLocaleString("en-US", {
+                            timeZone:
+                                Intl.DateTimeFormat().resolvedOptions().timeZone
+                        }) }}</td>
                     <td v-if="packages.status_details[0].package_status.packageStatus == 'Accept'"
                         class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate"> Đã
                         nhận từ khách hàng
@@ -620,7 +623,7 @@ export default {
             if (this.provinceSelected.provinceMunicipalityId == 0) {
                 this.createPackageError.provinceError.push("Hãy chọn Tỉnh/Thành phố nơi người nhận!");
             }
-            if (this.districtSelected.districtId== 0) {
+            if (this.districtSelected.districtId == 0) {
                 this.createPackageError.districtError.push("Hãy chọn Quận/Huyện nơi người nhận!");
             }
 
