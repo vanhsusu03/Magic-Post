@@ -17,7 +17,7 @@
                         Tải lại
                     </button>
                 </span>
-        
+
             </div>
 
             <hr class="my-4 mx-auto border-gray-200">
@@ -64,7 +64,10 @@
                         {{ packages.deliveryCenterReceiveId }}
                     </td>
                     <td class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">{{
-                        packages.status_details[1].time }}</td>
+                        new Date(packages.status_details[1].time).toLocaleString("en-US", {
+                            timeZone:
+                                Intl.DateTimeFormat().resolvedOptions().timeZone
+                        }) }}</td>
                     <td v-if="packages.status_details[1].package_status.packageStatus == 'Transport departure from Delivery center 1'"
                         class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate"> Đã
                         gửi tới điểm tập kết nguồn
@@ -164,7 +167,10 @@
                             </td>
                             <td
                                 class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
-                                {{ packages.status_details[0].time }}
+                                {{ new Date(packages.status_details[0].time).toLocaleString("en-US", {
+                                    timeZone:
+                                        Intl.DateTimeFormat().resolvedOptions().timeZone
+                                }) }}
                             </td>
                             <td v-if="packages.status_details[0].package_status.packageStatus == 'Accept'"
                                 class="py-2 px-4 border items-center justify-center md:text-base sm:text-sm text-xs truncate">
@@ -201,7 +207,7 @@
                 </div>
             </div>
         </div>
-        <!-- <Alert v-if="this.msg != ''" :message=this.msg class="pr-10" @close="this.resetMsg()" /> -->
+        <Alert v-if="this.msg != ''" :message=this.msg class="pr-10" @close="this.resetMsg()" />
     </div>
 </template>
 

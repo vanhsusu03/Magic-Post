@@ -2,7 +2,8 @@
     <div v-if="!this.createNew" class="">
         <div class="grid grid-cols-6 mx-4">
             <span class="col-start-1 col-end-6 max-w-fit">
-                <h1 class="flex font-semibold font-sans h-full items-center justify-center text-center lg:text-xl md:lg sm:text-base text-sm">
+                <h1
+                    class="flex font-semibold font-sans h-full items-center justify-center text-center lg:text-xl md:lg sm:text-base text-sm">
                     Danh sách điểm tập kết toàn quốc
                 </h1>
             </span>
@@ -36,7 +37,8 @@
                     <td class="py-2 px-4 border text-center md:text-base sm:text-sm text-xs">{{
                         warehouse.provinceMunicipality }}</td>
                     <td class="py-2 px-4 border text-center md:text-lg sm:text-base text-sm">
-                <tr class="flex my-auto mx-auto text-center items-center justify-center md:text-base sm:text-sm text-xs" v-for="whouse in warehouse.warehouses">
+                <tr class="flex my-auto mx-auto text-center items-center justify-center md:text-base sm:text-sm text-xs"
+                    v-for="whouse in warehouse.warehouses">
                     <td class="py-6 px-auto">{{ whouse.warehouseId }}</td>
                     <!-- <td>{{ whouse.address }}</td> -->
                 </tr>
@@ -52,7 +54,8 @@
                     </tr>
                 </td> -->
                 <td class="py-4 px-4 border md:text-lg sm:text-base text-sm">
-                    <tr class="flex py-4 my-4 mx-auto text-center items-center justify-center md:text-base sm:text-sm text-xs truncate" v-for="whouse in warehouse.warehouses">
+                    <tr class="flex py-4 my-4 mx-auto text-center items-center justify-center md:text-base sm:text-sm text-xs truncate"
+                        v-for="whouse in warehouse.warehouses">
                         {{ whouse.address }}
                         <div v-if="isSmallScreen && whouse.warehouseId === hoveredRowId" class="tooltip">
                             {{ hoveredText }}
@@ -181,11 +184,13 @@
             </form>
         </div>
     </div>
+    <Alert v-if="this.msg != '' && !this.createNew" :message=this.msg class="pr-10" @close="this.resetMsg()" />
 </template>
 
 <script>
 import { mapMutations, mapState } from 'vuex';
 import axios from 'axios';
+import Alert from './Alert.vue'
 export default {
     name: 'WareHouseManage',
     data() {
@@ -217,6 +222,7 @@ export default {
             count: 1,
             itemsPerPage: 4, // Adjust the number of items per page
             currentPage: 1,
+            msg: '',
         }
     },
     methods: {
@@ -224,6 +230,9 @@ export default {
             'setLeadershipRefreshToken', 'setManagerDC', 'setDCManagerAccessToken', 'setDCManagerRefreshToken',
             'setManagerWH', 'setWHManagerAccessToken', 'setWHManagerRefreshToken', 'setTellerDC', 'setTellerDCAccessToken',
             'setTellerDCRefresToken', 'setStaffWH']),
+        resetMsg() {
+            this.msg = '';
+        },
         setHoveredText(text, rowId, event) {
             this.hoveredText = text;
             this.hoveredRowId = rowId;
@@ -276,6 +285,7 @@ export default {
                     },
                     withCredentials: true
                 });
+                this.msg = 'Tạo điểm tập kết thành công!'
                 this.getAllWarehouse();
                 this.createdANewWH();
             } catch (err) {
@@ -372,6 +382,7 @@ export default {
                     headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
                 }, { withCredentials: true });
                 this.getAllWarehouse();
+                this.msg = 'Cập nhật thành công!'
                 this.createdANewWH();
             } catch (err) {
                 if (err.response && err.response.data.error === 'jwt expired') {
@@ -390,6 +401,7 @@ export default {
                 let res = await axios.delete(`/warehouses/${whouse.warehouseId}`, {
                     headers: { "Authorization": `Bearer ${this.leadershipToken.accessToken}` }
                 }, { withCredentials: true })
+                this.msg = 'Xóa thành công!'
                 this.getAllWarehouse();
             } catch (error) {
                 console.log("delete Error");

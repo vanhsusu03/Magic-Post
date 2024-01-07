@@ -7,6 +7,11 @@
                         Danh sách vận chuyển thành công
                     </h1>
                 </span>
+                <span class="col-start-1 col-end-5 py-2">
+                    <h1 class="inline-flex font-semibold lg:text-xl md:text-lg sm:text-base text-sm">
+                        Tổng số đơn hàng chuyển thành công:    <strong>{{ this.readyToSendPkgs.length }}</strong>
+                    </h1>
+                </span>
             </div>
 
             <hr class="my-2 mx-auto">

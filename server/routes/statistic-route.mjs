@@ -115,10 +115,15 @@ const router = Router()
 //  */
 // router.get('/statistic/:deliveryCenterId/:type/:day', StatisticController.getByDeliveryCenterDay)
 
-router.get('/statistic/:statusId/packages', isAuth, isTeller, StatisticController.getPackagesByStatusId)
+router.get('/statistic/:statusId/packages', isAuth, StatisticController.getPackagesByStatusId)
 
-router.get('/statistic/deliveryCenters/:deliveryCenterId/:statusId/packages', isAuth, permit([3, 2]), StatisticController.getPackagesByDelveryCenter)
+router.get('/statistic/deliveryCenters/:deliveryCenterId/:statusId/packages', isAuth, StatisticController.getPackagesByDelveryCenter)
 
-router.get('/statistic/warehouses/:warehouseId/:statusId/packages', isAuth, permit([5, 2]), StatisticController.getPackagesByWarehouse)
+router.get('/statistic/warehouses/:warehouseId/:statusId/packages', isAuth, StatisticController.getPackagesByWarehouse)
+
+// router.get('/statistic/deliveryCenters/:deliveryCenterId/:statusId/packages', isAuth, permit([3, 2]), StatisticController.getPackagesByDelveryCenter)
+
+// router.get('/statistic/warehouses/:warehouseId/:statusId/packages', isAuth, permit([5, 2]), StatisticController.getPackagesByWarehouse)
+
 
 export default router

@@ -1,5 +1,5 @@
 <template>
-    <div class="h-10/12 w-10/12" v-if="staff_WH.username">
+    <div class="h-10/12 w-10/12 stf" v-if="staff_WH.username">
         <div class="w-8/12 grid grid-cols-4 mx-auto">
             <span class="col-span-3 max-w-fit">
                 <h1 class="font-semibold py-4 text-center lg:text-xl md:text-lg sm:text-base text-sm">
@@ -81,4 +81,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.stf{
+    margin-bottom: 200px
+}
+</style>

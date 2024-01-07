@@ -1,33 +1,62 @@
 <template>
     <div v-if="isLogin">
-        <div class="grid grid-cols-12" >
-            <SideBarManage @childEvent="getSidebarExpand" class="col-start-1 bg-slate-50 " :selecteds="selecteds" @update:selecteds="updateSelecteds">
+        <div class="grid grid-cols-12">
+            <SideBarManage @childEvent="getSidebarExpand" class="col-start-1 bg-slate-50 " :selecteds="selecteds"
+                @update:selecteds="updateSelecteds">
             </SideBarManage>
             <div v-if="this.sidebarExpand" class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50">
-                <PackageBill v-if="selecteds[0]" :teller=this.test :form=this.formBill>Content for Thống kêasd</PackageBill>
-                <LeaderManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && leadership"></LeaderManageAccount>
-                <WarehouseManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && manager_WH"></WarehouseManagerManageAccount>
-                <DeliveryCenterManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && manager_DC"></DeliveryCenterManagerManageAccount>
-                <DeliveryCenterManage class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[2]"></DeliveryCenterManage>
-                <WareHouseManage class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[3]"></WareHouseManage>
-                <PackageManage_DC class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[6]"></PackageManage_DC>
-                <PackageManage_WH class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[7]"></PackageManage_WH>
-                <div class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[4]">Content for Thống kê</div>
-                <div class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[5]">Content for Thống kê</div>
+                <Article v-if="selecteds[0]"></Article>
+                <LeaderManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[1] && leadership"></LeaderManageAccount>
+                <WarehouseManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[1] && manager_WH"></WarehouseManagerManageAccount>
+                <DeliveryCenterManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[1] && manager_DC"></DeliveryCenterManagerManageAccount>
+                <DeliveryCenterManage class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[2]"></DeliveryCenterManage>
+                <WareHouseManage class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[3]"></WareHouseManage>
+                <PackageManage_DC class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[6]"></PackageManage_DC>
+                <PackageManage_WH class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[7]"></PackageManage_WH>
+                <WarehouseStatisticVue class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[4] && manager_WH"></WarehouseStatisticVue>
+                <DeliveryStatistic class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[4] && manager_DC">Content for
+                    Thống kê</DeliveryStatistic>
+                <LeadershipStatistic class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[4] && leadership" />
+                <PersonalInfor class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[5]">
+                </PersonalInfor>
             </div>
             <div v-else class="col-start-2 col-end-13 border-t border-l rounded-lg bg-slate-50">
-                <PackageBill v-if="selecteds[0]">Content for Thống kêasd</PackageBill>
-                <LeaderManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && leadership"></LeaderManageAccount>
-                <WarehouseManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && manager_WH"></WarehouseManagerManageAccount>
-                <DeliveryCenterManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[1] && manager_DC"></DeliveryCenterManagerManageAccount>
-                <DeliveryCenterManage class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[2]"></DeliveryCenterManage>
-                <WareHouseManage class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[3]"></WareHouseManage>
-                <PackageManage_DC class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[6]"></PackageManage_DC>
-                <PackageManage_WH class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[7]"></PackageManage_WH>
-                <div class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[4]">Content for Thống kê</div>
-                <div class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[5]">Content for Thống kê</div>
+                <Article v-if="selecteds[0]"></Article>
+                <LeaderManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[1] && leadership"></LeaderManageAccount>
+                <WarehouseManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[1] && manager_WH"></WarehouseManagerManageAccount>
+                <DeliveryCenterManagerManageAccount class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[1] && manager_DC"></DeliveryCenterManagerManageAccount>
+                <DeliveryCenterManage class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[2]"></DeliveryCenterManage>
+                <WareHouseManage class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[3]"></WareHouseManage>
+                <PackageManage_DC class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[6]"></PackageManage_DC>
+                <PackageManage_WH class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[7]"></PackageManage_WH>
+                <WarehouseStatisticVue class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[4] && manager_WH"></WarehouseStatisticVue>
+                <DeliveryStatistic class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[4] && manager_DC">Content for
+                    Thống kê</DeliveryStatistic>
+                <LeadershipStatistic class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50"
+                    v-if="selecteds[4] && leadership" />
+                <PersonalInfor class="col-start-3 col-end-13 border-t border-l rounded-lg bg-slate-50" v-if="selecteds[5]">
+                </PersonalInfor>
             </div>
-            
+
         </div>
     </div>
 </template>
@@ -41,8 +70,12 @@ import { mapState } from 'vuex';
 import WarehouseManagerManageAccount from '@/components/WarehouseLeadAccount.vue';
 import DeliveryCenterManagerManageAccount from '@/components/DeliveryCenterLeadAccount.vue';
 import PackageManage_DC from '@/components/PackageManage_DC.vue';
-import PackageBill from '@/components/PackageBill.vue'
 import PackageManage_WH from '@/components/PackageManage_WH.vue';
+import DeliveryStatistic from '@/components/DeliveryStatistic.vue';
+import WarehouseStatisticVue from '@/components/WarehouseStatistic.vue';
+import Article from '@/pages/Article.vue'
+import PersonalInfor from '@/pages/PersonalInfor.vue';
+import LeadershipStatistic from '@/components/LeadershipStatistic.vue'
 export default {
     name: 'ManagerHome',
     data() {
@@ -59,8 +92,13 @@ export default {
         WarehouseManagerManageAccount,
         DeliveryCenterManagerManageAccount,
         PackageManage_DC,
-        PackageBill,
         PackageManage_WH,
+        DeliveryStatistic,
+        DeliveryStatistic,
+        Article,
+        PersonalInfor,
+        WarehouseStatisticVue,
+        LeadershipStatistic
     },
     methods: {
         updateSelecteds(newSelecteds) {
@@ -72,7 +110,7 @@ export default {
             this.sidebarExpand = mss
             this.formBill = this.form;
         },
-    
+
     },
     computed: {
         ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH', 'teller_DC']),

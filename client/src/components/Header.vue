@@ -3,8 +3,7 @@
         <nav class="flex border-gray-300 border-b bg-slate-50 px-2 lg:px-6 py-0 mb-2">
             <div class="flex">
                 <RouterLink to="/" @click="scrollToTop()" class="flex p-2 items-center mx-auto">
-                    <img src="../assets/img/logo.png" class="h-8 sm:h-9 md:h-9 lg:h-16"
-                        alt="MagicPost Logo" />
+                    <img src="../assets/img/logo.png" class="h-8 sm:h-9 md:h-9 lg:h-16" alt="MagicPost Logo" />
                 </RouterLink>
             </div>
             <div class="flex justify-between items-center mx-auto w-full max-w-screen-2xl">
@@ -51,10 +50,9 @@
 
                         </svg>
                     </RouterLink>
-                    <RouterLink to="" href="#" class="hover:opacity-30 lg:p-2 px-6 py-2">
-                        <svg class="w-10 h-10" 
-                        xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
-                            fill="none">
+                    <RouterLink @click="this.handleLogout()" to="" href="#" class="hover:opacity-30 lg:p-2 px-6 py-2">
+                        <svg class="w-10 h-10" xmlns="http://www.w3.org/2000/svg" width="800px" height="800px"
+                            viewBox="0 0 24 24" fill="none">
 
                             <g id="SVGRepo_bgCarrier" stroke-width="0" />
 
@@ -114,6 +112,21 @@
                                     tabindex="-1" id="menu-item-3">
                                     Liên hệ
                                 </RouterLink>
+                                <RouterLink v-if="!this.isLogin" to="/login" @click="handleDropdown(), scrollToTop()"
+                                    class="text-gray-700 block px-4 py-2 text-sm pr-4 pl-3 lg:p-0" role="menuitem"
+                                    tabindex="-1" id="menu-item-3">
+                                    Đăng nhập
+                                </RouterLink>
+                                <RouterLink v-if="this.isLogin" to="/login" @click="handleDropdown(), scrollToTop()"
+                                    class="text-gray-700 block px-4 py-2 text-sm pr-4 pl-3 lg:p-0" role="menuitem"
+                                    tabindex="-1" id="menu-item-3">
+                                    Quản lý
+                                </RouterLink>
+                                <RouterLink v-if="this.isLogin" to="/" @click="handleDropdown(), scrollToTop(), handleLogout()"
+                                    class="text-gray-700 block px-4 py-2 text-sm pr-4 pl-3 lg:p-0" role="menuitem"
+                                    tabindex="-1" id="menu-item-3">
+                                    Đăng xuất
+                                </RouterLink>
                             </div>
                         </div>
                     </div>
@@ -166,8 +179,9 @@
 <script>
 // import axios from 'axios';
 // import { mapMutations, mapState } from 'vuex';
+import axios from "axios";
 import "../assets/general_css/style.css";
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
 
 export default {
     // eslint-disable-next-line vue/multi-word-component-names
@@ -182,7 +196,10 @@ export default {
 
     },
     methods: {
-        // ...mapMutations(['setStudent', 'setLogged', 'setAdmin']),
+        ...mapMutations(['scrollToTop', 'setLogged', 'setLeadership', 'setLeadershipAccessToken',
+            'setLeadershipRefreshToken', 'setManagerDC', 'setDCManagerAccessToken', 'setDCManagerRefreshToken',
+            'setManagerWH', 'setWHManagerAccessToken', 'setWHManagerRefreshToken', 'setTellerDC', 'setTellerDCAccessToken',
+            'setTellerDCRefreshToken', 'setStaffWH', 'setStaffWHAccessToken', 'setStaffWHRefreshToken']),
 
         scrollToTop() {
             window.scrollTo(0, 0);
@@ -190,6 +207,30 @@ export default {
 
         handleDropdown() {
             this.openDropdown = !this.openDropdown;
+        },
+
+        async handleLogout() {
+            let res;
+            if (this.leadership) {
+                res = await axios.post('/logout', { accountId: this.leadership.accountId }, { withCredentials: true });
+                this.setLeadership(null);
+            } else if (this.manager_DC) {
+                res = await axios.post('/logout', { accountId: this.manager_DC.accountId }, { withCredentials: true });
+                this.setManagerDC(null);
+            } else if (this.manager_WH) {
+                res = await axios.post('/logout', { accountId: this.manager_WH.accountId }, { withCredentials: true });
+                this.setManagerWH(null)
+            } else if (this.teller_DC.accountId) {
+                res = await axios.post('/logout', { accountId: this.teller_DC.accountId }, { withCredentials: true });
+                this.setTellerDC([])
+            } else if (this.staff_WH.accountId) {
+                res = await axios.post('/logout', { accountId: this.staff_WH.accountId }, { withCredentials: true });
+                this.setStaffWH([])
+            }
+            if (res.data) {
+                this.setLogged(false);
+                this.$router.push('/');
+            }
         }
         // async handleSearch() {
         //     // this.$refs.anyName.reset();
@@ -197,7 +238,8 @@ export default {
         // },
     },
     computed: {
-        ...mapState(['isLogin'])
+        ...mapState(['isLogin', 'leadership', 'leadershipToken', 'manager_DC', 'manager_WH', 'staff_WH',
+            'staffWHToken', 'teller_DC', 'tellerDCToken']),
     },
 }
 </script>
@@ -238,4 +280,5 @@ header {
     #menu-item-3:hover {
         background-color: rgb(231, 204, 84);
     }
-}</style>
+}
+</style>

@@ -2,6 +2,7 @@
     <div id="container">
         <div class="mx-auto">
             <h1 class="my-4 text-center font-sans font-bold lg:text-xl md:text-lg text-md">Giấy biên nhận chuyển phát</h1>
+            <div v-if="form"> {{ form }}</div>
             <hr class="my-2 mx-auto w-10/12">
             <!-- <button @click="test()" >tesst</button> -->
             <div class="h-9/12 mx-auto">
@@ -98,68 +99,100 @@
                     </tr>
 
                     <tr>
-                        <td class="max-w-screen-sm border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                        <td
+                            class="max-w-screen-sm border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
                             <h1><strong>6. Chỉ dẫn của người gửi khi không phát được bưu gửi</strong></h1>
                             <div class="">
-                                <input type="checkbox" class="inline-block" name="" id="" disabled>Chuyển hoàn ngay<br>             
-                                <input type="checkbox" class="inline-block" name="" id="" disabled>Gọi điện cho người gửi BC gửi đi<br>
-                                <input type="checkbox" class="inline-block" name="" id="" disabled>Chuyển hoàn trước ngày<br>
+                                <input type="checkbox" class="inline-block" name="" id="" disabled>Chuyển hoàn ngay<br>
+                                <input type="checkbox" class="inline-block" name="" id="" disabled>Gọi điện cho người gửi BC
+                                gửi đi<br>
+                                <input type="checkbox" class="inline-block" name="" id="" disabled>Chuyển hoàn trước
+                                ngày<br>
                                 <input type="checkbox" class="inline-block" name="" id="" disabled>Hủy<br>
-                                <input type="checkbox" class="inline-block" name="" id="" disabled>Chuyển hoàn sau khi hết thời gian lưu trữ<br>
+                                <input type="checkbox" class="inline-block" name="" id="" disabled>Chuyển hoàn sau khi hết
+                                thời gian lưu trữ<br>
                             </div>
-                            
+
                         </td>
-                        <td class="max-w-screen-sm border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                        <td
+                            class="max-w-screen-sm border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
                             <h1><strong>7. Cước</strong></h1>
                             <table class="w-full my-2">
                                 <tr>
-                                    <th class="bg-slate-300 border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                                    <th
+                                        class="bg-slate-300 border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
                                         Cước chính
                                     </th>
-                                    <th class="bg-slate-300 border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                                    <th
+                                        class="bg-slate-300 border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
                                         Phụ phí
                                     </th>
-                                    <th class="bg-slate-300 border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">Cước GTGT</th>
-                                    <th class="bg-slate-300 border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">Tổng cước(gồm VAT)</th>
-                                    <th class="bg-slate-300 border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">Thu khác</th>
-                                    <th class="bg-slate-300 border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">Tổng thu</th>
+                                    <th
+                                        class="bg-slate-300 border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                                        Cước GTGT</th>
+                                    <th
+                                        class="bg-slate-300 border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                                        Tổng cước(gồm VAT)</th>
+                                    <th
+                                        class="bg-slate-300 border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                                        Thu khác</th>
+                                    <th
+                                        class="bg-slate-300 border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                                        Tổng thu</th>
                                 </tr>
 
                                 <tr>
-                                    <td class="border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">9.500</td>
-                                    <td class="border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">1.900</td>
-                                    <td class="border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">0</td>
-                                    <td class="border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">13.312</td>
-                                    <td class="border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">0</td>
-                                    <td class="border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">13.312</td>
+                                    <td
+                                        class="border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                                        9.500</td>
+                                    <td
+                                        class="border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                                        1.900</td>
+                                    <td
+                                        class="border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                                        0</td>
+                                    <td
+                                        class="border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                                        13.312</td>
+                                    <td
+                                        class="border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                                        0</td>
+                                    <td
+                                        class="border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                                        13.312</td>
                                 </tr>
                             </table>
                             <h1><strong>8. Khối lượng(kg):</strong></h1>
-                            <h2>Khối lượng thực tế:     30</h2>
-                            <h2>Khối lượng quy đổi:     0</h2>
+                            <h2>Khối lượng thực tế: 30</h2>
+                            <h2>Khối lượng quy đổi: 0</h2>
                         </td>
-                        
+
                     </tr>
 
                     <tr>
-                        <td class="max-w-screen-sm border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                        <td
+                            class="max-w-screen-sm border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
                             <h1><strong>9. Cam kết của người gửi</strong></h1>
-                            <h3>Tôi chấp nhận các điều khoản tại mặt sau phiếu gửi và cam đoan bưu gửi này không chức những mặt hàng nguy hiểm, cấm gửi. Trườngg hợp không phát được hãy thức hiện chỉ dẫn tại mục 6. tôi sẽ trả cước chuyển hoàn</h3>
-                            <h1><strong>Ngày giờ gửi: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Chữ kí người gửi</strong></h1>
+                            <h3>Tôi chấp nhận các điều khoản tại mặt sau phiếu gửi và cam đoan bưu gửi này không chức những
+                                mặt hàng nguy hiểm, cấm gửi. Trườngg hợp không phát được hãy thức hiện chỉ dẫn tại mục 6.
+                                tôi sẽ trả cước chuyển hoàn</h3>
+                            <h1><strong>Ngày giờ gửi: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Chữ kí người gửi</strong>
+                            </h1>
                             <h3>12h28/12/2023</h3>
                         </td>
-                        <td class="max-w-screen-sm border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
+                        <td
+                            class="max-w-screen-sm border border-2 border-black items-center justify-center md:text-lg sm:text-base text-sm">
                             <h1><strong>10. Thu của người nhận:</strong></h1>
-                            <h2>COD: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                            <h2>COD: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1234</h2>
-                            <h2>Thu khác: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                            <h2>Thu khác: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;1234</h2>
-                            <h2>Tổng: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                            <h2>Tổng: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1234
                             </h2>
@@ -187,7 +220,8 @@
             </div>
         </div>
 
-</div></template>
+    </div>
+</template>
 
 <script>
 import QrcodeVue from 'qrcode.vue'
@@ -195,27 +229,28 @@ import QrcodeVue from 'qrcode.vue'
 export default {
     name: 'PackageBill',
     data() {
-      return {
-        value: 'https://courses.uet.vnu.edu.vn/',
-        size: 96,
-      }
+        return {
+            value: 'https://courses.uet.vnu.edu.vn/',
+            size: 96,
+        }
     },
     props: {
-        form: {
-            packageTypeId: 0,
-            deliveryCenterSendId: 0,
-            deliveryCenterReceiveId: 0,
-            weightGram: 0,
-            cost: 0,
-            codAmount: 0,
-            senderAddress: '',
-            receiverAddress: '',
-            senderName: '',
-            receiverName: '',
-            senderPhone: '',
-            receiverPhone: '',
-            location: '',
-        },
+        form: Object,
+        // {
+        //     packageTypeId: 0,
+        //     deliveryCenterSendId: 0,
+        //     deliveryCenterReceiveId: 0,
+        //     weightGram: 0,
+        //     cost: 0,
+        //     codAmount: 0,
+        //     senderAddress: '',
+        //     receiverAddress: '',
+        //     senderName: '',
+        //     receiverName: '',
+        //     senderPhone: '',
+        //     receiverPhone: '',
+        //     location: '',
+        // },
         teller: [],
     },
     components: {
@@ -227,10 +262,17 @@ export default {
             console.log(this.formBill)
         }
     },
-    
+    watch: {
+        form: {
+            handler(newForm) {
+                console.log('Form prop updated in PackageBill:', newForm);
+                // You can perform additional actions here if needed
+            },
+            immediate: true, // Trigger the handler immediately on component creation
+        },
+    },
+
 }
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

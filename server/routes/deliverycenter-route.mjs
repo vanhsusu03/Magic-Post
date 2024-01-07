@@ -37,7 +37,7 @@
 
 import { Router } from 'express'
 import DeliveryCenterController from "../controllers/DeliveryCenterController.mjs"
-import { isAuth, isLeadership, isTeller } from "../middlewares/Auth.mjs"
+import { isAuth, isDeliveryCenterManager, isLeadership, isTeller } from "../middlewares/Auth.mjs"
 
 const router = Router()
 
@@ -189,13 +189,11 @@ router.delete('/deliveryCenters/:deliveryCenterId', isAuth, isLeadership, Delive
 
 router.get('/deliveryCenters/:districtId', DeliveryCenterController.getDeliveryCentersByDistrict)
 
-router.get('/deliveryCentersHere/:deliveryCenterId', isAuth, isTeller, DeliveryCenterController.getDeliveryCentersById)
+router.get('/deliveryCentersHere/:deliveryCenterId', isAuth, DeliveryCenterController.getDeliveryCentersById)
 
 router.get('/deliveryCenters/:deliveryCenterId/packages/statuses', isAuth, DeliveryCenterController.getPackages)
 
 
-router.get('/deliveryCenters/:districtId', isAuth, DeliveryCenterController.getDeliveryCentersByDistrict)
 
-router.get('/deliveryCentersHere/:deliveryCenterId', isAuth, DeliveryCenterController.getDeliveryCentersById)
 
 export default router

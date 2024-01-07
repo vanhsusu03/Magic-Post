@@ -179,4 +179,6 @@ router.get('/warehouses/:provinceId', isAuth, WarehouseController.getWarehousesB
 
 router.get('/warehouse/deliverycenter/:deliveryCenterId', isAuth, WarehouseController.getWarehouseofADeliveryCenter)
 
+router.get('/warehouseHere/:warehouseId', isAuth, WarehouseController.getWarehousesById)
+
 export default router

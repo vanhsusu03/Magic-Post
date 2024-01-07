@@ -229,10 +229,6 @@ router.delete('/deleteAccount/:accountId', isAuth, AccountController.deleteAccou
  */
 router.post('/refresh', AccountController.refreshToken)
 
-router.get('/deliveryCenters/manager',AccountController.getAllManagerAccountFromDeliveryCenter)
-
-router.get('/warehouses/manager',AccountController.getAllManagerAccountFromWarehouse)
-
 /**
  * @swagger
  * /offices/{officeId}/accounts/{accountTypeId}:
@@ -271,7 +267,7 @@ router.get('/warehouses/manager',AccountController.getAllManagerAccountFromWareh
  */
 router.get('/offices/:officeId/accounts/:accountTypeId', isAuth, AccountController.getInfoByOffice)
 
-router.post('/logout', isLogin, AccountController.logOut)
+router.post('/logout', AccountController.logOut)
 
 
 // router.get('/profile', isAuth, async (req, res) => {
