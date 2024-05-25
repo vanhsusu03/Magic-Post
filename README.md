@@ -42,7 +42,7 @@ npm run serve
 If the website running successfully, you can access it at ```https://localhost:8080```
 
 ### 3) Prepare for server side
-* Open your SQL database workbench (MySQL Workbench for XAMPP, example) and running ```onlinecourse_schema.sql``` file to create "onlinecourse" database. Then, running ```onlinecourse_data.sql``` file to insert datas to using system.
+* Open your SQL database workbench (MySQL Workbench for XAMPP, example) and running ```INSERT_DATA_GEO_VN.sql``` file and ```magicpost_schema.sql``` file to create "magic" database. Then, running ```magicpost_data.sql``` file to insert datas to using system.
 * Config the .env file in server folder to your SQL config setup (HOST_NAME, PORT, PASSWORD,...)
 
 ### 4) Running the server side
