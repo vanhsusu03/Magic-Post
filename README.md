@@ -17,8 +17,6 @@ Here are the authors of this project and infors to contact us:
 
 Our project is based on **Vue.js + Tailwindcss** for client side and **Node.js + Express.js + ECMAScript (ES6)** for server side. Moreover, we use **JSON Web Token (JWT)** for authentication in back-end. 
 
-Datas for instant courses are crawled in Udemy platform.
-
 Requirements:
 * Vue.js 3.2.13
 * Vuex 4.0.2
