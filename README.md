@@ -24,7 +24,7 @@ Requirements:
 * npm >= 10.2.3
 * Sequelize 6.34.0
 
-Step-by-step introductions to get you running DNA ONline Course Web:
+Step-by-step introductions to get you running MagicPost:
 ### 1) Clone this repository to your local machine:
 
 ```bash
